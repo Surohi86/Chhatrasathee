@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHHATRASATHEE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Chart.js for graphical colorful bar charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ──────────────────────────────────────────────── */
-        /* CSS remains identical with added Smooth Transitions */
-        /* ──────────────────────────────────────────────── */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         :root {
@@ -49,7 +48,6 @@
 
         .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 1rem; min-height: 80vh; }
         
-        /* SMOOTH TRANSITION CODE */
         .screen { 
             display: none; 
             opacity: 0;
@@ -72,6 +70,32 @@
         .app-header { position: relative; text-align: center; padding: 2.5rem 1rem; }
         .theme-toggle { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--header-title); transition: 0.3s; }
         .theme-toggle:hover { transform: scale(1.2); }
+        
+        /* Sidebar Styles */
+        .menu-toggle { position: absolute; top: 20px; left: 20px; font-size: 1.5rem; cursor: pointer; color: var(--header-title); transition: 0.3s; display: none; }
+        .menu-toggle:hover { transform: scale(1.2); }
+
+        .sidebar {
+            position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
+            background: var(--card-bg); backdrop-filter: blur(15px);
+            border-right: 1px solid var(--border-color); box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+            z-index: 3000; transition: left 0.3s ease; padding: 2rem 1rem; overflow-y: auto;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 2500; display: none;
+        }
+        .sidebar-overlay.active { display: block; }
+        .sidebar-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+        .sidebar-logo { height: 60px; background: #fff; padding: 5px; border-radius: 10px; margin-bottom: 10px; }
+        .sidebar-user-name { font-weight: 600; font-size: 1rem; text-align: center; }
+        .sidebar-menu { list-style: none; }
+        .sidebar-item {
+            padding: 12px 15px; border-radius: 10px; margin-bottom: 5px; cursor: pointer;
+            font-weight: 500; display: flex; align-items: center; gap: 15px; color: var(--text-main); transition: 0.2s;
+        }
+        .sidebar-item:hover, .sidebar-item.active { background: var(--header-title); color: #fff; }
 
         .app-logo { height: 80px; background: #fff; padding: 5px; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .app-title-main { font-weight: 800; font-size: 1.8rem; letter-spacing: 1px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -82,19 +106,7 @@
 
         .subject-tray {
             background: linear-gradient(90deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fcf6ba 75%, #bf953f 100%);
-            color: #4a3500;
-            text-align: center;
-            padding: 15px 25px;
-            border-radius: 18px;
-            margin: 1rem auto;
-            width: 100%;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            text-transform: uppercase;
-            border: 1px solid #aa771c;
-            transition: 0.3s;
+            color: #4a3500; text-align: center; padding: 15px 25px; border-radius: 18px; margin: 1rem auto; width: 100%; cursor: pointer; font-weight: 700; font-size: 1.3rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); text-transform: uppercase; border: 1px solid #aa771c; transition: 0.3s;
         }
         .subject-tray:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
         
@@ -157,7 +169,30 @@
         .modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
         .modal.active { display: flex; }
         .modal-content { background: var(--card-bg); width: 90%; max-width: 450px; padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-main); }
-        .form-group input { width: 100%; padding: 12px; margin-bottom: 1rem; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; margin-bottom: 1rem; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; }
+
+        /* Modern Global Podium Leaderboard styling */
+        .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 1rem; margin: 2rem 0; padding-top: 1rem; }
+        .podium-step { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; border-radius: 15px 15px 0 0; padding: 15px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
+        .podium-step.first { height: 180px; background: linear-gradient(135deg, #ffd700, #ffa500); color: #fff; z-index: 2; }
+        .podium-step.second { height: 150px; background: linear-gradient(135deg, #c0c0c0, #808080); color: #fff; z-index: 1; }
+        .podium-step.third { height: 120px; background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; z-index: 1; }
+        .podium-avatar { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #fff; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 10px; font-weight: bold; }
+        .podium-rank { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; }
+        .podium-name { font-size: 0.9rem; font-weight: 600; line-height: 1.2; word-break: break-word; }
+        .podium-score { font-size: 0.85rem; font-weight: 700; opacity: 0.9; }
+
+        /* Stars Reviews CSS Styling */
+        .stars-container { display: flex; gap: 5px; font-size: 1.5rem; color: #ccc; cursor: pointer; margin-bottom: 1rem; width: fit-content; }
+        .stars-container i.active { color: #ffca08; }
+        .review-card { padding: 1rem; border-radius: 12px; background: rgba(0,0,0,0.02); border: 1px solid var(--border-color); margin-bottom: 1rem; }
+        body.dark-mode .review-card { background: rgba(255,255,255,0.03); }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .review-text { font-size: 0.95rem; }
+
+        /* Counter Widget CSS Styling */
+        .counter-widget { text-align: center; margin: 3rem 0; }
+        .counter-number { font-size: 3.5rem; font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
 
         @media (max-width: 600px) { 
             .app-footer { gap: 1.2rem; padding: 1rem 0.5rem 2.5rem 0.5rem; } 
@@ -168,15 +203,54 @@
 <body>
 
     <div class="app-header">
+        <div id="sidebar-toggle" class="menu-toggle"><i class="fas fa-bars"></i></div>
         <div id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></div>
         <img id="app-logo" src="https://i.imgur.com/gO142Tf.png" class="app-logo" alt="Logo">
         <span class="app-title-main">CHHATRASATHEE</span>
         <span class="app-title-sub">ଛାତ୍ରସାଥୀ</span>
     </div>
 
+    <!-- Toggle Sidebar Drawer -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <div id="app-sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <img id="sidebar-logo-img" src="https://i.imgur.com/gO142Tf.png" class="sidebar-logo" alt="Logo">
+            <div id="sidebar-user-avatar" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--header-title); display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; margin-bottom: 10px; font-weight: bold; color: #333;">CS</div>
+            <div id="sidebar-user-name" class="sidebar-user-name">Welcome</div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item active" onclick="navigateSidebar('subject-list-screen')"><i class="fas fa-home"></i> Home</li>
+            <li class="sidebar-item" onclick="navigateSidebar('notes-screen')"><i class="fas fa-book-open"></i> Notes</li>
+            <li class="sidebar-item" onclick="navigateSidebar('my-results-screen')"><i class="fas fa-chart-bar"></i> My Results</li>
+            <li class="sidebar-item" onclick="navigateSidebar('leaderboard-screen')"><i class="fas fa-trophy"></i> Leaderboard</li>
+            <li class="sidebar-item" onclick="navigateSidebar('profile-screen')"><i class="fas fa-user-circle"></i> Profile</li>
+            <li class="sidebar-item" onclick="navigateSidebar('links-screen')"><i class="fas fa-link"></i> Important Links</li>
+            <li class="sidebar-item" onclick="navigateSidebar('reviews-screen')"><i class="fas fa-star-half-alt"></i> Students Reviews</li>
+            <li class="sidebar-item" onclick="navigateSidebar('stats-screen')"><i class="fas fa-users"></i> Our Students</li>
+            <li class="sidebar-item" onclick="navigateSidebar('youtube-screen')"><i class="fas fa-play-circle"></i> YouTube Lessons</li>
+            <li class="sidebar-item" style="color: #dc3545;" onclick="logoutApp()"><i class="fas fa-sign-out-alt"></i> Exit</li>
+        </ul>
+    </div>
+
     <div class="container">
-        <!-- SCREEN 1: SUBJECTS -->
-        <div id="subject-list-screen" class="screen active">
+        <!-- SCREEN 0: LOGIN SCREEN -->
+        <div id="login-screen" class="screen active">
+            <div class="card" style="max-width: 450px; margin: 2rem auto;">
+                <h2 style="text-align: center; margin-bottom: 1.5rem;">Student Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="login-name" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="login-class" placeholder="Class" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Enter</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- SCREEN 1: SUBJECTS (HOME) -->
+        <div id="subject-list-screen" class="screen">
             <div class="card">
                 <h1 style="text-align: center; margin-bottom: 1rem;">Available Subjects</h1>
                 <div id="subject-list-container">
@@ -198,6 +272,7 @@
             </div>
         </div>
 
+        <!-- SCREEN 3: QUIZ CORE ENGINE -->
         <div id="quiz-screen" class="screen">
             <div class="back-nav" onclick="handleBackToQuizList()"><i class="fas fa-arrow-left"></i> Back to List</div>
             <div id="quiz-header-card" class="card"></div>
@@ -212,6 +287,137 @@
         </div>
 
         <div id="result-screen" class="screen"></div>
+
+        <!-- SCREEN 4: SUBJECT WISE NOTES SCREEN -->
+        <div id="notes-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;">Subject Notes</h1>
+                <div id="notes-subject-container"></div>
+                <div id="notes-topic-list-view" style="display:none">
+                    <div class="back-nav" onclick="goBackToNotesSubjects()"><i class="fas fa-arrow-left"></i> Back to Subject Notes</div>
+                    <h2 id="selected-notes-subject" style="margin-bottom:1rem"></h2>
+                    <div id="notes-topics-container"></div>
+                </div>
+                <div id="notes-detail-view" style="display:none">
+                    <div class="back-nav" onclick="goBackToNotesTopics()"><i class="fas fa-arrow-left"></i> Back to Topic list</div>
+                    <div id="note-detail-card" class="card"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: GRAPHICAL CHARTS MY RESULTS -->
+        <div id="my-results-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;">My Colorful Performance</h1>
+                <div style="position: relative; height: 350px; width: 100%;">
+                    <canvas id="resultsChart"></canvas>
+                </div>
+                <div id="results-empty-msg" style="display:none; text-align:center; padding: 2rem 0; opacity:0.6">No quiz matches found on file. Try finishing some quizzes!</div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6: GLOBAL PODIUM LEADERBOARD -->
+        <div id="leaderboard-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;"><i class="fas fa-trophy" style="color:#ffca08"></i> Hall of Fame</h1>
+                
+                <!-- Modern Stylized podium list -->
+                <div id="global-podium" class="podium-container"></div>
+
+                <div class="leaderboard-container">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Sl.</th>
+                                <th>Name</th>
+                                <th>Total Marks</th>
+                                <th>Obtained</th>
+                                <th>%</th>
+                                <th>Time Taken</th>
+                            </tr>
+                        </thead>
+                        <tbody id="global-leaderboard-rows"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 7: EDITABLE STUDENT PROFILE -->
+        <div id="profile-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;">My Profile</h1>
+                <form id="profile-edit-form">
+                    <div class="form-group" style="display:flex; justify-content:center; margin-bottom:1.5rem">
+                        <div id="profile-image-preview" style="width: 100px; height: 100px; border-radius: 50%; border:3px solid var(--header-title); display:flex; align-items:center; justify-content:center; overflow:hidden; background:#eee; font-size:2.5rem; font-weight:bold; color:#555;">CS</div>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight:600; display:block; margin-bottom:5px">Profile Image URL</label>
+                        <input type="url" id="profile-pic-url" placeholder="Paste Image URL">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight:600; display:block; margin-bottom:5px">Student Name</label>
+                        <input type="text" id="profile-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight:600; display:block; margin-bottom:5px">Class</label>
+                        <input type="text" id="profile-class" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Save Profiles Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- SCREEN 8: IMPORTANT LINKS SCREEN -->
+        <div id="links-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;">Important Links</h1>
+                <div id="links-container"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 9: REVIEWS SCREEN -->
+        <div id="reviews-screen" class="screen">
+            <div class="card">
+                <h2>Write a Review</h2>
+                <div id="stars-review-selector" class="stars-container">
+                    <i class="far fa-star" data-star="1"></i>
+                    <i class="far fa-star" data-star="2"></i>
+                    <i class="far fa-star" data-star="3"></i>
+                    <i class="far fa-star" data-star="4"></i>
+                    <i class="far fa-star" data-star="5"></i>
+                </div>
+                <form id="review-submission-form">
+                    <div class="form-group">
+                        <textarea id="review-textarea" placeholder="Share your experience with CHHATRASATHEE..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Post Review</button>
+                </form>
+            </div>
+            <div class="card">
+                <h2>Student Reviews Feed</h2>
+                <div id="reviews-feed-container" style="margin-top:1.5rem"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 10: ORGANIC COUNTER -->
+        <div id="stats-screen" class="screen">
+            <div class="card" style="text-align:center">
+                <h1>Our Student Community</h1>
+                <p style="opacity:0.8">CHHATRASATHEE is proud to support young minds across the nation.</p>
+                <div class="counter-widget">
+                    <div id="stats-counter" class="counter-number">0</div>
+                    <div style="font-weight:600; margin-top:10px; font-size:1.1rem">Registered active users</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 11: YOUTUBE LESSONS GRID -->
+        <div id="youtube-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;">Video Lessons</h1>
+                <div id="youtube-lessons-container" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1.5rem"></div>
+            </div>
+        </div>
     </div>
 
     <div class="ad-container">
@@ -226,21 +432,6 @@
         <a href="#" id="footer-whatsapp" style="display:none" target="_blank"><i class="fab fa-whatsapp"></i></a>
         <a href="#" id="footer-instagram" style="display:none" target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="#" id="footer-youtube" style="display:none" target="_blank"><i class="fab fa-youtube"></i></a>
-    </div>
-
-    <div id="details-modal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom:1rem">Student Details</h2>
-            <form id="details-form">
-                <div class="form-group"><input type="text" id="user-name" placeholder="Full Name" required></div>
-                <div class="form-group"><input type="text" id="user-class" placeholder="Class" required></div>
-                <div class="form-group"><input type="text" id="user-roll" placeholder="Roll No" required></div>
-                <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn btn-secondary" style="flex:1" onclick="closeModal('details-modal')">Cancel</button>
-                    <button type="submit" class="btn" style="flex:1">Start</button>
-                </div>
-            </form>
-        </div>
     </div>
 
     <div id="about-modal" class="modal">
@@ -260,11 +451,13 @@
         const db = firebase.firestore();
 
         let quizzes = [], subjects = [], currentQuizIndex = -1, currentQuestions = [], appContent = {};
-        let userData = { name: '', class: '', roll: '' };
+        let userData = { name: '', class: '', roll: '', profilePic: '' };
         
         let timerInterval;
         let timeRemaining = 0;
         let totalTimeAllocated = 0;
+        let resultsChartInstance = null;
+        let selectedNotesSubjectId = '';
 
         const formatTime = (seconds) => {
             const mins = Math.floor(seconds / 60);
@@ -277,6 +470,7 @@
             showScreen('quiz-list-screen');
         };
 
+        // Screen logic with toggling sidebar
         const showScreen = (id) => {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => {
@@ -287,6 +481,30 @@
             target.style.display = 'block';
             setTimeout(() => target.classList.add('active'), 50);
             window.scrollTo(0,0);
+
+            // Update active sidebar selection style
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const mapScreenToSidebarItemIndex = {
+                'subject-list-screen': 0, 'quiz-list-screen': 0, 'quiz-screen': 0, 'result-screen': 0,
+                'notes-screen': 1, 'my-results-screen': 2, 'leaderboard-screen': 3,
+                'profile-screen': 4, 'links-screen': 5, 'reviews-screen': 6,
+                'stats-screen': 7, 'youtube-screen': 8
+            };
+            const activeIdx = mapScreenToSidebarItemIndex[id];
+            if (activeIdx !== undefined) {
+                document.querySelectorAll('.sidebar-item')[activeIdx].classList.add('active');
+            }
+
+            // Screen Action Hooks (lazy load screen data dynamic elements)
+            if (id === 'my-results-screen') renderResultsChart();
+            if (id === 'leaderboard-screen') loadGlobalLeaderboard();
+            if (id === 'links-screen') loadImportantLinks();
+            if (id === 'reviews-screen') loadStudentReviews();
+            if (id === 'stats-screen') initOrganicStudentCounter();
+            if (id === 'youtube-screen') loadYoutubeLessons();
+            if (id === 'notes-screen') loadNotesSubjects();
         };
 
         const closeModal = (id) => document.getElementById(id).classList.remove('active');
@@ -296,11 +514,13 @@
             return array;
         };
 
-        // SMOOTHER INIT: Load subjects immediately, load quizzes in background
+        // Init App and listen for configuration updates
         const init = () => {
-            // 1. Listen for Theme/Settings (Async)
             db.collection('settings').doc('appConfig').onSnapshot(doc => { 
-                if(doc.exists && doc.data().logoUrl) document.getElementById('app-logo').src = doc.data().logoUrl; 
+                if(doc.exists && doc.data().logoUrl) {
+                    document.getElementById('app-logo').src = doc.data().logoUrl;
+                    document.getElementById('sidebar-logo-img').src = doc.data().logoUrl;
+                }
             });
 
             db.collection('settings').doc('appContent').onSnapshot(doc => {
@@ -311,17 +531,46 @@
                 }
             });
 
-            // 2. Faster Subject Fetch
             db.collection('subjects').orderBy('name').onSnapshot(snap => {
                 subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderSubjects(); // Render subjects first with '...' placeholder for counts
+                renderSubjects();
             });
 
-            // 3. Background Quiz Fetch (The heavy part)
             db.collection('quizzes').onSnapshot(snap => {
                 quizzes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderSubjects(); // Re-render once counts are available
+                renderSubjects();
             });
+
+            // Check if local student profile exists
+            const savedProfile = localStorage.getItem('csStudentProfile');
+            if (savedProfile) {
+                userData = JSON.parse(savedProfile);
+                loginCompleted();
+            }
+        };
+
+        const loginCompleted = () => {
+            document.getElementById('sidebar-toggle').style.display = 'block';
+            updateSidebarProfileInfo();
+            showScreen('subject-list-screen');
+        };
+
+        const updateSidebarProfileInfo = () => {
+            document.getElementById('sidebar-user-name').innerText = userData.name || 'Welcome';
+            const avatarEl = document.getElementById('sidebar-user-avatar');
+            if (userData.profilePic) {
+                avatarEl.innerHTML = `<img src="${userData.profilePic}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                avatarEl.innerHTML = userData.name ? userData.name.substring(0, 2).toUpperCase() : 'CS';
+            }
+        };
+
+        const logoutApp = () => {
+            localStorage.removeItem('csStudentProfile');
+            userData = { name: '', class: '', roll: '', profilePic: '' };
+            document.getElementById('sidebar-toggle').style.display = 'none';
+            toggleSidebar(false);
+            showScreen('login-screen');
         };
 
         const renderSubjects = () => {
@@ -330,16 +579,12 @@
             container.innerHTML = '';
             
             subjects.forEach(subject => {
-                // Check if quizzes are loaded yet
                 const subjectQuizzes = quizzes.filter(q => q.subjectId === subject.id);
                 const quizCount = subjectQuizzes.length;
-                
                 const tray = document.createElement('div'); 
                 tray.className = 'subject-tray'; 
                 
-                // Show "Loading..." count until quizzes array is populated
                 const countText = quizzes.length > 0 ? `(${quizCount} Quizzes Available)` : `(Checking quizzes...)`;
-                
                 tray.innerHTML = `${subject.name} <br> <span style="font-size: 0.8rem; font-weight:400">${countText}</span>`; 
                 
                 tray.onclick = () => {
@@ -367,7 +612,7 @@
                     item.className = `quiz-list-item ${gradClass}`;
                     colorIndex++;
                     item.innerHTML = `<div><h3>${quiz.title}</h3><p>${quiz.questions?.length || 0} Questions</p></div><button class="btn btn-secondary">START</button>`;
-                    item.onclick = () => { currentQuizIndex = originalIndex; document.getElementById('details-modal').classList.add('active'); };
+                    item.onclick = () => { currentQuizIndex = originalIndex; startQuiz(); };
                     container.appendChild(item);
                 });
             }
@@ -420,10 +665,12 @@
             const answers = currentQuestions.map((q, i) => { const sel = document.querySelector(`input[name="q${i}"]:checked`); if(sel && sel.value === q.answer) correct++; return sel ? sel.value : null; });
             const percent = Math.round((correct / total) * 100);
             const quizId = quizzes[currentQuizIndex].id;
+            const quizTitle = quizzes[currentQuizIndex].title;
 
             try {
                 await db.collection('leaderboard').add({ 
                     quizId, 
+                    quizTitle: quizTitle || 'Quiz Assessment',
                     name: userData.name, 
                     date: new Date().toLocaleDateString(), 
                     total, 
@@ -477,14 +724,538 @@
             } catch (err) { console.error(err); alert("Error saving results. Check connection."); }
         };
 
-        document.getElementById('details-form').onsubmit = (e) => { e.preventDefault(); userData = { name: document.getElementById('user-name').value, class: document.getElementById('user-class').value, roll: document.getElementById('user-roll').value }; closeModal('details-modal'); startQuiz(); };
+        // ─────────── 2. SUBJECT-WISE NOTES SECTION MODULE ───────────
+        const loadNotesSubjects = () => {
+            const container = document.getElementById('notes-subject-container');
+            container.innerHTML = '';
+            document.getElementById('notes-subject-container').style.display = 'block';
+            document.getElementById('notes-topic-list-view').style.display = 'none';
+            document.getElementById('notes-detail-view').style.display = 'none';
+
+            if(subjects.length === 0) {
+                container.innerHTML = `<p style="text-align:center; opacity:0.6">No active notes modules available.</p>`;
+                return;
+            }
+
+            subjects.forEach(subject => {
+                const tray = document.createElement('div');
+                tray.className = 'subject-tray';
+                tray.innerHTML = `${subject.name} <br> <span style="font-size: 0.8rem; font-weight:400">Study Materials</span>`;
+                tray.onclick = () => showNotesTopicsForSubject(subject.id, subject.name);
+                container.appendChild(tray);
+            });
+        };
+
+        const showNotesTopicsForSubject = async (subjectId, subjectName) => {
+            selectedNotesSubjectId = subjectId;
+            document.getElementById('selected-notes-subject').innerText = subjectName;
+            document.getElementById('notes-subject-container').style.display = 'none';
+            document.getElementById('notes-topic-list-view').style.display = 'block';
+            
+            const container = document.getElementById('notes-topics-container');
+            container.innerHTML = '<p style="text-align:center; padding:15px;">Loading syllabus content...</p>';
+
+            try {
+                const snap = await db.collection('notes').where('subjectId', '==', subjectId).get();
+                container.innerHTML = '';
+                if(snap.empty) {
+                    container.innerHTML = '<p style="text-align:center; opacity:0.6; padding:15px;">No topics uploaded for this subject yet.</p>';
+                    return;
+                }
+                
+                let colorIndex = 0;
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    const item = document.createElement('div');
+                    const gradClass = data.gradientClass || ('q-grad-' + ((colorIndex % 12) + 1));
+                    item.className = `quiz-list-item ${gradClass}`;
+                    colorIndex++;
+                    item.innerHTML = `<div><h3>${data.topicName}</h3><p>Read Module Note</p></div><button class="btn btn-secondary">Open</button>`;
+                    item.onclick = () => showNoteDetails(data);
+                    container.appendChild(item);
+                });
+            } catch (err) {
+                container.innerHTML = '<p style="color:red">Failed to retrieve study material topics.</p>';
+            }
+        };
+
+        const showNoteDetails = (noteData) => {
+            document.getElementById('notes-topic-list-view').style.display = 'none';
+            document.getElementById('notes-detail-view').style.display = 'block';
+            const detailCard = document.getElementById('note-detail-card');
+            
+            detailCard.innerHTML = `
+                <h2 style="color:var(--header-title); margin-bottom:1rem">${noteData.topicName}</h2>
+                <div style="white-space: pre-wrap; font-size:1.05rem; line-height:1.7">${noteData.content}</div>
+            `;
+        };
+
+        const goBackToNotesSubjects = () => {
+            document.getElementById('notes-topic-list-view').style.display = 'none';
+            document.getElementById('notes-subject-container').style.display = 'block';
+        };
+
+        const goBackToNotesTopics = () => {
+            document.getElementById('notes-detail-view').style.display = 'none';
+            document.getElementById('notes-topic-list-view').style.display = 'block';
+        };
+
+
+        // ─────────── 3. RESULTS GRAPHICAL CHARTS MODULE ───────────
+        const renderResultsChart = async () => {
+            const chartCanvas = document.getElementById('resultsChart');
+            const emptyMsg = document.getElementById('results-empty-msg');
+            
+            try {
+                const snap = await db.collection('leaderboard').where('name', '==', userData.name).orderBy('timestamp', 'desc').limit(10).get();
+                if(snap.empty) {
+                    chartCanvas.style.display = 'none';
+                    emptyMsg.style.display = 'block';
+                    return;
+                }
+
+                chartCanvas.style.display = 'block';
+                emptyMsg.style.display = 'none';
+
+                let rawData = [];
+                snap.forEach(doc => rawData.push(doc.data()));
+                rawData.reverse(); // Chronological order
+
+                const labels = rawData.map(d => d.quizTitle ? d.quizTitle.substring(0, 15) + '..' : 'Quiz');
+                const percentScores = rawData.map(d => d.percent);
+
+                if (resultsChartInstance) {
+                    resultsChartInstance.destroy();
+                }
+
+                // Create a beautiful, colorful, modern bar graph using Chart.js
+                resultsChartInstance = new Chart(chartCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Your Assessment Performance Score (%)',
+                            data: percentScores,
+                            backgroundColor: [
+                                '#f92edc', '#0ad3fa', '#12f55d', '#ffe33f', '#ff9933', 
+                                '#e20c75', '#079ba5', '#ff026a', '#ab18a2', '#ecb315'
+                            ],
+                            borderRadius: 8,
+                            borderWidth: 1,
+                            borderColor: 'rgba(0,0,0,0.05)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Results chart failure", err);
+            }
+        };
+
+
+        // ─────────── 4. GLOBAL PODIUM LEADERBOARD MODULE ───────────
+        const loadGlobalLeaderboard = async () => {
+            const rowsContainer = document.getElementById('global-leaderboard-rows');
+            const podiumContainer = document.getElementById('global-podium');
+            rowsContainer.innerHTML = '<tr><td colspan="6" style="text-align:center">Constructing global score tables...</td></tr>';
+            podiumContainer.innerHTML = '';
+
+            try {
+                // Fetch scores from DB
+                const snap = await db.collection('leaderboard').get();
+                let lbData = snap.docs.map(doc => doc.data());
+                
+                // Group by student and get aggregate average or highest score (Let's rank by best % score)
+                let topRanked = {};
+                lbData.forEach(entry => {
+                    if(!topRanked[entry.name] || topRanked[entry.name].percent < entry.percent) {
+                        topRanked[entry.name] = entry;
+                    }
+                });
+
+                let sortedUsers = Object.values(topRanked).sort((a,b) => {
+                    if (b.percent !== a.percent) return b.percent - a.percent;
+                    return a.timeTakenSecs - b.timeTakenSecs;
+                });
+
+                if (sortedUsers.length === 0) {
+                    rowsContainer.innerHTML = '<tr><td colspan="6" style="text-align:center">No student records created.</td></tr>';
+                    return;
+                }
+
+                // Render High-end 3D Podium for Top 3 Students
+                const podiumHTML = [];
+                const first = sortedUsers[0];
+                const second = sortedUsers[1];
+                const third = sortedUsers[2];
+
+                if(second) {
+                    podiumHTML.push(`
+                        <div class="podium-step second">
+                            <div class="podium-avatar">${second.name.substring(0,2).toUpperCase()}</div>
+                            <div class="podium-rank">2nd</div>
+                            <div class="podium-name">${second.name}</div>
+                            <div class="podium-score">${second.percent}%</div>
+                        </div>
+                    `);
+                }
+                if(first) {
+                    podiumHTML.push(`
+                        <div class="podium-step first">
+                            <div class="podium-avatar" style="border-color:#ffca08">${first.name.substring(0,2).toUpperCase()}</div>
+                            <div class="podium-rank">1st</div>
+                            <div class="podium-name">${first.name}</div>
+                            <div class="podium-score">${first.percent}%</div>
+                        </div>
+                    `);
+                }
+                if(third) {
+                    podiumHTML.push(`
+                        <div class="podium-step third">
+                            <div class="podium-avatar">${third.name.substring(0,2).toUpperCase()}</div>
+                            <div class="podium-rank">3rd</div>
+                            <div class="podium-name">${third.name}</div>
+                            <div class="podium-score">${third.percent}%</div>
+                        </div>
+                    `);
+                }
+                podiumContainer.innerHTML = podiumHTML.join('');
+
+                // Render remaining students in the ranking matrix list table
+                let tableHTML = '';
+                sortedUsers.forEach((d, i) => {
+                    tableHTML += `
+                        <tr>
+                            <td><b>${i+1}</b></td>
+                            <td>${d.name}</td>
+                            <td>${d.total}</td>
+                            <td>${d.obtained}</td>
+                            <td><span style="color:var(--header-title); font-weight:700">${d.percent}%</span></td>
+                            <td>${d.timeTaken || 'N/A'}</td>
+                        </tr>
+                    `;
+                });
+                rowsContainer.innerHTML = tableHTML;
+            } catch (err) {
+                rowsContainer.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red">Error loading general records list.</td></tr>';
+            }
+        };
+
+
+        // ─────────── 5. PROFILE MODULE ───────────
+        document.getElementById('profile-edit-form').onsubmit = (e) => {
+            e.preventDefault();
+            userData.name = document.getElementById('profile-name').value;
+            userData.class = document.getElementById('profile-class').value;
+            userData.profilePic = document.getElementById('profile-pic-url').value;
+
+            localStorage.setItem('csStudentProfile', JSON.stringify(userData));
+            updateSidebarProfileInfo();
+            
+            // Re-render Preview Avatar Frame
+            const previewEl = document.getElementById('profile-image-preview');
+            if(userData.profilePic) {
+                previewEl.innerHTML = `<img src="${userData.profilePic}" style="width:100%; height:100%; object-fit:cover;">`;
+            } else {
+                previewEl.innerHTML = userData.name.substring(0,2).toUpperCase();
+            }
+            alert("Profile metadata updated successfully!");
+        };
+
+
+        // ─────────── 6. IMPORTANT LINKS MODULE ───────────
+        const loadImportantLinks = async () => {
+            const container = document.getElementById('links-container');
+            container.innerHTML = '<p style="text-align:center; padding:20px;">Fetching official links repository...</p>';
+
+            try {
+                const snap = await db.collection('importantLinks').get();
+                container.innerHTML = '';
+                if(snap.empty) {
+                    container.innerHTML = '<p style="text-align:center; opacity:0.6; padding:20px;">No links uploaded by system administration.</p>';
+                    return;
+                }
+
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.cssText = "display:flex; justify-content:space-between; align-items:center; cursor:pointer;";
+                    card.innerHTML = `
+                        <div style="font-weight:600; font-size:1.05rem;">${data.title}</div>
+                        <i class="fas fa-external-link-alt" style="color:var(--header-title)"></i>
+                    `;
+                    card.onclick = () => window.open(data.url, '_blank');
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                container.innerHTML = '<p style="color:red">Failed to establish link modules configuration.</p>';
+            }
+        };
+
+
+        // ─────────── 7. REVIEWS & COMMENTS MODULE ───────────
+        let selectedStarRating = 0;
+        const starNodes = document.querySelectorAll('#stars-review-selector i');
+        
+        starNodes.forEach(node => {
+            node.addEventListener('mouseover', () => highlightStars(node.dataset.star));
+            node.addEventListener('click', () => { selectedStarRating = parseInt(node.dataset.star); highlightStars(selectedStarRating); });
+        });
+
+        document.getElementById('stars-review-selector').addEventListener('mouseleave', () => highlightStars(selectedStarRating));
+
+        const highlightStars = (rating) => {
+            starNodes.forEach(node => {
+                if (parseInt(node.dataset.star) <= rating) {
+                    node.className = "fas fa-star active";
+                } else {
+                    node.className = "far fa-star";
+                }
+            });
+        };
+
+        document.getElementById('review-submission-form').onsubmit = async (e) => {
+            e.preventDefault();
+            if(selectedStarRating === 0) return alert("Please select a star rating first!");
+            const textReview = document.getElementById('review-textarea').value.trim();
+
+            try {
+                await db.collection('reviews').add({
+                    studentName: userData.name,
+                    rating: selectedStarRating,
+                    text: textReview,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('review-textarea').value = '';
+                selectedStarRating = 0;
+                highlightStars(0);
+                alert("Thank you! Your community review was posted successfully.");
+                loadStudentReviews(); // Refresh feed
+            } catch (err) {
+                alert("Failed to post your review.");
+            }
+        };
+
+        const loadStudentReviews = async () => {
+            const feedContainer = document.getElementById('reviews-feed-container');
+            feedContainer.innerHTML = '<p style="text-align:center; opacity:0.6;">Retreiving feedback reviews...</p>';
+
+            try {
+                const snap = await db.collection('reviews').orderBy('timestamp', 'desc').limit(25).get();
+                feedContainer.innerHTML = '';
+                if(snap.empty) {
+                    feedContainer.innerHTML = '<p style="text-align:center; opacity:0.6;">No reviews submitted yet. Be the first!</p>';
+                    return;
+                }
+
+                snap.forEach(doc => {
+                    const r = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'review-card';
+                    
+                    let starHTML = '';
+                    for (let s = 1; s <= 5; s++) {
+                        starHTML += s <= r.rating ? `<i class="fas fa-star" style="color:#ffca08"></i>` : `<i class="far fa-star" style="color:#ccc"></i>`;
+                    }
+
+                    card.innerHTML = `
+                        <div class="review-header">
+                            <b>${r.studentName}</b>
+                            <div>${starHTML}</div>
+                        </div>
+                        <div class="review-text">${r.text}</div>
+                    `;
+                    feedContainer.appendChild(card);
+                });
+            } catch (err) {
+                feedContainer.innerHTML = '<p style="color:red">Could not generate reviews feed stream.</p>';
+            }
+        };
+
+
+        // ─────────── 8. "OUR STUDENTS" ACTIVE COUNTER MODULE ───────────
+        const initOrganicStudentCounter = async () => {
+            const statsNum = document.getElementById('stats-counter');
+            statsNum.innerText = "0";
+
+            try {
+                // Perform clean atomic increment transaction
+                const counterDocRef = db.collection('counters').doc('appCounters');
+                await db.runTransaction(async (transaction) => {
+                    const sfDoc = await transaction.get(counterDocRef);
+                    if (!sfDoc.exists) {
+                        transaction.set(counterDocRef, { studentCount: 1 });
+                    } else {
+                        const nextCount = sfDoc.data().studentCount + 1;
+                        transaction.update(counterDocRef, { studentCount: nextCount });
+                    }
+                });
+
+                // Retrieve fresh count
+                const docSnap = await counterDocRef.get();
+                const totalStudentsCount = docSnap.data().studentCount;
+
+                // Fire smooth animated counter count-up
+                let currentIterationCount = 0;
+                const incrementInterval = Math.ceil(totalStudentsCount / 40);
+                const intervalTrigger = setInterval(() => {
+                    currentIterationCount += incrementInterval;
+                    if (currentIterationCount >= totalStudentsCount) {
+                        statsNum.innerText = totalStudentsCount.toLocaleString();
+                        clearInterval(intervalTrigger);
+                    } else {
+                        statsNum.innerText = currentIterationCount.toLocaleString();
+                    }
+                }, 20);
+
+            } catch (err) {
+                console.error("Counter transaction failure", err);
+            }
+        };
+
+
+        // ─────────── 9. YOUTUBE LESSONS MODULE ───────────
+        const loadYoutubeLessons = async () => {
+            const lessonsContainer = document.getElementById('youtube-lessons-container');
+            lessonsContainer.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity:0.6;">Caching visual channels video database...</p>';
+
+            try {
+                const snap = await db.collection('youtubeLessons').get();
+                lessonsContainer.innerHTML = '';
+                if(snap.empty) {
+                    lessonsContainer.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity:0.6;">No video streams found.</p>';
+                    return;
+                }
+
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.style.cssText = "display:flex; flex-direction:column; gap:10px; cursor:pointer; transition:transform 0.2s;";
+                    card.onmouseover = () => card.style.transform = "scale(1.03)";
+                    card.onmouseout = () => card.style.transform = "scale(1)";
+                    
+                    // Simple regex to parse youtube video ID and get thumbnail
+                    let videoId = 'dQw4w9WgXcQ'; // Default fallback
+                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    const match = data.videoUrl.match(regExp);
+                    if (match && match[2].length === 11) videoId = match[2];
+
+                    card.innerHTML = `
+                        <div style="position:relative; width:100%; height:160px; border-radius:10px; overflow:hidden; background:#000;">
+                            <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" style="width:100%; height:100%; object-fit:cover;">
+                            <div style="position:absolute; inset:0; background:rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center;">
+                                <i class="fab fa-youtube" style="font-size:3.5rem; color:#FF0000; text-shadow:0 0 15px rgba(0,0,0,0.3)"></i>
+                            </div>
+                        </div>
+                        <h3 style="font-size:1.05rem; line-height:1.3; color:var(--text-main); margin-top:5px">${data.title}</h3>
+                        <p style="font-size:0.85rem; color:var(--text-sub);">Tap to play in YouTube app</p>
+                    `;
+                    card.onclick = () => window.open(data.videoUrl, '_blank');
+                    lessonsContainer.appendChild(card);
+                });
+            } catch (err) {
+                lessonsContainer.innerHTML = '<p style="color:red; grid-column: 1/-1;">Could not render video playlist grids.</p>';
+            }
+        };
+
+
+        // ─────────── SIDEBAR TOGGLE & NAV CONTROLLER ───────────
+        const toggleSidebar = (open = true) => {
+            document.getElementById('app-sidebar').classList.toggle('active', open);
+            document.getElementById('sidebar-overlay').classList.toggle('active', open);
+        };
+
+        document.getElementById('sidebar-toggle').addEventListener('click', () => toggleSidebar(true));
+        document.getElementById('sidebar-overlay').addEventListener('click', () => toggleSidebar(false));
+
+        const navigateSidebar = (screenId) => {
+            toggleSidebar(false);
+            showScreen(screenId);
+        };
+
+        // Student first-time login
+        document.getElementById('login-form').onsubmit = (e) => {
+            e.preventDefault();
+            const nameInp = document.getElementById('login-name').value;
+            const classInp = document.getElementById('login-class').value;
+            
+            userData = { 
+                name: nameInp, 
+                class: classInp, 
+                roll: '',
+                profilePic: ''
+            };
+            
+            localStorage.setItem('csStudentProfile', JSON.stringify(userData));
+            
+            // Sync with profile edit screen
+            document.getElementById('profile-name').value = userData.name;
+            document.getElementById('profile-class').value = userData.class;
+            document.getElementById('profile-pic-url').value = userData.profilePic;
+
+            loginCompleted();
+        };
+
         document.getElementById('quiz-form').onsubmit = (e) => { e.preventDefault(); calculateResult(); };
         document.getElementById('quiz-form').onchange = () => { document.getElementById('progress-text').innerText = `Answered ${document.querySelectorAll('input:checked').length} of ${currentQuestions.length}`; };
 
         const themeToggle = document.getElementById('theme-toggle');
         themeToggle.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); themeToggle.innerHTML = document.body.classList.contains('dark-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; });
         document.getElementById('footer-about-us').onclick = (e) => { e.preventDefault(); document.getElementById('about-text').innerText = appContent.appAboutUs || "Educational App"; document.getElementById('about-modal').classList.add('active'); };
-        document.getElementById('footer-share-app').onclick = (e) => { e.preventDefault(); navigator.clipboard.writeText(appContent.appShareLink || window.location.href); alert("Copied!"); };
+// Robust copy fallback helper function
+        const copyTextToClipboard = (text) => {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text)
+                    .then(() => alert("App share link copied!"))
+                    .catch(() => fallbackCopy(text));
+            } else {
+                fallbackCopy(text);
+            }
+        };
+
+        const fallbackCopy = (text) => {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed"; // Prevent scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                alert("App share link copied!");
+            } catch (err) {
+                alert("Please copy the link manually: " + text);
+            }
+            document.body.removeChild(textArea);
+        };
+
+        // Share button listener using the fallback copier
+        document.getElementById('footer-share-app').onclick = (e) => {
+            e.preventDefault();
+            const linkToShare = appContent.appShareLink || window.location.href;
+            copyTextToClipboard(linkToShare);
+        };
 
         init();
     </script>
