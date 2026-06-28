@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHHATRASATHEE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Noto Sans Oriya Font for high-quality complex script rendering -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;700&display=swap" rel="stylesheet">
+    
     <!-- Chart.js for graphical colorful bar charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -554,14 +558,13 @@
                 <div id="cert-scroll-wrapper" style="width:100%; position: relative; overflow: hidden; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15)">
                     <div id="certificate-pdf-target" style="width: 1000px; height: 710px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
                         
-                        <!-- Premium Double Border Frame -->
+<!-- Premium Double Border Frame -->
                         <div style="border: 8px double #d4af37; height: 100%; width: 100%; position: relative; box-sizing: border-box; padding: 40px; background: radial-gradient(circle, #ffffff 60%, #fffbf2 100%);">
                             
                             <!-- Gold Ribbon Corner Ribbon (Top Right) -->
-                            <div style="position: absolute; top: 0; right: 0; width: 130px; height: 130px; overflow: hidden;">
-                                <div style="position: absolute; display: block; width: 200px; padding: 8px 0; background: linear-gradient(135deg, #d4af37, #aa771c); color: #fff; text-align: center; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transform: rotate(45deg) translate(40px, -20px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">EXCELLENCE</div>
+                            <div style="position: absolute; top: -4px; right: -4px; width: 130px; height: 130px; overflow: hidden; z-index: 10;">
+                                <div style="position: absolute; display: block; width: 200px; padding: 8px 0; background: linear-gradient(135deg, #d4af37, #aa771c); color: #fff; text-align: center; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; top: 25px; right: -50px; transform: rotate(45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">EXCELLENCE</div>
                             </div>
-
                             <!-- Best Award Seal Badge (Top Left) -->
                             <div style="position: absolute; top: 20px; left: 20px; width: 110px; height: 155px; text-align: center; z-index:5;">
                                 <div style="position: absolute; bottom: 0; left: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
@@ -576,43 +579,41 @@
 
                             <!-- Certificate Headline Header with centered App Logo -->
                             <div style="text-align: center; margin-top: 5px;">
-                                <!-- Centered App Logo dynamically binded -->
                                 <img id="cert-logo" src="https://i.imgur.com/gO142Tf.png" style="height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 5px;" alt="Chhatrasathee Logo">
-                                
                                 <h1 style="font-family: 'Playfair Display', 'Georgia', serif; font-size: 3rem; letter-spacing: 4px; font-weight: 800; color: #5a136e; margin: 0; text-transform: uppercase;">Certificate</h1>
-                                <p style="font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #c86400; margin-top: 5px; text-transform: uppercase;">of Appreciation & Compliance / ପ୍ରଶଂସା ପତ୍ର</p>
+                                <p style="font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #c86400; margin-top: 5px; text-transform: uppercase;">
+                                    of Appreciation & Compliance / <span style="font-family: 'Noto Sans Oriya', sans-serif; letter-spacing: normal;">ପ୍ରଶଂସା ପତ୍ର</span>
+                                </p>
                             </div>
 
                             <!-- Presented to segment -->
                             <div style="text-align: center; margin-top: 20px;">
-                                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; color: #7f8c8d; text-transform: uppercase; margin: 0;">Proudly Presented To / ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା</p>
+                                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; color: #7f8c8d; text-transform: uppercase; margin: 0;">
+                                    Proudly Presented To / <span style="font-family: 'Noto Sans Oriya', sans-serif; letter-spacing: normal;">ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା</span>
+                                </p>
                                 <h2 id="cert-student-name" style="font-family: 'Playfair Display', 'Georgia', serif; font-style: italic; font-size: 3rem; color: #c86400; font-weight: 700; margin: 15px 0 5px 0; text-shadow: 0 1px 1px rgba(0,0,0,0.1);">Student Name</h2>
                                 <div style="width: 450px; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin: 0 auto; position: relative;">
                                     <div style="width: 12px; height: 12px; background: #d4af37; transform: rotate(45deg); position: absolute; top: -5px; left: 50%; margin-left: -6px;"></div>
                                 </div>
                             </div>
 
-                            <!-- Certificate Body Content (Supports Class, Solved Today Count, and active Study Streaks) -->
+                            <!-- Certificate Body Content -->
                             <div style="text-align: center; margin-top: 20px; padding: 0 40px; line-height: 1.5;">
                                 <p style="font-size: 0.95rem; color: #34495e; margin: 0 0 8px 0;">
                                     For exceptional commitment and study consistency in completing the daily Class <b id="cert-class" style="color: #5a136e;">[Class]</b> academic workouts, successfully solving <b id="cert-solved-today" style="color: #5a136e;">0</b> questions today and securing an active continuous study streak of <b id="cert-streak" style="color: #c86400;">0</b> days.
                                 </p>
-                                <!-- Forced single-line render with nowrap and responsive letter spacing -->
-                                <p style="font-family: 'Gautami', 'Kalinga', Arial, sans-serif; font-size: 0.78rem; font-weight: bold; font-style: italic; color: #2c3e50; direction: ltr; margin: 0; white-space: nowrap; letter-spacing: -0.1px;">
+                                <!-- Noto Sans Oriya applied with letter-spacing set to normal to ensure flawless ligature rendering -->
+                                <p style="font-family: 'Noto Sans Oriya', 'Kalinga', 'Gautami', Arial, sans-serif; font-size: 0.78rem; font-weight: bold; font-style: italic; color: #2c3e50; direction: ltr; margin: 0; white-space: nowrap; letter-spacing: normal;">
                                     ଛାତ୍ରସାଥୀ କମିଟି ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ପ୍ରତିଦିନ ନିଷ୍ଠାପୂର୍ବକ ପ୍ରଶ୍ନୋତ୍ତର ଅଭ୍ୟାସ ସମ୍ପୂର୍ଣ୍ଣ କରି ଏହି ଗୌରବମୟ ଲକ୍ଷ୍ୟ ପୂରଣ କରିଥିବାରୁ ଏହା ପ୍ରଦାନ କରାଗଲା ।
                                 </p>
                             </div>
 
                             <!-- Signatures and bottom central Streak Badge -->
                             <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
-                                
-                                <!-- Left Signature: Director -->
                                 <div style="text-align: center; width: 220px;">
                                     <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
                                     <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Director, Chhatrasathee</p>
                                 </div>
-
-                                <!-- Center Badge: Streak Fire Daily Goal Badge -->
                                 <div style="text-align: center;">
                                     <div style="width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid #e20c75; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                                         <span id="cert-badge-streak" style="font-size: 0.95rem; font-weight: 800; color: #212529; line-height: 1;">0d</span>
@@ -620,13 +621,10 @@
                                     </div>
                                     <p style="font-size: 0.65rem; font-weight: bold; color: #2c3e50; letter-spacing: 0.5px; text-transform: uppercase; margin: 5px 0 0 0;">Daily Goal Met</p>
                                 </div>
-
-                                <!-- Right Signature: Mentor Coordinator -->
                                 <div style="text-align: center; width: 220px;">
                                     <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
                                     <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Mentor Coordinator</p>
                                 </div>
-
                             </div>
 
                             <!-- Bottom Border Accent Ribbon Bar -->
@@ -2020,8 +2018,10 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                 margin:       0,
                 filename:     `Certificate_Chhatrasathee_${studentFilename}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2.2, useCORS: true }, // Higher scale creates crisp print resolution
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+                // Disable letterRendering explicitly to preserve complex Brahmic ligatures
+                html2canvas:  { scale: 2.5, useCORS: true, letterRendering: false }, 
+                // Set landscape page formats using exact pixel dimensions of the container
+                jsPDF:        { unit: 'px', format: [1000, 710], orientation: 'landscape', hotfixes: ['px_gstate'] }
             };
 
             // Use html2pdf promise pipeline to extract a raw Base64 Data URI instead of a buggy Blob URL
