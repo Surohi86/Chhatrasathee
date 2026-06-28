@@ -556,8 +556,8 @@
 
 <!-- Scrollable wrapper configured for automatic vector scaling on mobile screen viewports -->
                 <div id="cert-scroll-wrapper" style="width:100%; position: relative; overflow: hidden; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15)">
-                    <!-- Height adjusted to 700px to perfectly fit A4 landscape page constraints without overflow -->
-                    <div id="certificate-pdf-target" style="width: 1000px; height: 700px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
+                    <!-- Width and Height updated to exact A4 96 DPI pixels to achieve 100% full-page landscape layout -->
+                    <div id="certificate-pdf-target" style="width: 1122px; height: 793px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
                         
                         <!-- Premium Double Border Frame -->
                         <div style="border: 8px double #d4af37; height: 100%; width: 100%; position: relative; box-sizing: border-box; padding: 40px; background: radial-gradient(circle, #ffffff 60%, #fffbf2 100%);">
@@ -1998,8 +1998,8 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             if (!target || !wrapper) return;
 
             const containerWidth = wrapper.offsetWidth;
-            const targetWidth = 1000;
-            const targetHeight = 700; // Matches the updated A4 certificate DOM height perfectly
+            const targetWidth = 1122; // Matched to landscape A4 width
+            const targetHeight = 793; // Matched to landscape A4 height
 
             if (containerWidth < targetWidth) {
                 const scale = containerWidth / targetWidth;
@@ -2022,7 +2022,7 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             const oldTransformOrigin = element.style.transformOrigin;
             const oldWrapperHeight = wrapper ? wrapper.style.height : '';
 
-            // 2. Temporarily reset scale transforms so html2canvas renders the container at its native 1000px width
+            // 2. Temporarily reset scale transforms so html2canvas renders the container at its native 1122px width
             element.style.transform = 'none';
             element.style.transformOrigin = 'initial';
             if (wrapper) wrapper.style.height = 'auto';
@@ -2034,13 +2034,13 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                 filename:     `Certificate_Chhatrasathee_${studentFilename}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
-                    scale: 2.2, 
+                    scale: 2.5, 
                     useCORS: true, 
                     letterRendering: false,
                     scrollX: 0,
                     scrollY: 0,
-                    windowWidth: 1000,
-                    windowHeight: 700
+                    windowWidth: 1122,  // Render at exact A4 width resolution
+                    windowHeight: 793   // Render at exact A4 height resolution
                 }, 
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
