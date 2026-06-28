@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Chart.js for graphical colorful bar charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- html2pdf.js CDN library for exporting high-res landscape PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+   
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -171,16 +175,184 @@
         .modal-content { background: var(--card-bg); width: 90%; max-width: 450px; padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-main); }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; margin-bottom: 1rem; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; }
 
-        /* Modern Global Podium Leaderboard styling */
-        .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 1rem; margin: 2rem 0; padding-top: 1rem; }
-        .podium-step { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; border-radius: 15px 15px 0 0; padding: 15px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
-        .podium-step.first { height: 180px; background: linear-gradient(135deg, #ffd700, #ffa500); color: #fff; z-index: 2; }
-        .podium-step.second { height: 150px; background: linear-gradient(135deg, #c0c0c0, #808080); color: #fff; z-index: 1; }
-        .podium-step.third { height: 120px; background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; z-index: 1; }
-        .podium-avatar { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #fff; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 10px; font-weight: bold; }
-        .podium-rank { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; }
-        .podium-name { font-size: 0.9rem; font-weight: 600; line-height: 1.2; word-break: break-word; }
-        .podium-score { font-size: 0.85rem; font-weight: 700; opacity: 0.9; }
+/* Enhanced Modern Global Podium Leaderboard styling */
+        .podium-container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-end; 
+            gap: 1.2rem; 
+            margin: 3rem 0 2rem 0; 
+            padding-top: 1.5rem; 
+        }
+        
+        .podium-step { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
+            flex: 1; 
+            border-radius: 20px 20px 15px 15px; 
+            padding: 20px 10px 15px 10px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+            position: relative; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .podium-step:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        /* Vibrant gradients and glowing drop shadows for the podium blocks */
+        .podium-step.first { 
+            height: 200px; 
+            background: linear-gradient(135deg, #ff9f43, #ff5252); 
+            color: #fff; 
+            z-index: 2; 
+            border: 2.5px solid #ffca08;
+            box-shadow: 0 12px 28px rgba(255, 82, 82, 0.35);
+            animation: floating-podium 3s ease-in-out infinite;
+        }
+        .podium-step.second { 
+            height: 165px; 
+            background: linear-gradient(135deg, #54a0ff, #5f27cd); 
+            color: #fff; 
+            z-index: 1; 
+            box-shadow: 0 10px 24px rgba(84, 160, 255, 0.3);
+        }
+        .podium-step.third { 
+            height: 135px; 
+            background: linear-gradient(135deg, #10ac84, #01a3a4); 
+            color: #fff; 
+            z-index: 1; 
+            box-shadow: 0 10px 22px rgba(16, 172, 132, 0.3);
+        }
+        
+        @keyframes floating-podium {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        /* Float elements and pulse styles for top-performing icons */
+        .podium-badge {
+            position: absolute;
+            top: -20px;
+            font-size: 2rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+        }
+        .first-badge { color: #ffca08; animation: pulse-gold-badge 2s infinite; }
+        .second-badge { color: #f1f2f6; }
+        .third-badge { color: #ff9f43; }
+
+        @keyframes pulse-gold-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .podium-avatar { 
+            width: 54px; 
+            height: 54px; 
+            border-radius: 50%; 
+            border: 3.5px solid #fff; 
+            background: rgba(255, 255, 255, 0.25); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+            margin-bottom: 8px; 
+            font-weight: 800; 
+            font-size: 1.15rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        
+        .podium-rank { 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            margin-bottom: 2px; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        .podium-name { 
+            font-size: 0.95rem; 
+            font-weight: 700; 
+            line-height: 1.25; 
+            word-break: break-word; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .podium-score { 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            background: rgba(255, 255, 255, 0.25);
+            padding: 3px 10px;
+            border-radius: 14px;
+            margin-top: 6px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Sleek Custom Floating Table Row Design */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px; /* Space out rows for card-like feel */
+            min-width: 600px;
+        }
+        .leaderboard-table th {
+            background: var(--header-title);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.8px;
+            border: none;
+        }
+        .leaderboard-table th:first-child { border-radius: 12px 0 0 12px; }
+        .leaderboard-table th:last-child { border-radius: 0 12px 12px 0; }
+
+        .leaderboard-table tr {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .leaderboard-table td {
+            background: var(--card-bg);
+            padding: 15px;
+            border: none;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+        .leaderboard-table td:first-child {
+            border-left: 1px solid var(--border-color);
+            border-radius: 12px 0 0 12px;
+        }
+        .leaderboard-table td:last-child {
+            border-right: 1px solid var(--border-color);
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* Row elevation on hover */
+        .leaderboard-table tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        body.dark-mode .leaderboard-table tbody tr:hover {
+            box-shadow: 0 6px 16px rgba(255,255,255,0.03);
+        }
+
+        /* Stylish round circular badge styling for Rankings */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 0.85rem;
+        }
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #ff9f43); color: #fff; }
+        .rank-2 { background: linear-gradient(135deg, #cfd9df, #a1a1a1); color: #fff; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; }
+        .rank-other { background: rgba(0,0,0,0.04); color: var(--text-sub); }
+        body.dark-mode .rank-other { background: rgba(255,255,255,0.08); color: var(--text-sub); }
 
         /* Stars Reviews CSS Styling */
         .stars-container { display: flex; gap: 5px; font-size: 1.5rem; color: #ccc; cursor: pointer; margin-bottom: 1rem; width: fit-content; }
@@ -197,6 +369,67 @@
         @media (max-width: 600px) { 
             .app-footer { gap: 1.2rem; padding: 1rem 0.5rem 2.5rem 0.5rem; } 
             .quiz-list-item { flex-direction: column; text-align: center; gap: 0.5rem; }
+        }
+        /* ─────────── PERFORMANCE STATS GRID & BANNER STYLES ─────────── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .stat-mini-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            backdrop-filter: blur(5px);
+        }
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        
+        /* Dynamic motivational banner styling */
+        .motivation-box {
+            margin-top: 1.5rem;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.45;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
         }
     </style>
 </head>
@@ -218,10 +451,12 @@
             <div id="sidebar-user-avatar" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--header-title); display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff; margin-bottom: 10px; font-weight: bold; color: #333;">CS</div>
             <div id="sidebar-user-name" class="sidebar-user-name">Welcome</div>
         </div>
-        <ul class="sidebar-menu">
+<ul class="sidebar-menu">
             <li class="sidebar-item active" onclick="navigateSidebar('subject-list-screen')"><i class="fas fa-home"></i> Home</li>
             <li class="sidebar-item" onclick="navigateSidebar('notes-screen')"><i class="fas fa-book-open"></i> Notes</li>
+            <li class="sidebar-item" onclick="navigateSidebar('qa-screen')"><i class="fas fa-question-circle"></i> Questions Answers</li>
             <li class="sidebar-item" onclick="navigateSidebar('my-results-screen')"><i class="fas fa-chart-bar"></i> My Results</li>
+            <li class="sidebar-item" onclick="navigateSidebar('certificate-screen')"><i class="fas fa-award"></i> My Certificate</li>
             <li class="sidebar-item" onclick="navigateSidebar('leaderboard-screen')"><i class="fas fa-trophy"></i> Leaderboard</li>
             <li class="sidebar-item" onclick="navigateSidebar('profile-screen')"><i class="fas fa-user-circle"></i> Profile</li>
             <li class="sidebar-item" onclick="navigateSidebar('links-screen')"><i class="fas fa-link"></i> Important Links</li>
@@ -305,13 +540,161 @@
             </div>
         </div>
 
+<!-- SCREEN 4.5: CERTIFICATE OF ACHIEVEMENT SCREEN -->
+        <div id="certificate-screen" class="screen">
+            <div class="card" style="text-align: center;">
+                <h1>My Dynamic Certificate</h1>
+                <p style="opacity:0.7; margin-bottom:1.5rem">Displays your live study streak, daily metrics, and academic rewards</p>
+                
+                <div style="display:flex; justify-content:center; gap:10px; margin-bottom:1.5rem">
+                    <button class="btn" onclick="downloadCertificatePDF()"><i class="fas fa-download"></i> Download Certificate (PDF)</button>
+                </div>
+
+                <!-- Scrollable wrapper configured for automatic vector scaling on mobile screen viewports -->
+                <div id="cert-scroll-wrapper" style="width:100%; position: relative; overflow: hidden; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15)">
+                    <div id="certificate-pdf-target" style="width: 1000px; height: 710px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
+                        
+                        <!-- Premium Double Border Frame -->
+                        <div style="border: 8px double #d4af37; height: 100%; width: 100%; position: relative; box-sizing: border-box; padding: 40px; background: radial-gradient(circle, #ffffff 60%, #fffbf2 100%);">
+                            
+                            <!-- Gold Ribbon Corner Ribbon (Top Right) -->
+                            <div style="position: absolute; top: 0; right: 0; width: 130px; height: 130px; overflow: hidden;">
+                                <div style="position: absolute; display: block; width: 200px; padding: 8px 0; background: linear-gradient(135deg, #d4af37, #aa771c); color: #fff; text-align: center; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transform: rotate(45deg) translate(40px, -20px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">EXCELLENCE</div>
+                            </div>
+
+                            <!-- Best Award Seal Badge (Top Left) -->
+                            <div style="position: absolute; top: 20px; left: 20px; width: 110px; height: 155px; text-align: center; z-index:5;">
+                                <div style="position: absolute; bottom: 0; left: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
+                                <div style="position: absolute; bottom: 0; right: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(-20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
+                                <div style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, #ffe259 0%, #ffa751 100%); border: 4px dashed #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.65rem; line-height: 1.2; position: relative; z-index:2; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                                    <span>★ ★ ★</span>
+                                    <span style="font-size: 0.8rem; letter-spacing: 0.5px;">BEST</span>
+                                    <span style="font-size: 0.8rem; letter-spacing: 0.5px;">AWARD</span>
+                                    <span>★ ★ ★</span>
+                                </div>
+                            </div>
+
+                            <!-- Certificate Headline Header with centered App Logo -->
+                            <div style="text-align: center; margin-top: 5px;">
+                                <!-- Centered App Logo dynamically binded -->
+                                <img id="cert-logo" src="https://i.imgur.com/gO142Tf.png" style="height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 5px;" alt="Chhatrasathee Logo">
+                                
+                                <h1 style="font-family: 'Playfair Display', 'Georgia', serif; font-size: 3rem; letter-spacing: 4px; font-weight: 800; color: #5a136e; margin: 0; text-transform: uppercase;">Certificate</h1>
+                                <p style="font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #c86400; margin-top: 5px; text-transform: uppercase;">of Appreciation & Compliance / ପ୍ରଶଂସା ପତ୍ର</p>
+                            </div>
+
+                            <!-- Presented to segment -->
+                            <div style="text-align: center; margin-top: 20px;">
+                                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; color: #7f8c8d; text-transform: uppercase; margin: 0;">Proudly Presented To / ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା</p>
+                                <h2 id="cert-student-name" style="font-family: 'Playfair Display', 'Georgia', serif; font-style: italic; font-size: 3rem; color: #c86400; font-weight: 700; margin: 15px 0 5px 0; text-shadow: 0 1px 1px rgba(0,0,0,0.1);">Student Name</h2>
+                                <div style="width: 450px; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin: 0 auto; position: relative;">
+                                    <div style="width: 12px; height: 12px; background: #d4af37; transform: rotate(45deg); position: absolute; top: -5px; left: 50%; margin-left: -6px;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Certificate Body Content (Supports Class, Solved Today Count, and active Study Streaks) -->
+                            <div style="text-align: center; margin-top: 20px; padding: 0 40px; line-height: 1.5;">
+                                <p style="font-size: 0.95rem; color: #34495e; margin: 0 0 8px 0;">
+                                    For exceptional commitment and study consistency in completing the daily Class <b id="cert-class" style="color: #5a136e;">[Class]</b> academic workouts, successfully solving <b id="cert-solved-today" style="color: #5a136e;">0</b> questions today and securing an active continuous study streak of <b id="cert-streak" style="color: #c86400;">0</b> days.
+                                </p>
+                                <!-- Forced single-line render with nowrap and responsive letter spacing -->
+                                <p style="font-family: 'Gautami', 'Kalinga', Arial, sans-serif; font-size: 0.78rem; font-weight: bold; font-style: italic; color: #2c3e50; direction: ltr; margin: 0; white-space: nowrap; letter-spacing: -0.1px;">
+                                    ଛାତ୍ରସାଥୀ କମିଟି ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ପ୍ରତିଦିନ ନିଷ୍ଠାପୂର୍ବକ ପ୍ରଶ୍ନୋତ୍ତର ଅଭ୍ୟାସ ସମ୍ପୂର୍ଣ୍ଣ କରି ଏହି ଗୌରବମୟ ଲକ୍ଷ୍ୟ ପୂରଣ କରିଥିବାରୁ ଏହା ପ୍ରଦାନ କରାଗଲା ।
+                                </p>
+                            </div>
+
+                            <!-- Signatures and bottom central Streak Badge -->
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
+                                
+                                <!-- Left Signature: Director -->
+                                <div style="text-align: center; width: 220px;">
+                                    <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
+                                    <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Director, Chhatrasathee</p>
+                                </div>
+
+                                <!-- Center Badge: Streak Fire Daily Goal Badge -->
+                                <div style="text-align: center;">
+                                    <div style="width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid #e20c75; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                                        <span id="cert-badge-streak" style="font-size: 0.95rem; font-weight: 800; color: #212529; line-height: 1;">0d</span>
+                                        <span style="font-size: 0.8rem; color: #ff9933;"><i class="fas fa-fire"></i></span>
+                                    </div>
+                                    <p style="font-size: 0.65rem; font-weight: bold; color: #2c3e50; letter-spacing: 0.5px; text-transform: uppercase; margin: 5px 0 0 0;">Daily Goal Met</p>
+                                </div>
+
+                                <!-- Right Signature: Mentor Coordinator -->
+                                <div style="text-align: center; width: 220px;">
+                                    <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
+                                    <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Mentor Coordinator</p>
+                                </div>
+
+                            </div>
+
+                            <!-- Bottom Border Accent Ribbon Bar -->
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 18px; background: #0a0c21; border-top: 3px solid #d4af37; border-radius: 0 0 8px 8px;"></div>
+                        
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+<!-- SCREEN 12: QUESTIONS ANSWERS SCREEN -->
+        <div id="qa-screen" class="screen">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 1rem;">Questions & Answers</h1>
+                <div id="qa-subject-container"></div>
+                <div id="qa-topic-list-view" style="display:none">
+                    <div class="back-nav" onclick="goBackToQASubjects()"><i class="fas fa-arrow-left"></i> Back to Q&A Subjects</div>
+                    <h2 id="selected-qa-subject" style="margin-bottom:1rem"></h2>
+                    <div id="qa-topics-container"></div>
+                </div>
+                <div id="qa-detail-view" style="display:none">
+                    <div class="back-nav" onclick="goBackToQATopics()"><i class="fas fa-arrow-left"></i> Back to Q&A Topic list</div>
+                    <div id="qa-detail-card" class="card"></div>
+                </div>
+            </div>
+        </div>
+        
         <!-- SCREEN 5: GRAPHICAL CHARTS MY RESULTS -->
         <div id="my-results-screen" class="screen">
             <div class="card">
-                <h1 style="text-align: center; margin-bottom: 1rem;">My Colorful Performance</h1>
-                <div style="position: relative; height: 350px; width: 100%;">
+                <h1 style="text-align: center; margin-bottom: 0.5rem;"><i class="fas fa-chart-line" style="color: var(--header-title);"></i> My Performance</h1>
+                <p style="text-align: center; opacity: 0.7; margin-bottom: 1.5rem; font-size: 0.9rem;">Analyze your learning journey and performance progress</p>
+                
+                <!-- Floating Mini Stats Grid -->
+                <div class="stats-grid" id="performance-stats-grid" style="display:none;">
+                    <div class="stat-mini-card">
+                        <div class="stat-icon" style="background: rgba(10, 211, 250, 0.1); color: #0ad3fa;"><i class="fas fa-check-double"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Attempted</span>
+                            <span class="stat-val" id="stat-attempted">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="stat-icon" style="background: rgba(18, 245, 93, 0.1); color: #12f55d;"><i class="fas fa-award"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Best Score</span>
+                            <span class="stat-val" id="stat-best">0%</span>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="stat-icon" style="background: rgba(255, 153, 51, 0.1); color: #ff9933;"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Average</span>
+                            <span class="stat-val" id="stat-avg">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modern Vibrant Chart Container -->
+                <div style="position: relative; height: 320px; width: 100%;">
                     <canvas id="resultsChart"></canvas>
                 </div>
+                
+                <!-- Dynamic Motivational Message Banner -->
+                <div id="motivation-banner" class="motivation-box" style="display:none;"></div>
+
                 <div id="results-empty-msg" style="display:none; text-align:center; padding: 2rem 0; opacity:0.6">No quiz matches found on file. Try finishing some quizzes!</div>
             </div>
         </div>
@@ -488,23 +871,29 @@
             });
             const mapScreenToSidebarItemIndex = {
                 'subject-list-screen': 0, 'quiz-list-screen': 0, 'quiz-screen': 0, 'result-screen': 0,
-                'notes-screen': 1, 'my-results-screen': 2, 'leaderboard-screen': 3,
-                'profile-screen': 4, 'links-screen': 5, 'reviews-screen': 6,
-                'stats-screen': 7, 'youtube-screen': 8
+                'notes-screen': 1, 'qa-screen': 2, 'my-results-screen': 3, 
+                'certificate-screen': 4, // Maps selection styling cleanly to index 4
+                'leaderboard-screen': 5, 'profile-screen': 6, 'links-screen': 7, 
+                'reviews-screen': 8, 'stats-screen': 9, 'youtube-screen': 10
             };
             const activeIdx = mapScreenToSidebarItemIndex[id];
             if (activeIdx !== undefined) {
                 document.querySelectorAll('.sidebar-item')[activeIdx].classList.add('active');
             }
 
-            // Screen Action Hooks (lazy load screen data dynamic elements)
+// Screen Action Hooks (lazy load screen data dynamic elements)
             if (id === 'my-results-screen') renderResultsChart();
             if (id === 'leaderboard-screen') loadGlobalLeaderboard();
             if (id === 'links-screen') loadImportantLinks();
             if (id === 'reviews-screen') loadStudentReviews();
-            if (id === 'stats-screen') initOrganicStudentCounter();
+if (id === 'stats-screen') initOrganicStudentCounter();
             if (id === 'youtube-screen') loadYoutubeLessons();
             if (id === 'notes-screen') loadNotesSubjects();
+            if (id === 'qa-screen') loadQASubjects();
+            if (id === 'certificate-screen') {
+                loadStudentCertificate(); 
+                setTimeout(scaleCertificate, 100); // Triggers auto-scaling render check
+            }
         };
 
         const closeModal = (id) => document.getElementById(id).classList.remove('active');
@@ -801,48 +1190,226 @@
         };
 
 
+// ─────────── QUESTIONS & ANSWERS MODULE ───────────
+        let selectedQASubjectId = '';
+
+        const formatQAContent = (text) => {
+            if (!text) return '';
+            const lines = text.split('\n');
+            let insideAnswer = false;
+            
+            return lines.map(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return '<div style="height:10px;"></div>';
+
+                // Detect if line is a Question: starts with numbers, "Q" indicators or ends with "?"
+                const isQuestion = /^(?:Q\d*[:\.]?|Ans\d*[:\.]?|\d+[\.\)]\s+)/i.test(trimmed) || trimmed.endsWith('?');
+                
+                // Broad match for any "Answer" or "Ans" prefixes (handles optional spaces, hyphens, and colons)
+                const answerRegex = /^(Answer\s*-\s*|Ans\s*-\s*|Answer\s*:\s*|Ans\s*:\s*|Answer\s+|Ans\s+)/i;
+                const isAnswer = answerRegex.test(trimmed);
+
+                if (isQuestion && !isAnswer) {
+                    insideAnswer = false;
+                    return `<p style="color: #dc3545; font-weight: bold; margin-top: 15px; margin-bottom: 5px;">${trimmed}</p>`;
+                } else if (isAnswer) {
+                    insideAnswer = true;
+                    // Wraps only the matched prefix ("Answer", "Answer -", "Answer:", etc.) in a green span
+                    const styledLine = trimmed.replace(answerRegex, (match) => {
+                        return `<span style="color: #28a745; font-weight: bold;">${match}</span>`;
+                    });
+                    return `<p style="color: #007bff; font-weight: 500; margin-bottom: 5px;">${styledLine}</p>`;
+                } else {
+                    // Subsequent continuous lines of answers remain styled blue
+                    const textColor = insideAnswer ? '#007bff' : 'var(--text-main)';
+                    return `<p style="color: ${textColor}; margin-bottom: 5px; padding-left: 15px;">${trimmed}</p>`;
+                }
+            }).join('');
+        };
+
+        const loadQASubjects = () => {
+            const container = document.getElementById('qa-subject-container');
+            container.innerHTML = '';
+            document.getElementById('qa-subject-container').style.display = 'block';
+            document.getElementById('qa-topic-list-view').style.display = 'none';
+            document.getElementById('qa-detail-view').style.display = 'none';
+
+            if (subjects.length === 0) {
+                container.innerHTML = `<p style="text-align:center; opacity:0.6">No active Q&A modules available.</p>`;
+                return;
+            }
+
+            subjects.forEach(subject => {
+                const tray = document.createElement('div');
+                tray.className = 'subject-tray';
+                tray.innerHTML = `${subject.name} <br> <span style="font-size: 0.8rem; font-weight:400">Questions & Answers Sheets</span>`;
+                tray.onclick = () => showQATopicsForSubject(subject.id, subject.name);
+                container.appendChild(tray);
+            });
+        };
+
+        const showQATopicsForSubject = async (subjectId, subjectName) => {
+            selectedQASubjectId = subjectId;
+            document.getElementById('selected-qa-subject').innerText = subjectName;
+            document.getElementById('qa-subject-container').style.display = 'none';
+            document.getElementById('qa-topic-list-view').style.display = 'block';
+            
+            const container = document.getElementById('qa-topics-container');
+            container.innerHTML = '<p style="text-align:center; padding:15px;">Loading questions catalog...</p>';
+
+            try {
+                const snap = await db.collection('qa_sheets').where('subjectId', '==', subjectId).get();
+                container.innerHTML = '';
+                if (snap.empty) {
+                    container.innerHTML = '<p style="text-align:center; opacity:0.6; padding:15px;">No Q&A sheets uploaded for this subject yet.</p>';
+                    return;
+                }
+                
+                let colorIndex = 0;
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    const item = document.createElement('div');
+                    const gradClass = data.gradientClass || ('q-grad-' + ((colorIndex % 12) + 1));
+                    item.className = `quiz-list-item ${gradClass}`;
+                    colorIndex++;
+                    item.innerHTML = `<div><h3>${data.topicName}</h3><p>Open Question Sheet</p></div><button class="btn btn-secondary">Open</button>`;
+                    item.onclick = () => showQADetails(data);
+                    container.appendChild(item);
+                });
+            } catch (err) {
+                container.innerHTML = '<p style="color:red">Failed to retrieve Q&A topics.</p>';
+            }
+        };
+
+        const showQADetails = (qaData) => {
+            document.getElementById('qa-topic-list-view').style.display = 'none';
+            document.getElementById('qa-detail-view').style.display = 'block';
+            const detailCard = document.getElementById('qa-detail-card');
+            
+            detailCard.innerHTML = `
+                <h2 style="color:var(--header-title); margin-bottom:1rem">${qaData.topicName}</h2>
+                <div style="white-space: pre-wrap; font-size:1.05rem; line-height:1.7">${formatQAContent(qaData.content)}</div>
+            `;
+        };
+
+        const goBackToQASubjects = () => {
+            document.getElementById('qa-topic-list-view').style.display = 'none';
+            document.getElementById('qa-subject-container').style.display = 'block';
+        };
+
+        const goBackToQATopics = () => {
+            document.getElementById('qa-detail-view').style.display = 'none';
+            document.getElementById('qa-topic-list-view').style.display = 'block';
+        };
+        
+        
         // ─────────── 3. RESULTS GRAPHICAL CHARTS MODULE ───────────
         const renderResultsChart = async () => {
             const chartCanvas = document.getElementById('resultsChart');
             const emptyMsg = document.getElementById('results-empty-msg');
+            const statsGrid = document.getElementById('performance-stats-grid');
+            const motivationBanner = document.getElementById('motivation-banner');
             
             try {
                 const snap = await db.collection('leaderboard').where('name', '==', userData.name).orderBy('timestamp', 'desc').limit(10).get();
                 if(snap.empty) {
                     chartCanvas.style.display = 'none';
+                    statsGrid.style.display = 'none';
+                    motivationBanner.style.display = 'none';
                     emptyMsg.style.display = 'block';
                     return;
                 }
 
                 chartCanvas.style.display = 'block';
+                statsGrid.style.display = 'grid';
+                motivationBanner.style.display = 'block';
                 emptyMsg.style.display = 'none';
 
                 let rawData = [];
                 snap.forEach(doc => rawData.push(doc.data()));
-                rawData.reverse(); // Chronological order
+                rawData.reverse(); // Arrange chronologically
 
-                const labels = rawData.map(d => d.quizTitle ? d.quizTitle.substring(0, 15) + '..' : 'Quiz');
+                // Format labels cleanly to keep names short, falling back to a sequence count
+                const labels = rawData.map((d, index) => {
+                    if (d.quizTitle && d.quizTitle !== 'Quiz Assessment') {
+                        return d.quizTitle.length > 12 ? d.quizTitle.substring(0, 10) + '..' : d.quizTitle;
+                    }
+                    return `Quiz #${index + 1}`;
+                });
                 const percentScores = rawData.map(d => d.percent);
+
+                // Calculate local stat metrics
+                const attemptedCount = rawData.length;
+                const bestScore = Math.max(...percentScores);
+                const averageScore = Math.round(percentScores.reduce((a, b) => a + b, 0) / percentScores.length);
+
+                // Push values to the HTML DOM Stats Cards
+                document.getElementById('stat-attempted').innerText = attemptedCount;
+                document.getElementById('stat-best').innerText = bestScore + '%';
+                document.getElementById('stat-avg').innerText = averageScore + '%';
+
+                // Display dynamic and inspiring notification banners
+                if (averageScore >= 90) {
+                    motivationBanner.style.background = 'rgba(40, 167, 69, 0.08)';
+                    motivationBanner.style.border = '1px solid #28a745';
+                    motivationBanner.style.color = '#28a745';
+                    motivationBanner.innerHTML = '<i class="fas fa-star" style="margin-right:6px"></i> <b>Phenomenal Performance!</b> You are maintaining elite standards. Keep up the brilliant work!';
+                } else if (averageScore >= 70) {
+                    motivationBanner.style.background = 'rgba(0, 123, 255, 0.08)';
+                    motivationBanner.style.border = '1px solid #007bff';
+                    motivationBanner.style.color = '#007bff';
+                    motivationBanner.innerHTML = '<i class="fas fa-rocket" style="margin-right:6px"></i> <b>Superb Progress!</b> Your fundamentals are strong. Challenge yourself to hit 100% next!';
+                } else {
+                    motivationBanner.style.background = 'rgba(255, 153, 51, 0.1)';
+                    motivationBanner.style.border = '1px solid #ff9933';
+                    motivationBanner.style.color = '#d35400';
+                    motivationBanner.innerHTML = '<i class="fas fa-fire" style="margin-right:6px"></i> <b>Stay Determined!</b> Every quiz is another step closer to mastery. Review your incorrect answers and try again!';
+                }
 
                 if (resultsChartInstance) {
                     resultsChartInstance.destroy();
                 }
 
-                // Create a beautiful, colorful, modern bar graph using Chart.js
+                // Generate rich HTML5 color gradients inside Canvas 2D Context
+                const ctx = chartCanvas.getContext('2d');
+                
+                // Color Gradient 1: Magenta to Dark Purple
+                const gradPink = ctx.createLinearGradient(0, 0, 0, 300);
+                gradPink.addColorStop(0, '#f92edc'); gradPink.addColorStop(1, '#811fee');
+
+                // Color Gradient 2: Bright Blue to Deep Blue
+                const gradBlue = ctx.createLinearGradient(0, 0, 0, 300);
+                gradBlue.addColorStop(0, '#0ad3fa'); gradBlue.addColorStop(1, '#001af5');
+
+                // Color Gradient 3: Vibrant Green to Teal
+                const gradGreen = ctx.createLinearGradient(0, 0, 0, 300);
+                gradGreen.addColorStop(0, '#12f55d'); gradGreen.addColorStop(1, '#079ba5');
+
+                // Color Gradient 4: Gold to Red
+                const gradYellow = ctx.createLinearGradient(0, 0, 0, 300);
+                gradYellow.addColorStop(0, '#ffe33f'); gradYellow.addColorStop(1, '#f22920');
+
+                // Color Gradient 5: Sunset Orange to Pink
+                const gradOrange = ctx.createLinearGradient(0, 0, 0, 300);
+                gradOrange.addColorStop(0, '#ff9933'); gradOrange.addColorStop(1, '#dc3b6f');
+
+                const gradientPalette = [gradPink, gradBlue, gradGreen, gradYellow, gradOrange];
+
+                // Map colors across datasets systematically
+                const backgroundColors = percentScores.map((_, i) => gradientPalette[i % gradientPalette.length]);
+
+                // Render beautiful glowing Chart.js configuration
                 resultsChartInstance = new Chart(chartCanvas, {
                     type: 'bar',
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Your Assessment Performance Score (%)',
+                            label: 'Your Assessment Score (%)',
                             data: percentScores,
-                            backgroundColor: [
-                                '#f92edc', '#0ad3fa', '#12f55d', '#ffe33f', '#ff9933', 
-                                '#e20c75', '#079ba5', '#ff026a', '#ab18a2', '#ecb315'
-                            ],
-                            borderRadius: 8,
+                            backgroundColor: backgroundColors,
+                            borderRadius: 12,
                             borderWidth: 1,
-                            borderColor: 'rgba(0,0,0,0.05)'
+                            borderColor: 'rgba(255,255,255,0.1)'
                         }]
                     },
                     options: {
@@ -852,10 +1419,12 @@
                             y: {
                                 beginAtZero: true,
                                 max: 100,
-                                grid: { color: 'rgba(0,0,0,0.05)' }
+                                grid: { color: 'rgba(0,0,0,0.05)' },
+                                ticks: { font: { family: 'Poppins', size: 11 } }
                             },
                             x: {
-                                grid: { display: false }
+                                grid: { display: false },
+                                ticks: { font: { family: 'Poppins', size: 11, weight: 'bold' } }
                             }
                         },
                         plugins: {
@@ -864,7 +1433,7 @@
                     }
                 });
             } catch (err) {
-                console.error("Results chart failure", err);
+                console.error("Results chart failure:", err);
             }
         };
 
@@ -881,7 +1450,7 @@
                 const snap = await db.collection('leaderboard').get();
                 let lbData = snap.docs.map(doc => doc.data());
                 
-                // Group by student and get aggregate average or highest score (Let's rank by best % score)
+                // Group by student and map highest score
                 let topRanked = {};
                 lbData.forEach(entry => {
                     if(!topRanked[entry.name] || topRanked[entry.name].percent < entry.percent) {
@@ -899,7 +1468,7 @@
                     return;
                 }
 
-                // Render High-end 3D Podium for Top 3 Students
+                // Render High-end Floating Podium for Top 3 Students
                 const podiumHTML = [];
                 const first = sortedUsers[0];
                 const second = sortedUsers[1];
@@ -908,6 +1477,7 @@
                 if(second) {
                     podiumHTML.push(`
                         <div class="podium-step second">
+                            <i class="fas fa-star podium-badge second-badge"></i>
                             <div class="podium-avatar">${second.name.substring(0,2).toUpperCase()}</div>
                             <div class="podium-rank">2nd</div>
                             <div class="podium-name">${second.name}</div>
@@ -918,7 +1488,8 @@
                 if(first) {
                     podiumHTML.push(`
                         <div class="podium-step first">
-                            <div class="podium-avatar" style="border-color:#ffca08">${first.name.substring(0,2).toUpperCase()}</div>
+                            <i class="fas fa-crown podium-badge first-badge"></i>
+                            <div class="podium-avatar">${first.name.substring(0,2).toUpperCase()}</div>
                             <div class="podium-rank">1st</div>
                             <div class="podium-name">${first.name}</div>
                             <div class="podium-score">${first.percent}%</div>
@@ -928,6 +1499,7 @@
                 if(third) {
                     podiumHTML.push(`
                         <div class="podium-step third">
+                            <i class="fas fa-award podium-badge third-badge"></i>
                             <div class="podium-avatar">${third.name.substring(0,2).toUpperCase()}</div>
                             <div class="podium-rank">3rd</div>
                             <div class="podium-name">${third.name}</div>
@@ -937,22 +1509,35 @@
                 }
                 podiumContainer.innerHTML = podiumHTML.join('');
 
-                // Render remaining students in the ranking matrix list table
+                // Render remaining students in the card-styled table rows
                 let tableHTML = '';
                 sortedUsers.forEach((d, i) => {
+                    let rankBadgeClass = 'rank-other';
+                    let rankDisplay = i + 1;
+
+                    if (i === 0) {
+                        rankBadgeClass = 'rank-1';
+                        rankDisplay = '<i class="fas fa-crown" style="font-size:0.75rem;"></i>';
+                    } else if (i === 1) {
+                        rankBadgeClass = 'rank-2';
+                    } else if (i === 2) {
+                        rankBadgeClass = 'rank-3';
+                    }
+
                     tableHTML += `
                         <tr>
-                            <td><b>${i+1}</b></td>
-                            <td>${d.name}</td>
+                            <td><span class="rank-badge ${rankBadgeClass}">${rankDisplay}</span></td>
+                            <td><b style="color:var(--text-main); font-weight: 600;">${d.name}</b></td>
                             <td>${d.total}</td>
                             <td>${d.obtained}</td>
-                            <td><span style="color:var(--header-title); font-weight:700">${d.percent}%</span></td>
-                            <td>${d.timeTaken || 'N/A'}</td>
+                            <td><span style="color:var(--header-title); font-weight:800; font-size:1.05rem;">${d.percent}%</span></td>
+                            <td><i class="far fa-clock" style="margin-right:5px; opacity:0.65;"></i>${d.timeTaken || 'N/A'}</td>
                         </tr>
                     `;
                 });
                 rowsContainer.innerHTML = tableHTML;
             } catch (err) {
+                console.error("Leaderboard load error:", err);
                 rowsContainer.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red">Error loading general records list.</td></tr>';
             }
         };
@@ -1093,11 +1678,43 @@
         // ─────────── 8. "OUR STUDENTS" ACTIVE COUNTER MODULE ───────────
         const initOrganicStudentCounter = async () => {
             const statsNum = document.getElementById('stats-counter');
-            statsNum.innerText = "0";
+            
+            // Get the last known count from local cache (default to 100 if empty)
+            const cachedCount = parseInt(localStorage.getItem('cs_student_count')) || 100;
+            
+            let currentDisplayVal = 0;
+            let targetVal = cachedCount; 
+            let mainAnimationComplete = false;
+
+            const duration = 1200; // Total count-up duration in milliseconds
+            const startTime = performance.now();
+
+            // 1. Immediately start counting up from 0 to the cached value (0 lag)
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease-out quadratic curve for a premium deceleration feel
+                const easeProgress = progress * (2 - progress); 
+                currentDisplayVal = Math.round(targetVal * easeProgress);
+                
+                statsNum.innerText = currentDisplayVal.toLocaleString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    mainAnimationComplete = true;
+                    statsNum.innerText = targetVal.toLocaleString();
+                }
+            };
+            
+            // Fire the animation immediately starting from 0
+            requestAnimationFrame(animate);
 
             try {
-                // Perform clean atomic increment transaction
                 const counterDocRef = db.collection('counters').doc('appCounters');
+
+                // 2. Increment the database on every single view in the background
                 await db.runTransaction(async (transaction) => {
                     const sfDoc = await transaction.get(counterDocRef);
                     if (!sfDoc.exists) {
@@ -1108,25 +1725,46 @@
                     }
                 });
 
-                // Retrieve fresh count
+                // 3. Fetch the updated DB count
                 const docSnap = await counterDocRef.get();
-                const totalStudentsCount = docSnap.data().studentCount;
+                const latestCount = docSnap.exists ? docSnap.data().studentCount : targetVal;
 
-                // Fire smooth animated counter count-up
-                let currentIterationCount = 0;
-                const incrementInterval = Math.ceil(totalStudentsCount / 40);
-                const intervalTrigger = setInterval(() => {
-                    currentIterationCount += incrementInterval;
-                    if (currentIterationCount >= totalStudentsCount) {
-                        statsNum.innerText = totalStudentsCount.toLocaleString();
-                        clearInterval(intervalTrigger);
+                // Cache the fresh incremented count for the next run
+                localStorage.setItem('cs_student_count', latestCount);
+
+                // 4. Smoothly shift the animation target to the new, incremented count
+                if (latestCount > targetVal) {
+                    if (!mainAnimationComplete) {
+                        // If the main animation is still running, dynamically adjust its target
+                        targetVal = latestCount;
                     } else {
-                        statsNum.innerText = currentIterationCount.toLocaleString();
+                        // If the main animation already finished, run a quick secondary transition to the new number
+                        let startValue = targetVal;
+                        const secondaryDuration = 300; 
+                        const secondaryStartTime = performance.now();
+
+                        const secondaryAnimate = (currentTime) => {
+                            const elapsed = currentTime - secondaryStartTime;
+                            const progress = Math.min(elapsed / secondaryDuration, 1);
+                            const easeProgress = progress * (2 - progress);
+                            const currentVal = Math.round(startValue + (latestCount - startValue) * easeProgress);
+                            
+                            statsNum.innerText = currentVal.toLocaleString();
+
+                            if (progress < 1) {
+                                requestAnimationFrame(secondaryAnimate);
+                            } else {
+                                statsNum.innerText = latestCount.toLocaleString();
+                            }
+                        };
+                        requestAnimationFrame(secondaryAnimate);
                     }
-                }, 20);
+                }
 
             } catch (err) {
-                console.error("Counter transaction failure", err);
+                console.error("Counter transaction failure:", err);
+                // Fallback to displaying the target value on network failures
+                statsNum.innerText = targetVal.toLocaleString();
             }
         };
 
@@ -1257,6 +1895,156 @@
             copyTextToClipboard(linkToShare);
         };
 
+// ─────────── CERTIFICATE DYNAMIC COMPILER & PDF GENERATION ───────────
+        const loadStudentCertificate = async () => {
+            // Apply standard name & class fallbacks
+            document.getElementById('cert-student-name').innerText = userData.name || 'Student Name';
+            document.getElementById('cert-class').innerText = userData.class || '10';
+
+            // Sync with your Firestore configure logo (or use the active header logo fallback)
+            const appLogo = document.getElementById('app-logo');
+            const certLogo = document.getElementById('cert-logo');
+            if (appLogo && certLogo && appLogo.src) {
+                certLogo.src = appLogo.src;
+            }
+
+            try {
+                // Fetch leaderboard score logs specifically for the logged-in student
+                const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
+                
+                // 1. Calculate the total questions solved TODAY
+                let solvedTodayCount = 0;
+                const todayStr = new Date().toLocaleDateString(); // Matches entry creation locale format
+
+                // Collect unique calendar activity strings for consecutive study streak calculation
+                const activeDates = [];
+
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    if (d.date) {
+                        // Check match for today's solved count
+                        if (d.date === todayStr) {
+                            solvedTodayCount += (d.obtained || 0);
+                        }
+
+                        // Parse string safely into timezone ISO formats for streak arrays
+                        const dateParts = d.date.split('/');
+                        if (dateParts.length === 3) {
+                            // Support standard locales (Day, Month, Year mappings)
+                            const day = parseInt(dateParts[0]) > 12 ? parseInt(dateParts[0]) : parseInt(dateParts[1]);
+                            const month = parseInt(dateParts[0]) > 12 ? parseInt(dateParts[1]) - 1 : parseInt(dateParts[0]) - 1;
+                            const year = parseInt(dateParts[2]);
+                            const cleanDate = new Date(year, month, day);
+
+                            if (cleanDate && !isNaN(cleanDate.getTime())) {
+                                const isoStr = cleanDate.toISOString().split('T')[0];
+                                if (!activeDates.includes(isoStr)) {
+                                    activeDates.push(isoStr);
+                                }
+                            }
+                        }
+                    }
+                });
+
+                document.getElementById('cert-solved-today').innerText = solvedTodayCount;
+
+                // 2. Compute the exact Active Continuous Study Streak (consecutive days)
+                let activeStreakCount = 0;
+                if (activeDates.length > 0) {
+                    // Sort calendar date arrays descending (latest study sessions first)
+                    activeDates.sort((a, b) => new Date(b) - new Date(a));
+
+                    const latestDateStr = activeDates[0];
+                    const todayIso = new Date().toISOString().split('T')[0];
+                    
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayIso = yesterday.toISOString().split('T')[0];
+
+                    // User must have solved questions today or yesterday for the streak to remain active
+                    if (latestDateStr === todayIso || latestDateStr === yesterdayIso) {
+                        activeStreakCount = 1;
+                        let lastDate = new Date(latestDateStr);
+
+                        for (let i = 1; i < activeDates.length; i++) {
+                            const nextDate = new Date(activeDates[i]);
+                            const diffTime = Math.abs(lastDate - nextDate);
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                            if (diffDays === 1) {
+                                activeStreakCount++;
+                                lastDate = nextDate; // Move down check
+                            } else if (diffDays > 1) {
+                                break; // Gap detected, stop counting consecutive values
+                            }
+                        }
+                    }
+                }
+
+                // Render compiled streak strings inside certificate template
+                document.getElementById('cert-streak').innerText = activeStreakCount;
+                document.getElementById('cert-badge-streak').innerText = activeStreakCount + 'd';
+
+            } catch (err) {
+                console.error("Certificate compilation failed:", err);
+            }
+        };
+
+        // Intelligent full-screen scaling for responsive viewports
+        const scaleCertificate = () => {
+            const target = document.getElementById('certificate-pdf-target');
+            const wrapper = document.getElementById('cert-scroll-wrapper');
+            if (!target || !wrapper) return;
+
+            const containerWidth = wrapper.offsetWidth;
+            const targetWidth = 1000;
+            const targetHeight = 710;
+
+            if (containerWidth < targetWidth) {
+                const scale = containerWidth / targetWidth;
+                target.style.transform = `scale(${scale})`;
+                target.style.transformOrigin = 'top left';
+                wrapper.style.height = `${targetHeight * scale}px`;
+            } else {
+                target.style.transform = 'none';
+                wrapper.style.height = 'auto';
+            }
+        };
+
+        // Triggers html2pdf high-definition conversion and triggers save download prompt
+        const downloadCertificatePDF = () => {
+            const element = document.getElementById('certificate-pdf-target');
+            const studentFilename = (userData.name || 'Student').replace(/\s+/g, '_');
+            
+            const opt = {
+                margin:       0,
+                filename:     `Certificate_Chhatrasathee_${studentFilename}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2.2, useCORS: true }, // Higher scale creates crisp print resolution
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+
+            // Use html2pdf promise pipeline to extract a raw Base64 Data URI instead of a buggy Blob URL
+            html2pdf().set(opt).from(element).outputPdf('datauristring').then((pdfDataUri) => {
+                const link = document.createElement('a');
+                link.href = pdfDataUri;
+                link.download = `Certificate_Chhatrasathee_${studentFilename}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                console.error("PDF generation failed:", err);
+                alert("Failed to generate PDF: " + err.message);
+            });
+        };
+
+        // Bind resize event listener for real-time scaling changes
+        window.addEventListener('resize', () => {
+            if (document.getElementById('certificate-screen').classList.contains('active')) {
+                scaleCertificate();
+            }
+        });
+        
         init();
     </script>
 </body>
