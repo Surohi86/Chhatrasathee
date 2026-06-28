@@ -554,17 +554,19 @@
                     <button class="btn" onclick="downloadCertificatePDF()"><i class="fas fa-download"></i> Download Certificate (PDF)</button>
                 </div>
 
-                <!-- Scrollable wrapper configured for automatic vector scaling on mobile screen viewports -->
+<!-- Scrollable wrapper configured for automatic vector scaling on mobile screen viewports -->
                 <div id="cert-scroll-wrapper" style="width:100%; position: relative; overflow: hidden; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15)">
-                    <div id="certificate-pdf-target" style="width: 1000px; height: 710px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
+                    <!-- Height adjusted to 700px to perfectly fit A4 landscape page constraints without overflow -->
+                    <div id="certificate-pdf-target" style="width: 1000px; height: 700px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
                         
-<!-- Premium Double Border Frame -->
+                        <!-- Premium Double Border Frame -->
                         <div style="border: 8px double #d4af37; height: 100%; width: 100%; position: relative; box-sizing: border-box; padding: 40px; background: radial-gradient(circle, #ffffff 60%, #fffbf2 100%);">
                             
                             <!-- Gold Ribbon Corner Ribbon (Top Right) -->
                             <div style="position: absolute; top: -4px; right: -4px; width: 130px; height: 130px; overflow: hidden; z-index: 10;">
                                 <div style="position: absolute; display: block; width: 200px; padding: 8px 0; background: linear-gradient(135deg, #d4af37, #aa771c); color: #fff; text-align: center; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; top: 25px; right: -50px; transform: rotate(45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">EXCELLENCE</div>
                             </div>
+
                             <!-- Best Award Seal Badge (Top Left) -->
                             <div style="position: absolute; top: 20px; left: 20px; width: 110px; height: 155px; text-align: center; z-index:5;">
                                 <div style="position: absolute; bottom: 0; left: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
@@ -602,7 +604,6 @@
                                 <p style="font-size: 0.95rem; color: #34495e; margin: 0 0 8px 0;">
                                     For exceptional commitment and study consistency in completing the daily Class <b id="cert-class" style="color: #5a136e;">[Class]</b> academic workouts, successfully solving <b id="cert-solved-today" style="color: #5a136e;">0</b> questions today and securing an active continuous study streak of <b id="cert-streak" style="color: #c86400;">0</b> days.
                                 </p>
-                                <!-- Noto Sans Oriya applied with letter-spacing set to normal to ensure flawless ligature rendering -->
                                 <p style="font-family: 'Noto Sans Oriya', 'Kalinga', 'Gautami', Arial, sans-serif; font-size: 0.78rem; font-weight: bold; font-style: italic; color: #2c3e50; direction: ltr; margin: 0; white-space: nowrap; letter-spacing: normal;">
                                     ଛାତ୍ରସାଥୀ କମିଟି ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ପ୍ରତିଦିନ ନିଷ୍ଠାପୂର୍ବକ ପ୍ରଶ୍ନୋତ୍ତର ଅଭ୍ୟାସ ସମ୍ପୂର୍ଣ୍ଣ କରି ଏହି ଗୌରବମୟ ଲକ୍ଷ୍ୟ ପୂରଣ କରିଥିବାରୁ ଏହା ପ୍ରଦାନ କରାଗଲା ।
                                 </p>
@@ -610,17 +611,16 @@
 
                             <!-- Signatures and bottom central Streak Badge -->
                             <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
+                                <!-- Left Signature: Director -->
                                 <div style="text-align: center; width: 220px;">
                                     <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
                                     <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Director, Chhatrasathee</p>
                                 </div>
-                                <div style="text-align: center;">
-                                    <div style="width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid #e20c75; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                                        <span id="cert-badge-streak" style="font-size: 0.95rem; font-weight: 800; color: #212529; line-height: 1;">0d</span>
-                                        <span style="font-size: 0.8rem; color: #ff9933;"><i class="fas fa-fire"></i></span>
-                                    </div>
-                                    <p style="font-size: 0.65rem; font-weight: bold; color: #2c3e50; letter-spacing: 0.5px; text-transform: uppercase; margin: 5px 0 0 0;">Daily Goal Met</p>
-                                </div>
+
+                                <!-- Hidden hook element to maintain compatibility with script sets -->
+                                <span id="cert-badge-streak" style="display: none;"></span>
+
+                                <!-- Right Signature: Mentor Coordinator -->
                                 <div style="text-align: center; width: 220px;">
                                     <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
                                     <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Mentor Coordinator</p>
@@ -1981,7 +1981,10 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
                 // Render compiled streak strings inside certificate template
                 document.getElementById('cert-streak').innerText = activeStreakCount;
-                document.getElementById('cert-badge-streak').innerText = activeStreakCount + 'd';
+                const badgeStreak = document.getElementById('cert-badge-streak');
+                if (badgeStreak) {
+                    badgeStreak.innerText = activeStreakCount + 'd';
+                }
 
             } catch (err) {
                 console.error("Certificate compilation failed:", err);
@@ -1996,7 +1999,7 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
             const containerWidth = wrapper.offsetWidth;
             const targetWidth = 1000;
-            const targetHeight = 710;
+            const targetHeight = 700; // Matches the updated A4 certificate DOM height perfectly
 
             if (containerWidth < targetWidth) {
                 const scale = containerWidth / targetWidth;
@@ -2012,29 +2015,50 @@ if (id === 'stats-screen') initOrganicStudentCounter();
         // Triggers html2pdf high-definition conversion and triggers save download prompt
         const downloadCertificatePDF = () => {
             const element = document.getElementById('certificate-pdf-target');
+            const wrapper = document.getElementById('cert-scroll-wrapper');
+            
+            // 1. Capture the scale state applied to fit small viewport layouts
+            const oldTransform = element.style.transform;
+            const oldTransformOrigin = element.style.transformOrigin;
+            const oldWrapperHeight = wrapper ? wrapper.style.height : '';
+
+            // 2. Temporarily reset scale transforms so html2canvas renders the container at its native 1000px width
+            element.style.transform = 'none';
+            element.style.transformOrigin = 'initial';
+            if (wrapper) wrapper.style.height = 'auto';
+
             const studentFilename = (userData.name || 'Student').replace(/\s+/g, '_');
             
             const opt = {
                 margin:       0,
                 filename:     `Certificate_Chhatrasathee_${studentFilename}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                // Disable letterRendering explicitly to preserve complex Brahmic ligatures
-                html2canvas:  { scale: 2.5, useCORS: true, letterRendering: false }, 
-                // Set landscape page formats using exact pixel dimensions of the container
-                jsPDF:        { unit: 'px', format: [1000, 710], orientation: 'landscape', hotfixes: ['px_gstate'] }
+                html2canvas:  { 
+                    scale: 2.2, 
+                    useCORS: true, 
+                    letterRendering: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 1000,
+                    windowHeight: 700
+                }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
 
-            // Use html2pdf promise pipeline to extract a raw Base64 Data URI instead of a buggy Blob URL
-            html2pdf().set(opt).from(element).outputPdf('datauristring').then((pdfDataUri) => {
-                const link = document.createElement('a');
-                link.href = pdfDataUri;
-                link.download = `Certificate_Chhatrasathee_${studentFilename}.pdf`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+            // 3. Generate the PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                // 4. Re-apply viewport responsive layouts once rendering completes
+                element.style.transform = oldTransform;
+                element.style.transformOrigin = oldTransformOrigin;
+                if (wrapper) wrapper.style.height = oldWrapperHeight;
             }).catch(err => {
                 console.error("PDF generation failed:", err);
                 alert("Failed to generate PDF: " + err.message);
+                
+                // Fallback state restoration on failure
+                element.style.transform = oldTransform;
+                element.style.transformOrigin = oldTransformOrigin;
+                if (wrapper) wrapper.style.height = oldWrapperHeight;
             });
         };
 
