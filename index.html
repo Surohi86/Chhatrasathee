@@ -104,6 +104,32 @@
             font-weight: 500; display: flex; align-items: center; gap: 15px; color: var(--text-main); transition: 0.2s;
         }
         .sidebar-item:hover, .sidebar-item.active { background: var(--header-title); color: #fff; }
+        
+        /* Custom Vibrant Colors for Sidebar Icons */
+.sidebar-item i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+    transition: color 0.3s, filter 0.3s;
+}
+.sidebar-item .fa-home { color: #ff5e57; }             /* Coral Red */
+.sidebar-item .fa-book-open { color: #ffa801; }        /* Vibrant Orange */
+.sidebar-item .fa-question-circle { color: #0be881; }  /* Bright Green */
+.sidebar-item .fa-chart-bar { color: #00d2d3; }        /* Ocean Cyan */
+.sidebar-item .fa-award { color: #ffc048; }            /* Gold */
+.sidebar-item .fa-trophy { color: #ffdd59; }           /* bright Yellow */
+.sidebar-item .fa-user-circle { color: #54a0ff; }      /* Sky Blue */
+.sidebar-item .fa-link { color: #a55eea; }             /* Purple */
+.sidebar-item .fa-star-half-alt { color: #ff9f43; }    /* Amber */
+.sidebar-item .fa-users { color: #26de81; }            /* Emerald */
+.sidebar-item .fa-play-circle { color: #eb3b5a; }      /* Crimson Red */
+.sidebar-item .fa-sign-out-alt { color: #fc5c65; }     /* Soft Red */
+
+/* Ensure text legibility & icon contrast when hovered or selected (active background) */
+.sidebar-item:hover i, .sidebar-item.active i {
+    color: #ffffff !important;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6));
+}
 
         .app-logo { height: 80px; background: #fff; padding: 5px; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .app-title-main { font-weight: 800; font-size: 1.8rem; letter-spacing: 1px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -291,13 +317,65 @@
             backdrop-filter: blur(5px);
         }
 
-        /* Sleek Custom Floating Table Row Design */
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 8px; /* Space out rows for card-like feel */
-            min-width: 600px;
-        }
+        /* Sleek Fluid Floating Table Row Design */
+.leaderboard-container { 
+    overflow-x: auto; 
+    margin-top: 10px; 
+    -webkit-overflow-scrolling: touch;
+}
+.leaderboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Space out rows for card-like feel */
+    margin-bottom: 1rem;
+}
+.leaderboard-table th {
+    background: var(--header-title);
+    color: white;
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.8px;
+    border: none;
+}
+
+/* Responsive Table Scaling for Mobile and Tablets */
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem !important; /* Recover screen space on sides */
+    }
+    .card {
+        padding: 1rem !important; /* Recover padding inside layout card */
+        border-radius: 14px !important;
+        margin-bottom: 1rem !important;
+    }
+    .leaderboard-table th, .leaderboard-table td {
+        padding: 10px 6px !important; /* Shrink cell padding slightly */
+        font-size: 0.82rem !important; 
+    }
+    .leaderboard-table th {
+        font-size: 0.72rem !important;
+        letter-spacing: 0.4px !important;
+    }
+    .leaderboard-table td span.rank-badge {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.75rem !important;
+    }
+    /* Set name column max layout to prevent extreme stretching */
+    .leaderboard-table td b {
+        display: block;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    /* Hide visual icon to optimize narrow viewport spacing */
+    .leaderboard-table td i.fa-clock {
+        display: none !important;
+    }
+}
         .leaderboard-table th {
             background: var(--header-title);
             color: white;
@@ -707,16 +785,7 @@
 
                 <div class="leaderboard-container">
                     <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th>Sl.</th>
-                                <th>Name</th>
-                                <th>Total Marks</th>
-                                <th>Obtained</th>
-                                <th>%</th>
-                                <th>Time Taken</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Sl.</th><th>Name</th><th>Total</th><th>Obtained</th><th>%</th><th>Time</th></tr></thead>
                         <tbody id="global-leaderboard-rows"></tbody>
                     </table>
                 </div>
@@ -1098,14 +1167,14 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                         </div>
                     </div>
                     <div class="card">
-                        <h3 style="color:var(--header-title); margin-bottom:10px"><i class="fas fa-trophy"></i> Leader Board (Top 20)</h3>
-                        <div class="leaderboard-container">
-                            <table class="leaderboard-table">
-                                <thead><tr><th>Sl.</th><th>Name</th><th>Date</th><th>Total Marks</th><th>Obtained Marks</th><th>%</th><th>Time</th></tr></thead>
-                                <tbody>${lbHTML}</tbody>
-                            </table>
-                        </div>
-                    </div>
+                      <h3 style="color:var(--header-title); margin-bottom:10px"><i class="fas fa-trophy"></i> Leader Board (Top 20)</h3>
+                      <div class="leaderboard-container">
+                          <table class="leaderboard-table">
+                              <thead><tr><th>Sl.</th><th>Name</th><th>Date</th><th>Total</th><th>Obtained</th><th>%</th><th>Time</th></tr></thead>
+                              <tbody>${lbHTML}</tbody>
+                          </table>
+                      </div>
+                  </div>
                     <div class="card"><h3>Question Review</h3><br>${reviewHTML}</div>`;
                 showScreen('result-screen');
             } catch (err) { console.error(err); alert("Error saving results. Check connection."); }
@@ -1894,102 +1963,122 @@ if (id === 'stats-screen') initOrganicStudentCounter();
         };
 
 // ─────────── CERTIFICATE DYNAMIC COMPILER & PDF GENERATION ───────────
-        const loadStudentCertificate = async () => {
-            // Apply standard name & class fallbacks
-            document.getElementById('cert-student-name').innerText = userData.name || 'Student Name';
-            document.getElementById('cert-class').innerText = userData.class || '10';
-
-            // Sync with your Firestore configure logo (or use the active header logo fallback)
-            const appLogo = document.getElementById('app-logo');
-            const certLogo = document.getElementById('cert-logo');
-            if (appLogo && certLogo && appLogo.src) {
-                certLogo.src = appLogo.src;
+       // Helper to safely transform database date string formats and server timestamps to YYYY-MM-DD
+const parseToLocalDateStr = (docData) => {
+    let d = null;
+    if (docData.timestamp && typeof docData.timestamp.toDate === 'function') {
+        d = docData.timestamp.toDate();
+    } else if (docData.date) {
+        d = new Date(docData.date);
+        if (isNaN(d.getTime())) {
+            const parts = docData.date.split(/[\/\-]/);
+            if (parts.length === 3) {
+                let year = parseInt(parts[2]);
+                let month = parseInt(parts[0]) - 1;
+                let day = parseInt(parts[1]);
+                if (year < 100) year += 2000;
+                if (month > 11) {
+                    month = parseInt(parts[1]) - 1;
+                    day = parseInt(parts[0]);
+                }
+                d = new Date(year, month, day);
             }
+        }
+    }
+    if (!d || isNaN(d.getTime())) return null;
+    
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const dayVal = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${dayVal}`;
+};
+            const loadStudentCertificate = async () => {
+    // Apply standard name & class fallbacks
+    document.getElementById('cert-student-name').innerText = userData.name || 'Student Name';
+    document.getElementById('cert-class').innerText = userData.class || '10';
 
-            try {
-                // Fetch leaderboard score logs specifically for the logged-in student
-                const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
-                
-                // 1. Calculate the total questions solved TODAY
-                let solvedTodayCount = 0;
-                const todayStr = new Date().toLocaleDateString(); // Matches entry creation locale format
+    // Sync with your Firestore configure logo (or use the active header logo fallback)
+    const appLogo = document.getElementById('app-logo');
+    const certLogo = document.getElementById('cert-logo');
+    if (appLogo && certLogo && appLogo.src) {
+        certLogo.src = appLogo.src;
+    }
 
-                // Collect unique calendar activity strings for consecutive study streak calculation
-                const activeDates = [];
+    try {
+        // Fetch leaderboard score logs specifically for the logged-in student
+        const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
+        
+        // 1. Calculate the total questions solved TODAY
+        let solvedTodayCount = 0;
+        
+        // Standardize current local date format to YYYY-MM-DD
+        const localToday = new Date();
+        const todayIso = `${localToday.getFullYear()}-${String(localToday.getMonth() + 1).padStart(2, '0')}-${String(localToday.getDate()).padStart(2, '0')}`;
 
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    if (d.date) {
-                        // Check match for today's solved count
-                        if (d.date === todayStr) {
-                            solvedTodayCount += (d.obtained || 0);
-                        }
+        // Collect unique calendar activity strings for consecutive study streak calculation
+        const activeDates = [];
 
-                        // Parse string safely into timezone ISO formats for streak arrays
-                        const dateParts = d.date.split('/');
-                        if (dateParts.length === 3) {
-                            // Support standard locales (Day, Month, Year mappings)
-                            const day = parseInt(dateParts[0]) > 12 ? parseInt(dateParts[0]) : parseInt(dateParts[1]);
-                            const month = parseInt(dateParts[0]) > 12 ? parseInt(dateParts[1]) - 1 : parseInt(dateParts[0]) - 1;
-                            const year = parseInt(dateParts[2]);
-                            const cleanDate = new Date(year, month, day);
-
-                            if (cleanDate && !isNaN(cleanDate.getTime())) {
-                                const isoStr = cleanDate.toISOString().split('T')[0];
-                                if (!activeDates.includes(isoStr)) {
-                                    activeDates.push(isoStr);
-                                }
-                            }
-                        }
-                    }
-                });
-
-                document.getElementById('cert-solved-today').innerText = solvedTodayCount;
-
-                // 2. Compute the exact Active Continuous Study Streak (consecutive days)
-                let activeStreakCount = 0;
-                if (activeDates.length > 0) {
-                    // Sort calendar date arrays descending (latest study sessions first)
-                    activeDates.sort((a, b) => new Date(b) - new Date(a));
-
-                    const latestDateStr = activeDates[0];
-                    const todayIso = new Date().toISOString().split('T')[0];
-                    
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    const yesterdayIso = yesterday.toISOString().split('T')[0];
-
-                    // User must have solved questions today or yesterday for the streak to remain active
-                    if (latestDateStr === todayIso || latestDateStr === yesterdayIso) {
-                        activeStreakCount = 1;
-                        let lastDate = new Date(latestDateStr);
-
-                        for (let i = 1; i < activeDates.length; i++) {
-                            const nextDate = new Date(activeDates[i]);
-                            const diffTime = Math.abs(lastDate - nextDate);
-                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                            if (diffDays === 1) {
-                                activeStreakCount++;
-                                lastDate = nextDate; // Move down check
-                            } else if (diffDays > 1) {
-                                break; // Gap detected, stop counting consecutive values
-                            }
-                        }
-                    }
+        snap.forEach(doc => {
+            const d = doc.data();
+            const entryDateIso = parseToLocalDateStr(d);
+            
+            if (entryDateIso) {
+                // Check match for today's solved count
+                if (entryDateIso === todayIso) {
+                    solvedTodayCount += (d.obtained || 0);
                 }
 
-                // Render compiled streak strings inside certificate template
-                document.getElementById('cert-streak').innerText = activeStreakCount;
-                const badgeStreak = document.getElementById('cert-badge-streak');
-                if (badgeStreak) {
-                    badgeStreak.innerText = activeStreakCount + 'd';
+                if (!activeDates.includes(entryDateIso)) {
+                    activeDates.push(entryDateIso);
                 }
-
-            } catch (err) {
-                console.error("Certificate compilation failed:", err);
             }
-        };
+        });
+
+        document.getElementById('cert-solved-today').innerText = solvedTodayCount;
+
+        // 2. Compute the exact Active Continuous Study Streak (consecutive days)
+        let activeStreakCount = 0;
+        if (activeDates.length > 0) {
+            // Sort calendar date arrays descending (latest study sessions first)
+            activeDates.sort((a, b) => new Date(b) - new Date(a));
+
+            const latestDateStr = activeDates[0];
+            
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayIso = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
+            // User must have solved questions today or yesterday for the streak to remain active
+            if (latestDateStr === todayIso || latestDateStr === yesterdayIso) {
+                activeStreakCount = 1;
+                let lastDate = new Date(latestDateStr);
+
+                for (let i = 1; i < activeDates.length; i++) {
+                    const nextDate = new Date(activeDates[i]);
+                    const diffTime = Math.abs(lastDate - nextDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    if (diffDays === 1) {
+                        activeStreakCount++;
+                        lastDate = nextDate; // Move down check
+                    } else if (diffDays > 1) {
+                        break; // Gap detected, stop counting consecutive values
+                    }
+                }
+            }
+        }
+
+        // Render compiled streak strings inside certificate template
+        document.getElementById('cert-streak').innerText = activeStreakCount;
+        const badgeStreak = document.getElementById('cert-badge-streak');
+        if (badgeStreak) {
+            badgeStreak.innerText = activeStreakCount + 'd';
+        }
+
+    } catch (err) {
+        console.error("Certificate compilation failed:", err);
+    }
+};
 
         // Intelligent full-screen scaling for responsive viewports
         const scaleCertificate = () => {
