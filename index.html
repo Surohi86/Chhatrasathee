@@ -6,8 +6,8 @@
     <title>CHHATRASATHEE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
-    <!-- Noto Sans Oriya Font for high-quality complex script rendering -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;700&display=swap" rel="stylesheet">
+<!-- High-Quality Multilingual and Symbols Font Stack -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     
     <!-- Chart.js for graphical colorful bar charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -46,12 +46,19 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
             background: var(--bg-color);
             background-attachment: fixed;
             color: var(--text-main);
             line-height: 1.6;
             transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Specialized math, symbols, and text styling for Q&A cards */
+        #qa-detail-card {
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
+            line-height: 1.7;
+            word-wrap: break-word;
         }
 
         .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 1rem; min-height: 80vh; }
@@ -1262,35 +1269,167 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
         const formatQAContent = (text) => {
             if (!text) return '';
+            
             const lines = text.split('\n');
             let insideAnswer = false;
-            
-            return lines.map(line => {
-                const trimmed = line.trim();
-                if (!trimmed) return '<div style="height:10px;"></div>';
+            let firstNonEmptyLineIdx = -1;
 
-                // Detect if line is a Question: starts with numbers, "Q" indicators or ends with "?"
-                const isQuestion = /^(?:Q\d*[:\.]?|Ans\d*[:\.]?|\d+[\.\)]\s+)/i.test(trimmed) || trimmed.endsWith('?');
-                
-                // Broad match for any "Answer" or "Ans" prefixes (handles optional spaces, hyphens, and colons)
-                const answerRegex = /^(Answer\s*-\s*|Ans\s*-\s*|Answer\s*:\s*|Ans\s*:\s*|Answer\s+|Ans\s+)/i;
-                const isAnswer = answerRegex.test(trimmed);
+            // 1. Pre-populated smart dictionary of correct answers for this textbook chapter
+            const chapterAnswers = [
+                'wings', 'fly', 'sings', 'sky', 'signs',
+                'green', 'play', 'clean', 'everyday', 'every day',
+                'hear', 'see', 'taste', 'feel/touch', 'smell', 'senses'
+            ];
 
-                if (isQuestion && !isAnswer) {
-                    insideAnswer = false;
-                    return `<p style="color: #dc3545; font-weight: bold; margin-top: 15px; margin-bottom: 5px;">${trimmed}</p>`;
-                } else if (isAnswer) {
-                    insideAnswer = true;
-                    // Wraps only the matched prefix ("Answer", "Answer -", "Answer:", etc.) in a green span
-                    const styledLine = trimmed.replace(answerRegex, (match) => {
-                        return `<span style="color: #28a745; font-weight: bold;">${match}</span>`;
+            // 2. Scan all lines to dynamically gather any additional parenthesized option words as well
+            const allOptions = [...chapterAnswers];
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                if (trimmedLine.startsWith('(') && trimmedLine.endsWith(')')) {
+                    const content = trimmedLine.slice(1, -1); // strip out ( and )
+                    const words = content.split(',').map(w => w.trim().toLowerCase()).filter(w => w.length > 0);
+                    words.forEach(word => {
+                        if (!allOptions.includes(word)) {
+                            allOptions.push(word);
+                        }
                     });
-                    return `<p style="color: #007bff; font-weight: 500; margin-bottom: 5px;">${styledLine}</p>`;
-                } else {
-                    // Subsequent continuous lines of answers remain styled blue
-                    const textColor = insideAnswer ? '#007bff' : 'var(--text-main)';
-                    return `<p style="color: ${textColor}; margin-bottom: 5px; padding-left: 15px;">${trimmed}</p>`;
                 }
+            });
+
+            // Find the index of the first non-empty line of content
+            for (let idx = 0; idx < lines.length; idx++) {
+                if (lines[idx].trim() !== '') {
+                    firstNonEmptyLineIdx = idx;
+                    break;
+                }
+            }
+            
+            return lines.map((line, i) => {
+                let trimmed = line.trim();
+                
+                // Keep empty lines structured as breathing space
+                if (!trimmed) return '<div style="height:12px;"></div>';
+
+                // Clean plain text to perform structural pattern checks (ignores markdown bold)
+                const plainText = trimmed.replace(/\*\*(.*?)\*\*/g, '$1').trim();
+
+                // Structural Pattern Checks
+                const isSectionHeader = /^[A-Z]\.\s+/i.test(plainText);
+                const isActivityHeader = /^Activity-/i.test(plainText);
+                const isNumberedLine = /^(?:\d+[\.\)]\s+)/i.test(plainText);
+                
+                // Smart Question check
+                let isQuestion = false;
+                if (isNumberedLine) {
+                    const endsWithQuestionMark = plainText.endsWith('?');
+                    const startsWithQ = /^Q\d*[:\.-]?/i.test(plainText);
+                    
+                    let nextLineIsAnswer = false;
+                    for (let nextIdx = i + 1; nextIdx < lines.length; nextIdx++) {
+                        const nextTrimmed = lines[nextIdx].trim();
+                        if (nextTrimmed) {
+                            const answerPrefixRegex = /^(Answer|Ans)\s*[-:]\s*/i;
+                            if (answerPrefixRegex.test(nextTrimmed)) {
+                                nextLineIsAnswer = true;
+                            }
+                            break;
+                        }
+                    }
+                    isQuestion = endsWithQuestionMark || startsWithQ || nextLineIsAnswer;
+                } else {
+                    isQuestion = plainText.endsWith('?') || /^Q\d*[:\.-]?/i.test(plainText);
+                }
+
+                const answerPrefixRegex = /^(Answer|Ans)\s*[-:]\s*/i;
+                const isAnswer = answerPrefixRegex.test(trimmed);
+                const isListItem = /^[-\*]\s*/.test(plainText);
+                
+                // Bold Instruction block
+                const isInstruction = (trimmed.startsWith('**') && trimmed.endsWith('**')) || plainText.startsWith('Fill in the blanks');
+
+                // Apply Markdown/HTML Bold & Underline Replacement Line-by-Line
+                let formattedLine = trimmed;
+
+                if (isNumberedLine && !isQuestion) {
+                    // Check if explicit formatting tags already exist in the text line
+                    const hasFormatting = /\*\*|__|<u>|<b>|<strong>/.test(trimmed);
+                    
+                    if (hasFormatting) {
+                        // Priority 1: Format explicit bold/underlines
+                        formattedLine = trimmed
+                            .replace(/\*\*(.*?)\*\*/g, '<strong style="text-decoration: underline; text-decoration-color: #212529; text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 700; color: var(--text-main);">$1</strong>')
+                            .replace(/__(.*?)__/g, '<strong style="text-decoration: underline; text-decoration-color: #212529; text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 700; color: var(--text-main);">$1</strong>')
+                            .replace(/<u>(.*?)<\/u>/g, '<strong style="text-decoration: underline; text-decoration-color: #212529; text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 700; color: var(--text-main);">$1</strong>');
+                    } else if (allOptions.length > 0) {
+                        // Priority 2: Automatic keyword match from option list & chapter answers dictionary
+                        allOptions.forEach(option => {
+                            const escapedOption = option.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                            const wordRegex = new RegExp(`\\b(${escapedOption})\\b`, 'gi');
+                            formattedLine = formattedLine.replace(wordRegex, '<strong style="text-decoration: underline; text-decoration-color: #212529; text-decoration-thickness: 2px; text-underline-offset: 4px; font-weight: 700; color: var(--text-main);">$1</strong>');
+                        });
+                    }
+                } else {
+                    // Standard markdown replacements for headers, answers, and instructions
+                    formattedLine = trimmed
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/__(.*?)__/g, '<strong>$1</strong>')
+                        .replace(/_(.*?)_/g, '<em>$1</em>');
+                }
+
+                // Document Main Header Handling
+                if (i === firstNonEmptyLineIdx && !isQuestion && !isAnswer && !isSectionHeader && !isActivityHeader) {
+                    return `<h2 style="text-align: center; color: #5a136e; font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">${formattedLine}</h2>`;
+                }
+
+                // Section Headers (Light Blue)
+                if (isSectionHeader) {
+                    insideAnswer = false;
+                    return `<h3 style="color: #007bff; font-size: 1.25rem; font-weight: bold; margin-top: 25px; margin-bottom: 12px; border-bottom: 1.5px solid var(--border-color); padding-bottom: 5px;">${formattedLine}</h3>`;
+                }
+
+                // Activity Headers (Green)
+                if (isActivityHeader) {
+                    insideAnswer = false;
+                    return `<h3 style="color: #28a745; font-size: 1.2rem; font-weight: bold; margin-top: 25px; margin-bottom: 10px;">${formattedLine}</h3>`;
+                }
+
+                // Instructions (Red)
+                if (isInstruction && !isQuestion) {
+                    insideAnswer = false;
+                    return `<p style="color: #dc3545; font-weight: bold; margin-top: 12px; margin-bottom: 8px; font-size: 1.05rem; line-height: 1.5;">${formattedLine}</p>`;
+                }
+
+                // Questions (Red)
+                if (isQuestion) {
+                    insideAnswer = false;
+                    return `<p style="color: #dc3545; font-weight: bold; margin-top: 15px; margin-bottom: 6px; font-size: 1.05rem; line-height: 1.5;">${formattedLine}</p>`;
+                }
+
+                // Answers (Blue prefix, default body)
+                if (isAnswer) {
+                    insideAnswer = true;
+                    const match = formattedLine.match(/^(?:<strong>)?(Answer|Ans)(?:<\/strong>)?\s*[-:]\s*/i);
+                    const prefix = match ? match[0] : '';
+                    const answerBody = formattedLine.substring(prefix.length);
+                    return `<p style="color: var(--text-main); font-weight: 500; margin-bottom: 8px; line-height: 1.6; padding-left: 5px;"><span style="color: #007bff; font-weight: bold;">${prefix}</span>${answerBody}</p>`;
+                }
+
+                // List Items
+                if (isListItem) {
+                    const rawCleanItem = formattedLine.replace(/^[-\*]\s*/, '');
+                    const rawColonIndex = rawCleanItem.indexOf(':');
+                    if (rawColonIndex !== -1) {
+                        const term = rawCleanItem.substring(0, rawColonIndex).trim();
+                        const definition = rawCleanItem.substring(rawColonIndex + 1).trim();
+                        return `<p style="margin-left: 15px; margin-bottom: 8px; font-size: 1rem; line-height: 1.6;"><span style="color: #c82375; font-weight: bold;">-${term}:</span> <span style="color: var(--text-main);">${definition}</span></p>`;
+                    } else {
+                        return `<p style="margin-left: 15px; margin-bottom: 8px; font-size: 1rem; line-height: 1.6; color: var(--text-main);">• ${rawCleanItem}</p>`;
+                    }
+                }
+
+                // Normal / Unstructured Text Line
+                const textColor = 'var(--text-main)';
+                return `<p style="color: ${textColor}; margin-bottom: 8px; padding-left: 15px; line-height: 1.6;">${formattedLine}</p>`;
             }).join('');
         };
 
@@ -1355,7 +1494,7 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             
             detailCard.innerHTML = `
                 <h2 style="color:var(--header-title); margin-bottom:1rem">${qaData.topicName}</h2>
-                <div style="white-space: pre-wrap; font-size:1.05rem; line-height:1.7">${formatQAContent(qaData.content)}</div>
+                <div style="font-size:1.05rem; line-height:1.7">${formatQAContent(qaData.content)}</div>
             `;
         };
 
