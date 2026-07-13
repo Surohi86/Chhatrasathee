@@ -1241,6 +1241,90 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                 container.innerHTML = '<p style="color:red">Failed to retrieve study material topics.</p>';
             }
         };
+        
+        // ─────────── SUBJECT NOTES MARKDOWN PARSER ───────────
+        const formatNotesContent = (text) => {
+            if (!text) return '';
+            
+            const lines = text.split('\n');
+            let htmlOutput = [];
+            let firstNonEmptyLine = true;
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+
+                // Handle empty lines for balanced paragraph spacing
+                if (!line) {
+                    htmlOutput.push('<div style="height: 12px;"></div>');
+                    continue;
+                }
+
+                // Global Inline Formatting replacements: bold (** or __) and italic (* or _)
+                let formattedLine = line
+                    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
+                    .replace(/__(.*?)__/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/_(.*?)_/g, '<em>$1</em>');
+
+                // 1. First Non-Empty Line acts as the Centered Main Title (styled in premium Magenta)
+                if (firstNonEmptyLine) {
+                    firstNonEmptyLine = false;
+                    let titleText = line.replace(/\*\*/g, '').replace(/__/g, '');
+                    htmlOutput.push(`
+                        <div style="text-align: center; margin-bottom: 25px; width: 100%;">
+                            <h2 style="font-family: 'Poppins', 'Noto Sans Oriya', sans-serif; font-size: 1.8rem; font-weight: 800; color: #5a136e; display: inline-block; margin: 0; padding-bottom: 5px; border-bottom: 2px dotted #dc3545;">${titleText}</h2>
+                        </div>
+                    `);
+                    continue;
+                }
+
+                // 2. Matches subheadings starting with digits (English/Odia) like: "1. Title" or "**୧. Title**"
+                const headingRegex = /^(?:\s*|<strong[^>]*>)*(?:\*\*|__)?([0-9୦-୯]+)\.\s*(.*?)(?:\*\*|__)?(?:<\/strong>)*$/i;
+                const headingMatch = line.match(headingRegex);
+                
+                if (headingMatch) {
+                    const num = headingMatch[1];
+                    let title = headingMatch[2];
+                    title = title.replace(/\*\*/g, '').replace(/__/g, ''); // strip remaining markdown markers
+                    htmlOutput.push(`
+                        <h3 style="color: #007bff; font-size: 1.25rem; font-weight: bold; margin-top: 25px; margin-bottom: 12px; font-family: inherit;">
+                            ${num}. ${title}
+                        </h3>
+                    `);
+                    continue;
+                }
+
+                // 3. Matches bullet points starting with asterisks (*), dashes (-), or bullet glyphs (•)
+                const bulletRegex = /^\s*[\*\-•]\s*(.*)$/;
+                const bulletMatch = line.match(bulletRegex);
+                
+                if (bulletMatch) {
+                    let bulletText = bulletMatch[1];
+                    let formattedBullet = bulletText
+                        .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
+                        .replace(/__(.*?)__/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                        .replace(/_(.*?)_/g, '<em>$1</em>');
+
+                    htmlOutput.push(`
+                        <div style="display: flex; align-items: flex-start; margin-left: 15px; margin-bottom: 8px; line-height: 1.7;">
+                            <span style="color: var(--text-main); margin-right: 10px; font-size: 1.2rem; line-height: 1;">•</span>
+                            <span style="flex: 1; color: var(--text-main); font-size: 1.05rem; font-family: inherit;">${formattedBullet}</span>
+                        </div>
+                    `);
+                    continue;
+                }
+
+                // 4. Fallback rendering for standard paragraph texts
+                htmlOutput.push(`
+                    <p style="color: var(--text-main); font-size: 1.05rem; margin-bottom: 10px; line-height: 1.7; font-family: inherit;">
+                        ${formattedLine}
+                    </p>
+                `);
+            }
+
+            return htmlOutput.join('');
+        };
 
         const showNoteDetails = (noteData) => {
             document.getElementById('notes-topic-list-view').style.display = 'none';
@@ -1248,8 +1332,9 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             const detailCard = document.getElementById('note-detail-card');
             
             detailCard.innerHTML = `
-                <h2 style="color:var(--header-title); margin-bottom:1rem">${noteData.topicName}</h2>
-                <div style="white-space: pre-wrap; font-size:1.05rem; line-height:1.7">${noteData.content}</div>
+                <div id="qa-detail-card" style="padding: 10px; border-radius: 12px;">
+                    ${formatNotesContent(noteData.content)}
+                </div>
             `;
         };
 
