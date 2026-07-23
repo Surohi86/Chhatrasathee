@@ -246,7 +246,7 @@
             text-align: center; 
             flex: 1; 
             border-radius: 20px 20px 15px 15px; 
-            padding: 20px 10px 15px 10px; 
+            padding: 30px 10px 15px 10px; /* Optimized top padding to maximize vertical inside space */
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
             position: relative; 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -256,9 +256,9 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
-        /* Vibrant gradients and glowing drop shadows for the podium blocks */
+        /* Proportionately staggered heights providing complete container space */
         .podium-step.first { 
-            height: 200px; 
+            height: 260px; 
             background: linear-gradient(135deg, #ff9f43, #ff5252); 
             color: #fff; 
             z-index: 2; 
@@ -267,14 +267,14 @@
             animation: floating-podium 3s ease-in-out infinite;
         }
         .podium-step.second { 
-            height: 165px; 
+            height: 230px; 
             background: linear-gradient(135deg, #54a0ff, #5f27cd); 
             color: #fff; 
             z-index: 1; 
             box-shadow: 0 10px 24px rgba(84, 160, 255, 0.3);
         }
         .podium-step.third { 
-            height: 135px; 
+            height: 200px; /* Raised to 200px to ensure the percentage bubble sits fully inside */
             background: linear-gradient(135deg, #10ac84, #01a3a4); 
             color: #fff; 
             z-index: 1; 
@@ -289,9 +289,10 @@
         /* Float elements and pulse styles for top-performing icons */
         .podium-badge {
             position: absolute;
-            top: -20px;
-            font-size: 2rem;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            top: -15px; /* Adjusted slightly upward for optimal alignment */
+            font-size: 2.2rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+            z-index: 10;
         }
         .first-badge { color: #ffca08; animation: pulse-gold-badge 2s infinite; }
         .second-badge { color: #f1f2f6; }
@@ -303,19 +304,25 @@
         }
 
         .podium-avatar { 
-            width: 54px; 
-            height: 54px; 
-            border-radius: 50%; 
+            width: 58px !important; 
+            height: 58px !important; 
+            min-width: 58px !important;
+            min-height: 58px !important;
+            border-radius: 50% !important; /* Forces perfect circle execution */
             border: 3.5px solid #fff; 
             background: rgba(255, 255, 255, 0.25); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            overflow: hidden; 
-            margin-bottom: 8px; 
+            flex-shrink: 0 !important; /* Prevents compression into an oval */
+            margin-bottom: 10px; 
             font-weight: 800; 
-            font-size: 1.15rem;
+            font-size: 1.25rem;
+            line-height: 1; /* Aligns text cleanly in the center */
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            /* Removed overflow: hidden so accented vowel signs display beautifully without clipping */
         }
         
         .podium-rank { 
@@ -325,11 +332,13 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
         .podium-name { 
-            font-size: 0.95rem; 
+            font-size: 1rem; 
             font-weight: 700; 
-            line-height: 1.25; 
+            line-height: 1.3; 
             word-break: break-word; 
-            text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            color: #ffffff;
+            margin: 4px 0;
         }
         .podium-score { 
             font-size: 0.85rem; 
@@ -537,6 +546,26 @@
                 gap: 8px;
             }
         }
+        /* Prevent text selection and highlighting across the user panel */
+        body {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE10+/Edge */
+            user-select: none;         /* Standard */
+        }
+        
+        /* Prevent dragging of images or cards */
+        img, a, .card, td {
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+        /* Blackout protection when trying to print or save as PDF */
+        @media print {
+            body {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -591,14 +620,14 @@
         </div>
 
         <!-- SCREEN 1: SUBJECTS (HOME) -->
-        <div id="subject-list-screen" class="screen">
-            <div class="card">
-                <h1 style="text-align: center; margin-bottom: 1rem;">Available Subjects</h1>
-                <div id="subject-list-container">
-                    <p style="text-align:center; opacity:0.6;">Searching for subjects...</p>
-                </div>
-            </div>
+<div id="subject-list-screen" class="screen">
+    <div class="card">
+        <h1 style="text-align: center; margin-bottom: 1rem;">Available Quizzes/Tests (MCQs)</h1>
+        <div id="subject-list-container">
+            <p style="text-align:center; opacity:0.6;">Searching for subjects...</p>
         </div>
+    </div>
+</div>
 
         <!-- SCREEN 2: QUIZZES -->
         <div id="quiz-list-screen" class="screen">
@@ -1076,28 +1105,48 @@ if (id === 'stats-screen') initOrganicStudentCounter();
         };
 
         const renderQuizzesForSubject = (subjectId, subjectName) => {
-            document.getElementById('selected-subject-title').innerText = subjectName;
-            const container = document.getElementById('quiz-list-container');
-            container.innerHTML = '';
+    document.getElementById('selected-subject-title').innerText = subjectName;
+    const container = document.getElementById('quiz-list-container');
+    container.innerHTML = '';
+    
+    const filtered = quizzes.filter(q => q.subjectId === subjectId);
+    if(filtered.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 3rem 1rem;">
+                <div style="font-size: 3rem; color: #ff9933; margin-bottom: 1rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <h2 style="font-size: 1.8rem; font-weight: 700; background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; display: inline-block;">Coming soon.....</h2>
+                <p style="font-size: 0.95rem; color: var(--text-sub); font-weight: 500;">Interactive tests and practices are currently being prepared for this section. Stay tuned!</p>
+            </div>`;
+    } else {
+        let colorIndex = 0;
+        filtered.forEach((quiz) => {
+            const originalIndex = quizzes.findIndex(q => q.id === quiz.id);
+            const item = document.createElement('div');
+            const gradClass = 'q-grad-' + ((colorIndex % 12) + 1);
+            item.className = `quiz-list-item ${gradClass}`;
+            colorIndex++;
             
-            const filtered = quizzes.filter(q => q.subjectId === subjectId);
-            if(filtered.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">No quizzes found for this subject.</p>';
-            } else {
-                let colorIndex = 0;
-                filtered.forEach((quiz) => {
-                    const originalIndex = quizzes.findIndex(q => q.id === quiz.id);
-                    const item = document.createElement('div');
-                    const gradClass = 'q-grad-' + ((colorIndex % 12) + 1);
-                    item.className = `quiz-list-item ${gradClass}`;
-                    colorIndex++;
-                    item.innerHTML = `<div><h3>${quiz.title}</h3><p>${quiz.questions?.length || 0} Questions</p></div><button class="btn btn-secondary">START</button>`;
-                    item.onclick = () => { currentQuizIndex = originalIndex; startQuiz(); };
-                    container.appendChild(item);
-                });
-            }
-            showScreen('quiz-list-screen');
-        };
+            const isExternal = !!quiz.externalUrl;
+            const subText = isExternal ? 'External Link' : `${quiz.questions?.length || 0} Questions`;
+            const btnText = isExternal ? 'OPEN' : 'START';
+            
+            item.innerHTML = `<div><h3>${quiz.title}</h3><p>${subText}</p></div><button class="btn btn-secondary">${btnText}</button>`;
+            
+            item.onclick = () => { 
+                if (isExternal) {
+                    window.open(quiz.externalUrl, '_blank');
+                } else {
+                    currentQuizIndex = originalIndex; 
+                    startQuiz(); 
+                }
+            };
+            container.appendChild(item);
+        });
+    }
+    showScreen('quiz-list-screen');
+};
 
         const startQuiz = (shuffled = false) => {
             const quiz = quizzes[currentQuizIndex];
@@ -1237,11 +1286,18 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
             try {
                 const snap = await db.collection('notes').where('subjectId', '==', subjectId).get();
-                container.innerHTML = '';
-                if(snap.empty) {
-                    container.innerHTML = '<p style="text-align:center; opacity:0.6; padding:15px;">No topics uploaded for this subject yet.</p>';
-                    return;
-                }
+container.innerHTML = '';
+if(snap.empty) {
+    container.innerHTML = `
+        <div style="text-align: center; padding: 3rem 1rem;">
+            <div style="font-size: 3rem; color: #ff9933; margin-bottom: 1rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <h2 style="font-size: 1.8rem; font-weight: 700; background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; display: inline-block;">Coming soon.....</h2>
+            <p style="font-size: 0.95rem; color: var(--text-sub); font-weight: 500;">Study notes and reference materials are currently being prepared for this section. Stay tuned!</p>
+        </div>`;
+    return;
+}
                 
                 let colorIndex = 0;
                 snap.forEach(doc => {
@@ -1567,11 +1623,18 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
             try {
                 const snap = await db.collection('qa_sheets').where('subjectId', '==', subjectId).get();
-                container.innerHTML = '';
-                if (snap.empty) {
-                    container.innerHTML = '<p style="text-align:center; opacity:0.6; padding:15px;">No Q&A sheets uploaded for this subject yet.</p>';
-                    return;
-                }
+container.innerHTML = '';
+if (snap.empty) {
+    container.innerHTML = `
+        <div style="text-align: center; padding: 3rem 1rem;">
+            <div style="font-size: 3rem; color: #ff9933; margin-bottom: 1rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <h2 style="font-size: 1.8rem; font-weight: 700; background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; display: inline-block;">Coming soon.....</h2>
+            <p style="font-size: 0.95rem; color: var(--text-sub); font-weight: 500;">Solved question-answer sheets are currently being prepared for this section. Stay tuned!</p>
+        </div>`;
+    return;
+}
                 
                 let colorIndex = 0;
                 snap.forEach(doc => {
