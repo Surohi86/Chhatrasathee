@@ -250,6 +250,159 @@
 
         .ad-container { display: flex; justify-content: center; align-items: center; margin: 15px 0; overflow: hidden; width: 100%; }
 
+        /* Modern Scrollable Hero Banner Carousel */
+        .hero-ad-slider {
+            position: relative;
+            width: 100%;
+            max-width: 760px;
+            margin: 15px auto 5px auto;
+            overflow: hidden;
+            border-radius: 14px;
+            box-sizing: border-box;
+        }
+
+        .hero-slider-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            gap: 12px;
+            padding: 4px 2px;
+        }
+        .hero-slider-track::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+
+        .hero-slide-item {
+            flex: 0 0 100%;
+            width: 100%;
+            scroll-snap-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
+            display: block;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .hero-slide-item img {
+            width: 100%;
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+            border-radius: 12px;
+            margin: 0 auto;
+        }
+
+        .hero-slider-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .hero-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0, 123, 255, 0.25);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        body.dark-mode .hero-dot {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .hero-dot.active {
+            width: 22px;
+            border-radius: 10px;
+            background: var(--header-title);
+        }
+
+        /* ─────────── MODERN RUNNING TICKER AD STYLING ─────────── */
+        .ticker-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 6px 12px;
+            margin: 10px auto 0 auto;
+            max-width: 760px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        body.dark-mode .ticker-container {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .ticker-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .ticker-badge i {
+            animation: pulse-ticker-icon 1.5s infinite;
+        }
+
+        @keyframes pulse-ticker-icon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .ticker-track {
+            flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-left: 12px;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 15px, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15px, black 90%, transparent);
+        }
+
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: ticker-marquee 18s linear infinite;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            cursor: default;
+        }
+
+        .ticker-container:hover .ticker-content {
+            animation-play-state: paused;
+        }
+
+        @keyframes ticker-marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
         .app-footer { display: flex; justify-content: center; align-items: center; flex-wrap: nowrap; gap: 2rem; padding: 1rem 1rem 3rem 1rem; margin-top: 0; overflow-x: auto; }
         .app-footer::-webkit-scrollbar { display: none; }
         .app-footer a { text-decoration: none; transition: transform 0.3s; flex-shrink: 0; }
@@ -612,6 +765,22 @@
         <img id="app-logo" src="https://i.imgur.com/gO142Tf.png" class="app-logo" alt="Logo">
         <span class="app-title-main">CHHATRASATHEE</span>
         <span class="app-title-sub">ଛାତ୍ରସାଥୀ</span>
+        
+        <!-- SCROLLABLE HERO AD BANNER CAROUSEL -->
+        <div id="hero-ad-banner-slot" class="hero-ad-slider" style="display:none;">
+            <div id="hero-slider-track" class="hero-slider-track"></div>
+            <div id="hero-slider-dots" class="hero-slider-dots"></div>
+        </div>
+
+        <!-- MODERN RUNNING TICKER AD -->
+        <div id="ticker-ad-wrapper" class="ticker-container" style="display:none;">
+            <div class="ticker-badge" id="ticker-badge-text">
+                <i class="fas fa-bolt"></i> <span>NOTICE</span>
+            </div>
+            <div class="ticker-track">
+                <a id="ticker-text-link" class="ticker-content" target="_blank"></a>
+            </div>
+        </div>
     </div>
 
     <!-- Toggle Sidebar Drawer -->
@@ -1073,6 +1242,123 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                     appContent = doc.data();
                     const links = { 'footer-facebook': appContent.appFacebookLink, 'footer-whatsapp': appContent.appWhatsAppLink, 'footer-instagram': appContent.appInstagramLink, 'footer-youtube': appContent.appYouTubeLink };
                     for (const [id, url] of Object.entries(links)) { const el = document.getElementById(id); if(url) { el.href = url; el.style.display = 'block'; } else { el.style.display = 'none'; } }
+                }
+            });
+
+            // ─────────── LIVE MULTI-BANNER CAROUSEL CONTROLLER (SETTINGS SYNC) ───────────
+            let heroBannerInterval = null;
+            let currentBannerIndex = 0;
+            let totalBanners = 0;
+
+            const scrollToBanner = (index) => {
+                const track = document.getElementById('hero-slider-track');
+                if (!track) return;
+                const slideWidth = track.offsetWidth;
+                track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+                updateActiveDot(index);
+            };
+
+            const updateActiveDot = (index) => {
+                const dots = document.querySelectorAll('.hero-dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+            };
+
+            db.collection('settings').doc('heroBanners').onSnapshot(doc => {
+                const sliderContainer = document.getElementById('hero-ad-banner-slot');
+                const track = document.getElementById('hero-slider-track');
+                const dotsContainer = document.getElementById('hero-slider-dots');
+                
+                clearInterval(heroBannerInterval);
+
+                if (!doc.exists || !Array.isArray(doc.data().banners) || doc.data().banners.length === 0) {
+                    sliderContainer.style.display = 'none';
+                    track.innerHTML = '';
+                    dotsContainer.innerHTML = '';
+                    return;
+                }
+
+                const banners = doc.data().banners;
+                totalBanners = banners.length;
+
+                track.innerHTML = '';
+                dotsContainer.innerHTML = '';
+
+                banners.forEach((b, idx) => {
+                    const slide = document.createElement(b.targetUrl ? 'a' : 'div');
+                    slide.className = 'hero-slide-item';
+                    if (b.targetUrl) {
+                        slide.href = b.targetUrl;
+                        slide.target = '_blank';
+                    }
+                    slide.innerHTML = `<img src="${b.imageUrl}" alt="${b.title || 'Banner Slide'}">`;
+                    track.appendChild(slide);
+
+                    if (totalBanners > 1) {
+                        const dot = document.createElement('div');
+                        dot.className = `hero-dot ${idx === 0 ? 'active' : ''}`;
+                        dot.onclick = () => {
+                            currentBannerIndex = idx;
+                            scrollToBanner(idx);
+                        };
+                        dotsContainer.appendChild(dot);
+                    }
+                });
+
+                sliderContainer.style.display = 'block';
+
+                // Auto-rotates every 4 seconds if multiple banners exist
+                if (totalBanners > 1) {
+                    currentBannerIndex = 0;
+                    heroBannerInterval = setInterval(() => {
+                        currentBannerIndex = (currentBannerIndex + 1) % totalBanners;
+                        scrollToBanner(currentBannerIndex);
+                    }, 4000);
+
+                    // Track manual swipe / touch scroll
+                    track.onscroll = () => {
+                        const slideWidth = track.offsetWidth;
+                        if (slideWidth > 0) {
+                            const newIdx = Math.round(track.scrollLeft / slideWidth);
+                            updateActiveDot(newIdx);
+                            currentBannerIndex = newIdx;
+                        }
+                    };
+                }
+            });
+
+// ─────────── LIVE REAL-TIME RUNNING TICKER AD LISTENER ───────────
+            db.collection('settings').doc('tickerAd').onSnapshot(doc => {
+                const wrapper = document.getElementById('ticker-ad-wrapper');
+                const badgeText = document.getElementById('ticker-badge-text');
+                const contentLink = document.getElementById('ticker-text-link');
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.status === 'active' && data.text && data.text.trim()) {
+                        const badgeLabel = data.tag || 'NOTICE';
+                        badgeText.innerHTML = `<i class="fas fa-bullhorn"></i> <span>${badgeLabel}</span>`;
+                        contentLink.innerHTML = data.text;
+                        
+                        if (data.targetUrl && data.targetUrl.trim()) {
+                            contentLink.href = data.targetUrl;
+                            contentLink.style.cursor = 'pointer';
+                        } else {
+                            contentLink.removeAttribute('href');
+                            contentLink.style.cursor = 'default';
+                        }
+                        
+                        // Automatically adjusts marquee animation speed based on text length
+                        const speed = Math.max(12, Math.round(data.text.length * 0.3));
+                        contentLink.style.animationDuration = `${speed}s`;
+
+                        wrapper.style.display = 'flex';
+                    } else {
+                        wrapper.style.display = 'none';
+                    }
+                } else {
+                    wrapper.style.display = 'none';
                 }
             });
 
