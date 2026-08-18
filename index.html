@@ -54,11 +54,45 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
         
-        /* Specialized math, symbols, and text styling for Q&A cards */
-        #qa-detail-card {
+        /* Specialized math, symbols, and text styling for Q&A and HTML Notes cards */
+        #qa-detail-card, #note-detail-card, .html-note-content {
             font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
             line-height: 1.7;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Prevent HTML diagrams, images & banners from overflowing the card */
+        .html-note-content img, #note-detail-card img, #qa-detail-card img {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+            margin: 10px auto;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        /* Responsive tables and embedded elements */
+        .html-note-content table, #note-detail-card table {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block;
+            overflow-x: auto;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .html-note-content div, .html-note-content section, .html-note-content p {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .html-note-content iframe, .html-note-content video {
+            max-width: 100% !important;
+            border-radius: 10px;
         }
 
         .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 1rem; min-height: 80vh; }
@@ -79,6 +113,8 @@
             display: flex; align-items: center; gap: 8px; cursor: pointer;
             color: var(--header-title); font-weight: 600; margin-bottom: 1.5rem;
             width: fit-content; transition: 0.2s;
+            position: relative;
+            z-index: 10;
         }
         .back-nav:hover { transform: translateX(-5px); }
 
@@ -1173,7 +1209,7 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             const container = document.getElementById('questions-container'); container.innerHTML = '';
             currentQuestions.forEach((q, i) => {
                 const card = document.createElement('div'); card.className = 'card';
-                let options = q.type === 'mcq' ? q.options.map(o => `<label class="option-label"><input type="radio" name="q${i}" value="${o}"> <span>${o}</span></label>`).join('') : `<label class="option-label"><input type="radio" name="q${i}" value="True"> <span>True</span></label><label class="option-label"><input type="radio" name="q${i}" value="False"> <span>False</span></label>`;
+                let options = q.type === 'mcq' ? q.options.map((o, optIdx) => `<label class="option-label"><input type="radio" name="q${i}" value="${optIdx}"> <span>${o}</span></label>`).join('') : `<label class="option-label"><input type="radio" name="q${i}" value="True"> <span>True</span></label><label class="option-label"><input type="radio" name="q${i}" value="False"> <span>False</span></label>`;
                 card.innerHTML = `${q.questionImage ? `<img src="${q.questionImage}" class="quiz-question-image">` : ''}<div class="question-text">${i+1}. ${q.question}</div>${options}`;
                 container.appendChild(card);
             });
@@ -1191,7 +1227,13 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             const btn = document.getElementById('submit-btn'); btn.innerText = "SAVING..."; btn.disabled = true;
             let correct = 0;
             const total = currentQuestions.length;
-            const answers = currentQuestions.map((q, i) => { const sel = document.querySelector(`input[name="q${i}"]:checked`); if(sel && sel.value === q.answer) correct++; return sel ? sel.value : null; });
+            const answers = currentQuestions.map((q, i) => { 
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!sel) return null;
+    const selectedVal = q.type === 'mcq' ? q.options[parseInt(sel.value)] : sel.value;
+    if (selectedVal === q.answer) correct++;
+    return selectedVal;
+});
             const percent = Math.round((correct / total) * 100);
             const quizId = quizzes[currentQuizIndex].id;
             const quizTitle = quizzes[currentQuizIndex].title;
@@ -1306,8 +1348,19 @@ if(snap.empty) {
                     const gradClass = data.gradientClass || ('q-grad-' + ((colorIndex % 12) + 1));
                     item.className = `quiz-list-item ${gradClass}`;
                     colorIndex++;
-                    item.innerHTML = `<div><h3>${data.topicName}</h3><p>Read Module Note</p></div><button class="btn btn-secondary">Open</button>`;
-                    item.onclick = () => showNoteDetails(data);
+
+                    const isOnlyPdf = !!data.pdfUrl && !data.content && !data.htmlContent;
+                    const subText = isOnlyPdf ? 'PDF Document' : (data.htmlContent ? 'Interactive HTML Notes' : 'Study Material');
+                    const btnText = isOnlyPdf ? 'OPEN PDF' : 'OPEN';
+
+                    item.innerHTML = `<div><h3>${data.topicName}</h3><p>${subText}</p></div><button class="btn btn-secondary">${btnText}</button>`;
+                    item.onclick = () => {
+                        if (isOnlyPdf) {
+                            window.open(data.pdfUrl, '_blank');
+                        } else {
+                            showNoteDetails(data);
+                        }
+                    };
                     container.appendChild(item);
                 });
             } catch (err) {
@@ -1404,14 +1457,52 @@ if(snap.empty) {
             document.getElementById('notes-detail-view').style.display = 'block';
             const detailCard = document.getElementById('note-detail-card');
             
+            // 1. Render PDF Download/View Banner Button if a PDF link is attached
+            let pdfButtonHtml = '';
+            if (noteData.pdfUrl && noteData.pdfUrl.trim()) {
+                pdfButtonHtml = `
+                    <div style="margin-bottom: 20px; text-align: center;">
+                        <a href="${noteData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; box-shadow:0 4px 15px rgba(214, 48, 49, 0.35);">
+                            <i class="fas fa-file-pdf" style="font-size:1.3rem;"></i> Open / Download PDF Notes
+                        </a>
+                    </div>
+                `;
+            }
+
+            // Helper to clean full HTML wrapper tags (<html>, <head>, <body>) if whole page markup is pasted
+            const cleanHtmlMarkup = (rawHtml) => {
+                if (!rawHtml) return '';
+                const bodyMatch = rawHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+                return bodyMatch ? bodyMatch[1] : rawHtml;
+            };
+
+            // 2. Render HTML Content (Priority) or Parsed Plain Text
+            let renderedBody = '';
+            if (noteData.htmlContent && noteData.htmlContent.trim()) {
+                renderedBody = `
+                    <div class="html-note-content" style="font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif; line-height: 1.8; word-wrap: break-word; font-size: 1.05rem; width: 100%; max-width: 100%; box-sizing: border-box;">
+                        ${cleanHtmlMarkup(noteData.htmlContent)}
+                    </div>
+                `;
+            } else if (noteData.content && noteData.content.trim()) {
+                renderedBody = `
+                    <div style="font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif; line-height: 1.8; word-wrap: break-word; width: 100%; max-width: 100%; box-sizing: border-box;">
+                        ${formatNotesContent(noteData.content)}
+                    </div>
+                `;
+            }
+
             detailCard.innerHTML = `
-                <div id="qa-detail-card" style="padding: 10px; border-radius: 12px;">
-                    ${formatNotesContent(noteData.content)}
+                <div style="padding: 10px 5px; width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden;">
+                    ${pdfButtonHtml}
+                    ${renderedBody}
                 </div>
             `;
         };
 
+        // ─────────── NOTES BACK NAVIGATION HANDLERS ───────────
         const goBackToNotesSubjects = () => {
+            document.getElementById('notes-detail-view').style.display = 'none';
             document.getElementById('notes-topic-list-view').style.display = 'none';
             document.getElementById('notes-subject-container').style.display = 'block';
         };
