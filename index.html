@@ -250,7 +250,7 @@
 
         .ad-container { display: flex; justify-content: center; align-items: center; margin: 15px 0; overflow: hidden; width: 100%; }
 
-        /* Modern Scrollable Hero Banner Carousel */
+        /* ─────────── 13-TRANSITION HERO AD BANNER CAROUSEL ─────────── */
         .hero-ad-slider {
             position: relative;
             width: 100%;
@@ -259,33 +259,30 @@
             overflow: hidden;
             border-radius: 14px;
             box-sizing: border-box;
+            perspective: 1200px; /* Enables 3D perspective */
         }
 
         .hero-slider-track {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
-            gap: 12px;
-            padding: 4px 2px;
-        }
-        .hero-slider-track::-webkit-scrollbar {
-            display: none; /* Chrome, Safari */
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 140px;
         }
 
         .hero-slide-item {
-            flex: 0 0 100%;
             width: 100%;
-            scroll-snap-align: center;
+            display: none;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: transform 0.2s ease;
-            display: block;
             text-decoration: none;
             box-sizing: border-box;
+            backface-visibility: hidden;
+        }
+
+        .hero-slide-item.active {
+            display: block;
         }
 
         .hero-slide-item img {
@@ -321,6 +318,89 @@
             border-radius: 10px;
             background: var(--header-title);
         }
+
+        /* ─── 13 DISTINCT ANIMATION KEYFRAMES ─── */
+        /* 1. Slide In from Right */
+        @keyframes animSlideLeft {
+            from { transform: translateX(100%); opacity: 0.3; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        /* 2. Slide In from Left */
+        @keyframes animSlideRight {
+            from { transform: translateX(-100%); opacity: 0.3; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        /* 3. Slide Up */
+        @keyframes animSlideUp {
+            from { transform: translateY(60px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* 4. Slide Down */
+        @keyframes animSlideDown {
+            from { transform: translateY(-60px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* 5. Smooth Dissolve / Cross-Fade */
+        @keyframes animFade {
+            from { opacity: 0; transform: scale(1.01); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        /* 6. Ken Burns Zoom In */
+        @keyframes animZoomIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        /* 7. Zoom Out */
+        @keyframes animZoomOut {
+            from { transform: scale(1.15); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        /* 8. 3D Horizontal Card Flip */
+        @keyframes animFlipX {
+            from { transform: perspective(800px) rotateY(90deg); opacity: 0; }
+            to { transform: perspective(800px) rotateY(0deg); opacity: 1; }
+        }
+        /* 9. 3D Vertical Cube Flip */
+        @keyframes animFlipY {
+            from { transform: perspective(800px) rotateX(-90deg); opacity: 0; }
+            to { transform: perspective(800px) rotateX(0deg); opacity: 1; }
+        }
+        /* 10. Swirl Rotation & Scale */
+        @keyframes animSwirl {
+            from { transform: rotate(-8deg) scale(0.88); opacity: 0; }
+            to { transform: rotate(0deg) scale(1); opacity: 1; }
+        }
+        /* 11. Depth-Focus Blur to Clear */
+        @keyframes animBlur {
+            from { filter: blur(12px); transform: scale(1.05); opacity: 0.2; }
+            to { filter: blur(0); transform: scale(1); opacity: 1; }
+        }
+        /* 12. Diagonal Shutter Wipe */
+        @keyframes animWipe {
+            from { clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%); opacity: 0.4; }
+            to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+        }
+        /* 13. Elastic Pop Bounce */
+        @keyframes animBounce {
+            0% { transform: scale(0.75); opacity: 0; }
+            60% { transform: scale(1.04); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Animation Class Hooks */
+        .trans-slide-left  { animation: animSlideLeft 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-slide-right { animation: animSlideRight 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-slide-up    { animation: animSlideUp 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-slide-down  { animation: animSlideDown 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-fade        { animation: animFade 0.6s ease forwards; }
+        .trans-zoom-in     { animation: animZoomIn 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-zoom-out    { animation: animZoomOut 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-flip-x      { animation: animFlipX 0.75s ease forwards; transform-origin: center; }
+        .trans-flip-y      { animation: animFlipY 0.75s ease forwards; transform-origin: center; }
+        .trans-swirl       { animation: animSwirl 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .trans-blur        { animation: animBlur 0.65s ease forwards; }
+        .trans-wipe        { animation: animWipe 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .trans-bounce      { animation: animBounce 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
         /* ─────────── MODERN RUNNING TICKER AD STYLING ─────────── */
         .ticker-container {
@@ -755,6 +835,143 @@
                 display: none !important;
             }
         }
+        
+        /* ─────────── CUSTOM CLEAN LOGIN SCREEN STYLES ─────────── */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .login-branding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .login-logo-box {
+            width: 80px;
+            height: 80px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .login-logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .login-title-main {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, #b833f4, #5034f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .login-title-sub {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #e63946;
+            letter-spacing: 0.5px;
+        }
+
+        .login-card-container {
+            background: #ffffff !important;
+            border-radius: 24px !important;
+            padding: 2.5rem 2rem !important;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04) !important;
+            border: 1px solid rgba(0, 0, 0, 0.03) !important;
+            backdrop-filter: none !important;
+        }
+
+        .login-card-title {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 1.8rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px 18px !important;
+            margin-bottom: 1.2rem !important;
+            background: #f4f6f8 !important;
+            border: 1px solid #eef0f3 !important;
+            border-radius: 12px !important;
+            color: #1e293b !important;
+            font-size: 0.95rem !important;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .login-input:focus {
+            border-color: #7c3aed !important;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+        }
+
+        .login-input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .login-enter-btn {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 30px !important;
+            background: linear-gradient(90deg, #d623d6 0%, #5027ee 50%, #1e3cf5 100%) !important;
+            color: #ffffff !important;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(80, 39, 238, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+        }
+
+        .login-enter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(80, 39, 238, 0.45);
+            opacity: 0.95;
+        }
+        
+        /* Force complete hide of Header, Ticker, Ads and Footer when Login is active */
+        body:has(#login-screen.active) .app-header,
+        body:has(#login-screen.active) .app-footer,
+        body:has(#login-screen.active) .ad-container,
+        body.on-login-page .app-header,
+        body.on-login-page .app-footer,
+        body.on-login-page .ad-container {
+            display: none !important;
+        }
+
+        body:has(#login-screen.active) .container,
+        body.on-login-page .container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            min-height: 100vh !important;
+        }
     </style>
 </head>
 <body>
@@ -810,16 +1027,26 @@
     <div class="container">
         <!-- SCREEN 0: LOGIN SCREEN -->
         <div id="login-screen" class="screen active">
-            <div class="card" style="max-width: 450px; margin: 2rem auto;">
-                <h2 style="text-align: center; margin-bottom: 1.5rem;">Student Login</h2>
+            <!-- Brand Logo & Header centered on Login -->
+            <div class="login-branding">
+                <div class="login-logo-box">
+                    <img id="login-screen-logo" src="https://i.imgur.com/gO142Tf.png" alt="Chhatrasathee Logo">
+                </div>
+                <div class="login-title-main">CHHATRASATHEE</div>
+                <div class="login-title-sub">ଛାତ୍ରସାଥୀ</div>
+            </div>
+
+            <!-- Modern Form Card -->
+            <div class="card login-card-container">
+                <h2 class="login-card-title">Student Login</h2>
                 <form id="login-form">
-                    <div class="form-group">
-                        <input type="text" id="login-name" placeholder="Full Name" required>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" id="login-name" class="login-input" placeholder="Full Name" required>
                     </div>
-                    <div class="form-group">
-                        <input type="text" id="login-class" placeholder="Class" required>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" id="login-class" class="login-input" placeholder="Class" required>
                     </div>
-                    <button type="submit" class="btn" style="width: 100%;">Enter</button>
+                    <button type="submit" class="login-enter-btn">ENTER</button>
                 </form>
             </div>
         </div>
@@ -1178,7 +1405,6 @@
             showScreen('quiz-list-screen');
         };
 
-        // Screen logic with toggling sidebar
         const showScreen = (id) => {
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => {
@@ -1186,9 +1412,25 @@
                 setTimeout(() => { if(!s.classList.contains('active')) s.style.display = 'none'; }, 400);
             });
             const target = document.getElementById(id);
-            target.style.display = 'block';
+            target.style.display = (id === 'login-screen') ? 'flex' : 'block';
             setTimeout(() => target.classList.add('active'), 50);
             window.scrollTo(0,0);
+
+            // Toggle body class and visibility for clean Login screen
+            const isLoginPage = (id === 'login-screen');
+            if (isLoginPage) {
+                document.body.classList.add('on-login-page');
+            } else {
+                document.body.classList.remove('on-login-page');
+            }
+
+            const appHeader = document.querySelector('.app-header');
+            const appFooter = document.querySelector('.app-footer');
+            const adContainers = document.querySelectorAll('.ad-container');
+
+            if (appHeader) appHeader.style.setProperty('display', isLoginPage ? 'none' : 'block', 'important');
+            if (appFooter) appFooter.style.setProperty('display', isLoginPage ? 'none' : 'flex', 'important');
+            adContainers.forEach(ad => ad.style.setProperty('display', isLoginPage ? 'none' : 'flex', 'important'));
 
             // Update active sidebar selection style
             document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -1197,7 +1439,7 @@
             const mapScreenToSidebarItemIndex = {
                 'subject-list-screen': 0, 'quiz-list-screen': 0, 'quiz-screen': 0, 'result-screen': 0,
                 'notes-screen': 1, 'qa-screen': 2, 'my-results-screen': 3, 
-                'certificate-screen': 4, // Maps selection styling cleanly to index 4
+                'certificate-screen': 4,
                 'leaderboard-screen': 5, 'profile-screen': 6, 'links-screen': 7, 
                 'reviews-screen': 8, 'stats-screen': 9, 'youtube-screen': 10
             };
@@ -1206,18 +1448,18 @@
                 document.querySelectorAll('.sidebar-item')[activeIdx].classList.add('active');
             }
 
-// Screen Action Hooks (lazy load screen data dynamic elements)
+            // Screen Action Hooks
             if (id === 'my-results-screen') renderResultsChart();
             if (id === 'leaderboard-screen') loadGlobalLeaderboard();
             if (id === 'links-screen') loadImportantLinks();
             if (id === 'reviews-screen') loadStudentReviews();
-if (id === 'stats-screen') initOrganicStudentCounter();
+            if (id === 'stats-screen') initOrganicStudentCounter();
             if (id === 'youtube-screen') loadYoutubeLessons();
             if (id === 'notes-screen') loadNotesSubjects();
             if (id === 'qa-screen') loadQASubjects();
             if (id === 'certificate-screen') {
                 loadStudentCertificate(); 
-                setTimeout(scaleCertificate, 100); // Triggers auto-scaling render check
+                setTimeout(scaleCertificate, 100);
             }
         };
 
@@ -1234,6 +1476,8 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                 if(doc.exists && doc.data().logoUrl) {
                     document.getElementById('app-logo').src = doc.data().logoUrl;
                     document.getElementById('sidebar-logo-img').src = doc.data().logoUrl;
+                    const loginLogo = document.getElementById('login-screen-logo');
+                    if (loginLogo) loginLogo.src = doc.data().logoUrl;
                 }
             });
 
@@ -1245,24 +1489,52 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                 }
             });
 
-            // ─────────── LIVE MULTI-BANNER CAROUSEL CONTROLLER (SETTINGS SYNC) ───────────
+            // ─────────── LIVE MULTI-BANNER 13-TRANSITION CONTROLLER ───────────
             let heroBannerInterval = null;
             let currentBannerIndex = 0;
             let totalBanners = 0;
 
-            const scrollToBanner = (index) => {
-                const track = document.getElementById('hero-slider-track');
-                if (!track) return;
-                const slideWidth = track.offsetWidth;
-                track.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
-                updateActiveDot(index);
-            };
+            // List of 13 animated transitions
+            const transitionEffects = [
+                'trans-slide-left',
+                'trans-zoom-in',
+                'trans-flip-x',
+                'trans-wipe',
+                'trans-slide-up',
+                'trans-fade',
+                'trans-blur',
+                'trans-flip-y',
+                'trans-swirl',
+                'trans-zoom-out',
+                'trans-slide-down',
+                'trans-bounce',
+                'trans-slide-right'
+            ];
 
-            const updateActiveDot = (index) => {
+            const showBannerSlide = (index, customEffect = null) => {
+                const slides = document.querySelectorAll('.hero-slide-item');
                 const dots = document.querySelectorAll('.hero-dot');
+                if (slides.length === 0) return;
+
+                // Pick a transition from the list or use custom
+                const effect = customEffect || transitionEffects[index % transitionEffects.length];
+
+                slides.forEach((slide, i) => {
+                    // Clear all animation classes
+                    transitionEffects.forEach(cls => slide.classList.remove(cls));
+                    if (i === index) {
+                        slide.classList.add('active');
+                        slide.classList.add(effect);
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+
                 dots.forEach((dot, i) => {
                     dot.classList.toggle('active', i === index);
                 });
+
+                currentBannerIndex = index;
             };
 
             db.collection('settings').doc('heroBanners').onSnapshot(doc => {
@@ -1287,7 +1559,7 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
                 banners.forEach((b, idx) => {
                     const slide = document.createElement(b.targetUrl ? 'a' : 'div');
-                    slide.className = 'hero-slide-item';
+                    slide.className = `hero-slide-item ${idx === 0 ? 'active' : ''}`;
                     if (b.targetUrl) {
                         slide.href = b.targetUrl;
                         slide.target = '_blank';
@@ -1299,8 +1571,7 @@ if (id === 'stats-screen') initOrganicStudentCounter();
                         const dot = document.createElement('div');
                         dot.className = `hero-dot ${idx === 0 ? 'active' : ''}`;
                         dot.onclick = () => {
-                            currentBannerIndex = idx;
-                            scrollToBanner(idx);
+                            showBannerSlide(idx, 'trans-zoom-in');
                         };
                         dotsContainer.appendChild(dot);
                     }
@@ -1308,23 +1579,37 @@ if (id === 'stats-screen') initOrganicStudentCounter();
 
                 sliderContainer.style.display = 'block';
 
-                // Auto-rotates every 4 seconds if multiple banners exist
+                // Touch swipe listeners for mobile devices
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                track.ontouchstart = (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                };
+
+                track.ontouchend = (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    const swipeDistance = touchStartX - touchEndX;
+                    if (Math.abs(swipeDistance) > 40 && totalBanners > 1) {
+                        if (swipeDistance > 0) {
+                            // Swiped Left
+                            const nextIdx = (currentBannerIndex + 1) % totalBanners;
+                            showBannerSlide(nextIdx, 'trans-slide-left');
+                        } else {
+                            // Swiped Right
+                            const prevIdx = (currentBannerIndex - 1 + totalBanners) % totalBanners;
+                            showBannerSlide(prevIdx, 'trans-slide-right');
+                        }
+                    }
+                };
+
+                // Auto-rotates every 4.5 seconds with varied transitions
                 if (totalBanners > 1) {
                     currentBannerIndex = 0;
                     heroBannerInterval = setInterval(() => {
-                        currentBannerIndex = (currentBannerIndex + 1) % totalBanners;
-                        scrollToBanner(currentBannerIndex);
-                    }, 4000);
-
-                    // Track manual swipe / touch scroll
-                    track.onscroll = () => {
-                        const slideWidth = track.offsetWidth;
-                        if (slideWidth > 0) {
-                            const newIdx = Math.round(track.scrollLeft / slideWidth);
-                            updateActiveDot(newIdx);
-                            currentBannerIndex = newIdx;
-                        }
-                    };
+                        const nextIdx = (currentBannerIndex + 1) % totalBanners;
+                        showBannerSlide(nextIdx);
+                    }, 4500);
                 }
             });
 
@@ -1377,6 +1662,8 @@ if (id === 'stats-screen') initOrganicStudentCounter();
             if (savedProfile) {
                 userData = JSON.parse(savedProfile);
                 loginCompleted();
+            } else {
+                showScreen('login-screen');
             }
         };
 
