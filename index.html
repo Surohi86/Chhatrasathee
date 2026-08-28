@@ -1697,6 +1697,15 @@
             return String(text).replace(/\u0B4D\u0B2F/g, '\u0B4D\u0B5F');
         };
 
+        // Universal solid & gradient CSS generator
+        const getSubtitleStyle = (colorVal) => {
+            const val = colorVal || '#dc3545';
+            if (val.includes('gradient')) {
+                return `background: ${val}; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block;`;
+            }
+            return `color: ${val};`;
+        };
+
         const renderSubjects = () => {
             const container = document.getElementById('subject-list-container');
             if (!container) return;
@@ -1712,9 +1721,10 @@
                 const countText = quizzes.length > 0 ? `(${quizCount} QUIZZES AVAILABLE)` : `(CHECKING QUIZZES...)`;
                 const titleClean = formatOdiaText(subject.name || '');
                 const subClean = formatOdiaText(subject.subtitle || '');
+                const colorStyle = getSubtitleStyle(subject.subtitleColor);
                 
                 const subtitleHtml = subClean.trim() 
-                    ? `<div style="font-family: 'Noto Sans Oriya', 'Kalinga', 'Gautami', Arial, sans-serif !important; font-size: 1.05rem; font-weight: 700; color: ${subject.subtitleColor || '#dc3545'}; margin: 3px 0 2px 0; text-transform: none !important; letter-spacing: normal !important; word-spacing: normal; line-height: 1.5; font-feature-settings: 'liga' 1, 'dlig' 1; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;">${subClean}</div>` 
+                    ? `<div style="font-family: 'Noto Sans Oriya', 'Kalinga', 'Gautami', Arial, sans-serif !important; font-size: 1.05rem; font-weight: 700; ${colorStyle} margin: 3px 0 2px 0; text-transform: none !important; letter-spacing: normal !important; word-spacing: normal; line-height: 1.5; font-feature-settings: 'liga' 1, 'dlig' 1; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;">${subClean}</div>` 
                     : '';
 
                 tray.innerHTML = `
