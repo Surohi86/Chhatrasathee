@@ -1691,9 +1691,16 @@
             showScreen('login-screen');
         };
 
+        // Universal Odia ligature & ya-phala sanitizer
+        const formatOdiaText = (text) => {
+            if (!text) return '';
+            return String(text).replace(/\u0B4D\u0B2F/g, '\u0B4D\u0B5F');
+        };
+
         const renderSubjects = () => {
             const container = document.getElementById('subject-list-container');
-            if(subjects.length === 0) return;
+            if (!container) return;
+            if (subjects.length === 0) return;
             container.innerHTML = '';
             
             subjects.forEach(subject => {
@@ -1702,11 +1709,22 @@
                 const tray = document.createElement('div'); 
                 tray.className = 'subject-tray'; 
                 
-                const countText = quizzes.length > 0 ? `(${quizCount} Quizzes Available)` : `(Checking quizzes...)`;
-                tray.innerHTML = `${subject.name} <br> <span style="font-size: 0.8rem; font-weight:400">${countText}</span>`; 
+                const countText = quizzes.length > 0 ? `(${quizCount} QUIZZES AVAILABLE)` : `(CHECKING QUIZZES...)`;
+                const titleClean = formatOdiaText(subject.name || '');
+                const subClean = formatOdiaText(subject.subtitle || '');
+                
+                const subtitleHtml = subClean.trim() 
+                    ? `<div style="font-family: 'Noto Sans Oriya', 'Kalinga', 'Gautami', Arial, sans-serif !important; font-size: 1.05rem; font-weight: 700; color: ${subject.subtitleColor || '#dc3545'}; margin: 3px 0 2px 0; text-transform: none !important; letter-spacing: normal !important; word-spacing: normal; line-height: 1.5; font-feature-settings: 'liga' 1, 'dlig' 1; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;">${subClean}</div>` 
+                    : '';
+
+                tray.innerHTML = `
+                    <div style="font-family: 'Noto Sans Oriya', 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 800; letter-spacing: normal; line-height: 1.4; font-feature-settings: 'liga' 1, 'dlig' 1;">${titleClean}</div>
+                    ${subtitleHtml}
+                    <div style="font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 600; opacity: 0.85; margin-top: 3px; letter-spacing: 0.5px;">${countText}</div>
+                `; 
                 
                 tray.onclick = () => {
-                    if(quizzes.length === 0) return alert("Still loading quizzes, please wait a second...");
+                    if (quizzes.length === 0) return alert("Still loading quizzes, please wait a second...");
                     renderQuizzesForSubject(subject.id, subject.name);
                 };
                 container.appendChild(tray);
@@ -2865,27 +2883,34 @@ if (snap.empty) {
         };
 
         // Student first-time login
-        document.getElementById('login-form').onsubmit = (e) => {
-            e.preventDefault();
-            const nameInp = document.getElementById('login-name').value;
-            const classInp = document.getElementById('login-class').value;
-            
-            userData = { 
-                name: nameInp, 
-                class: classInp, 
-                roll: '',
-                profilePic: ''
-            };
-            
-            localStorage.setItem('csStudentProfile', JSON.stringify(userData));
-            
-            // Sync with profile edit screen
-            document.getElementById('profile-name').value = userData.name;
-            document.getElementById('profile-class').value = userData.class;
-            document.getElementById('profile-pic-url').value = userData.profilePic;
+const loginFormEl = document.getElementById('login-form');
+if (loginFormEl) {
+    loginFormEl.onsubmit = (e) => {
+        e.preventDefault();
+        const nameInp = document.getElementById('login-name').value.trim();
+        const classInp = document.getElementById('login-class').value.trim();
+        
+        if (!nameInp || !classInp) {
+            alert("Please enter both Name and Class.");
+            return;
+        }
 
-            loginCompleted();
+        userData = { 
+            name: nameInp, 
+            class: classInp, 
+            roll: '',
+            profilePic: ''
         };
+        
+        localStorage.setItem('csStudentProfile', JSON.stringify(userData));
+        
+        if (document.getElementById('profile-name')) document.getElementById('profile-name').value = userData.name;
+        if (document.getElementById('profile-class')) document.getElementById('profile-class').value = userData.class;
+        if (document.getElementById('profile-pic-url')) document.getElementById('profile-pic-url').value = userData.profilePic;
+
+        loginCompleted();
+    };
+}
 
         document.getElementById('quiz-form').onsubmit = (e) => { e.preventDefault(); calculateResult(); };
         document.getElementById('quiz-form').onchange = () => { document.getElementById('progress-text').innerText = `Answered ${document.querySelectorAll('input:checked').length} of ${currentQuestions.length}`; };
