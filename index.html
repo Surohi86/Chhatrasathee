@@ -229,10 +229,92 @@
         #quiz-timer { font-weight: 700; font-size: 1.1rem; color: #dc3545; display: flex; align-items: center; gap: 5px; justify-content: center; margin-bottom: 10px; }
         body.dark-mode #quiz-timer { color: #ff9933; }
 
-        .question-text { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
-        .quiz-question-image { max-width: 100%; border-radius: 10px; margin-bottom: 1rem; }
-        .option-label { display: block; background: rgba(0,0,0,0.02); padding: 12px; border-radius: 10px; margin-bottom: 8px; border: 1px solid var(--border-color); cursor: pointer; }
-        body.dark-mode .option-label { background: rgba(255,255,255,0.03); }
+        /* ─────────── INSTANT ANSWER INTERACTIVE STYLES ─────────── */
+        .option-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.02);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1.5px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 1rem;
+            user-select: none;
+        }
+        .option-label:hover:not(.locked) {
+            background: rgba(0, 123, 255, 0.06);
+            border-color: rgba(0, 123, 255, 0.3);
+            transform: translateX(4px);
+        }
+        .option-label.locked {
+            cursor: default;
+        }
+        .option-label.correct-opt {
+            background: #e8f8f0 !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(40, 167, 69, 0.2);
+            animation: popFeedback 0.3s ease;
+        }
+        body.dark-mode .option-label.correct-opt {
+            background: rgba(40, 167, 69, 0.2) !important;
+            border-color: #28a745 !important;
+            color: #75b798 !important;
+        }
+        .option-label.wrong-opt {
+            background: #fde8e8 !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(220, 53, 69, 0.2);
+            animation: shakeFeedback 0.35s ease;
+        }
+        body.dark-mode .option-label.wrong-opt {
+            background: rgba(220, 53, 69, 0.2) !important;
+            border-color: #dc3545 !important;
+            color: #ea868f !important;
+        }
+        .opt-feedback-icon {
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+        .opt-feedback-icon.icon-correct {
+            color: #28a745;
+        }
+        .opt-feedback-icon.icon-wrong {
+            color: #dc3545;
+        }
+        .instant-explanation {
+            display: none;
+            background: rgba(0, 123, 255, 0.06);
+            border-left: 4px solid var(--header-title);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 12px;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-main);
+            animation: animFade 0.3s ease forwards;
+        }
+        body.dark-mode .instant-explanation {
+            background: rgba(10, 211, 250, 0.08);
+        }
+
+        @keyframes popFeedback {
+            0% { transform: scale(0.97); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shakeFeedback {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
         .quiz-footer { position: sticky; bottom: 0; background: var(--quiz-footer-bg); padding: 1rem; border-top: 1px solid var(--border-color); text-align: center; backdrop-filter: blur(10px); z-index: 10; }
 
         .score-visuals { display: flex; justify-content: center; gap: 2rem; align-items: center; margin: 2rem 0; }
@@ -1394,6 +1476,82 @@
         let resultsChartInstance = null;
         let selectedNotesSubjectId = '';
 
+        // ─────────── SYNTHESIZED SOUND EFFECTS (NO EXTERNAL FILES) ───────────
+        let audioCtx = null;
+        const getAudioContext = () => {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        };
+
+        const playCorrectSound = () => {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                // Two-tone rising major chime (C5 -> G5)
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc1.type = 'triangle';
+                osc2.type = 'sine';
+
+                osc1.frequency.setValueAtTime(523.25, now);       // C5
+                osc1.frequency.setValueAtTime(783.99, now + 0.12); // G5
+
+                osc2.frequency.setValueAtTime(1046.50, now);      // C6 octave harmonic
+                osc2.frequency.setValueAtTime(1567.98, now + 0.12);
+
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.45);
+                osc2.stop(now + 0.45);
+            } catch (e) {
+                console.warn("Audio playback failed:", e);
+            }
+        };
+
+        const playWrongSound = () => {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const now = ctx.currentTime;
+
+                // Low buzz error tone
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(190, now);
+                osc.frequency.linearRampToValueAtTime(130, now + 0.28);
+
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } catch (e) {
+                console.warn("Audio playback failed:", e);
+            }
+        };
+
         const formatTime = (seconds) => {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
@@ -1790,6 +1948,13 @@
             currentQuestions = JSON.parse(JSON.stringify(quiz.questions || []));
             if(shuffled) shuffle(currentQuestions);
 
+            // ─────────── SHUFFLE OPTIONS EVERY TIME ───────────
+            currentQuestions.forEach(q => {
+                if (q.type === 'mcq' && Array.isArray(q.options)) {
+                    shuffle(q.options);
+                }
+            });
+
             timeRemaining = currentQuestions.length * 60;
             totalTimeAllocated = timeRemaining;
 
@@ -1807,17 +1972,103 @@
             }, 1000);
 
             document.getElementById('quiz-header-card').innerHTML = `<h2>${quiz.title}</h2><p>${quiz.subtitle || ''}</p>`;
-            const container = document.getElementById('questions-container'); container.innerHTML = '';
+            const container = document.getElementById('questions-container'); 
+            container.innerHTML = '';
+
             currentQuestions.forEach((q, i) => {
-                const card = document.createElement('div'); card.className = 'card';
-                let options = q.type === 'mcq' ? q.options.map((o, optIdx) => `<label class="option-label"><input type="radio" name="q${i}" value="${optIdx}"> <span>${o}</span></label>`).join('') : `<label class="option-label"><input type="radio" name="q${i}" value="True"> <span>True</span></label><label class="option-label"><input type="radio" name="q${i}" value="False"> <span>False</span></label>`;
-                card.innerHTML = `${q.questionImage ? `<img src="${q.questionImage}" class="quiz-question-image">` : ''}<div class="question-text">${i+1}. ${q.question}</div>${options}`;
+                const card = document.createElement('div'); 
+                card.className = 'card';
+                card.id = `question-card-${i}`;
+
+                const optionsList = q.type === 'mcq' ? q.options : ['True', 'False'];
+                
+                const optionsHtml = optionsList.map((optVal, optIdx) => {
+                    return `
+                        <label class="option-label" id="opt-label-${i}-${optIdx}" onclick="handleOptionClick(${i}, ${optIdx}, '${encodeURIComponent(optVal)}')">
+                            <div style="display:flex; align-items:center; gap:10px; width:100%;">
+                                <input type="radio" name="q${i}" value="${optIdx}" style="display:none;">
+                                <span>${optVal}</span>
+                            </div>
+                            <span class="opt-feedback-icon" id="opt-icon-${i}-${optIdx}"></span>
+                        </label>
+                    `;
+                }).join('');
+
+                const explanationBlock = (q.description || q.descriptionImage) ? `
+                    <div id="explanation-${i}" class="instant-explanation">
+                        ${q.description ? `<div><strong>Explanation:</strong> ${q.description}</div>` : ''}
+                        ${q.descriptionImage ? `<img src="${q.descriptionImage}" class="quiz-question-image" style="margin-top:8px;">` : ''}
+                    </div>
+                ` : '';
+
+                card.innerHTML = `
+                    ${q.questionImage ? `<img src="${q.questionImage}" class="quiz-question-image">` : ''}
+                    <div class="question-text">${i+1}. ${q.question}</div>
+                    <div class="options-wrapper" id="options-wrap-${i}">
+                        ${optionsHtml}
+                    </div>
+                    ${explanationBlock}
+                `;
                 container.appendChild(card);
             });
+
             document.getElementById('progress-text').innerText = `Answered 0 of ${currentQuestions.length}`;
             document.getElementById('submit-btn').innerText = "Submit Quiz";
             document.getElementById('submit-btn').disabled = false;
             showScreen('quiz-screen');
+        };
+
+        const handleOptionClick = (qIndex, selectedOptIdx, encodedOptValue) => {
+            const card = document.getElementById(`question-card-${qIndex}`);
+            if (!card || card.dataset.answered === 'true') return; // Prevent multiple clicks on answered questions
+
+            // Mark question as answered
+            card.dataset.answered = 'true';
+
+            const selectedValue = decodeURIComponent(encodedOptValue);
+            const question = currentQuestions[qIndex];
+            const isCorrect = (selectedValue.trim() === (question.answer || '').trim());
+
+            // Lock all option elements in this question
+            const allLabels = card.querySelectorAll('.option-label');
+            allLabels.forEach(lbl => lbl.classList.add('locked'));
+
+            // Select the hidden radio input so result submission still works smoothly
+            const selectedLabel = document.getElementById(`opt-label-${qIndex}-${selectedOptIdx}`);
+            const selectedRadio = selectedLabel ? selectedLabel.querySelector('input[type="radio"]') : null;
+            if (selectedRadio) selectedRadio.checked = true;
+            const selectedIcon = document.getElementById(`opt-icon-${qIndex}-${selectedOptIdx}`);
+
+            if (isCorrect) {
+                // Correct Choice
+                playCorrectSound();
+                if (selectedLabel) selectedLabel.classList.add('correct-opt');
+                if (selectedIcon) selectedIcon.innerHTML = '<i class="fas fa-check-circle icon-correct"></i>';
+            } else {
+                // Wrong Choice
+                playWrongSound();
+                if (selectedLabel) selectedLabel.classList.add('wrong-opt');
+                if (selectedIcon) selectedIcon.innerHTML = '<i class="fas fa-times-circle icon-wrong"></i>';
+
+                // Automatically reveal the correct option in green
+                const optionsList = question.type === 'mcq' ? question.options : ['True', 'False'];
+                optionsList.forEach((optVal, idx) => {
+                    if (optVal.trim() === (question.answer || '').trim()) {
+                        const correctLabel = document.getElementById(`opt-label-${qIndex}-${idx}`);
+                        const correctIcon = document.getElementById(`opt-icon-${qIndex}-${idx}`);
+                        if (correctLabel) correctLabel.classList.add('correct-opt');
+                        if (correctIcon) correctIcon.innerHTML = '<i class="fas fa-check-circle icon-correct"></i>';
+                    }
+                });
+            }
+
+            // Reveal explanation if present
+            const expl = document.getElementById(`explanation-${qIndex}`);
+            if (expl) expl.style.display = 'block';
+
+            // Update answered counter
+            const totalAnswered = document.querySelectorAll('.card[data-answered="true"]').length;
+            document.getElementById('progress-text').innerText = `Answered ${totalAnswered} of ${currentQuestions.length}`;
         };
 
         const calculateResult = async () => {
@@ -1831,8 +2082,10 @@
             const answers = currentQuestions.map((q, i) => { 
     const sel = document.querySelector(`input[name="q${i}"]:checked`);
     if (!sel) return null;
-    const selectedVal = q.type === 'mcq' ? q.options[parseInt(sel.value)] : sel.value;
-    if (selectedVal === q.answer) correct++;
+    const selectedVal = q.type === 'mcq' 
+        ? q.options[parseInt(sel.value)] 
+        : (parseInt(sel.value) === 0 ? 'True' : 'False');
+    if (selectedVal && selectedVal.trim() === (q.answer || '').trim()) correct++;
     return selectedVal;
 });
             const percent = Math.round((correct / total) * 100);
@@ -2923,7 +3176,6 @@ if (loginFormEl) {
 }
 
         document.getElementById('quiz-form').onsubmit = (e) => { e.preventDefault(); calculateResult(); };
-        document.getElementById('quiz-form').onchange = () => { document.getElementById('progress-text').innerText = `Answered ${document.querySelectorAll('input:checked').length} of ${currentQuestions.length}`; };
 
         const themeToggle = document.getElementById('theme-toggle');
         themeToggle.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); themeToggle.innerHTML = document.body.classList.contains('dark-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; });
