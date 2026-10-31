@@ -126,6 +126,49 @@
         .menu-toggle { position: absolute; top: 20px; left: 20px; font-size: 1.5rem; cursor: pointer; color: var(--header-title); transition: 0.3s; display: none; }
         .menu-toggle:hover { transform: scale(1.2); }
 
+        /* ─── COIN EARNED BADGE (JUST RIGHT TO SIDEBAR MENU) ─── */
+        .coin-earned-badge {
+            position: absolute;
+            top: 17px;
+            left: 62px;
+            display: none;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, #ffd700, #ff9f43);
+            color: #4a3500;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(255, 160, 0, 0.35);
+            border: 2px solid #ffffff;
+            z-index: 100;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .coin-earned-badge:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 16px rgba(255, 160, 0, 0.5);
+        }
+        .coin-earned-badge i.fa-coins {
+            color: #ffffff;
+            font-size: 1.1rem;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+            animation: pulse-coin 2s infinite;
+        }
+        @keyframes pulse-coin {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+        }
+        @media (max-width: 480px) {
+            .coin-earned-badge {
+                padding: 4px 10px;
+                font-size: 0.85rem;
+                left: 56px;
+            }
+        }
+
         .sidebar {
             position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
             background: var(--card-bg); backdrop-filter: blur(15px);
@@ -1603,12 +1646,258 @@ body.dark-mode .class-header-title {
             line-height: 1.4;
         }
         body.dark-mode .delete-warning-caption { color: #a4b0be; }
+
+        /* ─────────── EXACT COLOURFUL TRAY WITH GLOWING ANIMATION (MATCHING SCREENSHOT) ─────────── */
+        .daily-feed-wrapper {
+            margin-top: 1.8rem;
+            width: 100%;
+        }
+
+        .daily-feed-card {
+            /* Exact Tri-color gradient matching screenshot: Sage Green -> Electric Sky Blue -> Royal Indigo Blue */
+            background: linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%) !important;
+            border-radius: 18px !important;
+            padding: 1.25rem 1.4rem !important;
+            margin-bottom: 1rem !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            /* Glowing Shadow Animation */
+            box-shadow: 0 8px 24px rgba(30, 167, 253, 0.4), 0 0 18px rgba(74, 66, 245, 0.3) !important;
+            animation: feed-glow-pulse 3s infinite ease-in-out;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        /* Continuous Ambient Glow Animation */
+        @keyframes feed-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 6px 20px rgba(30, 167, 253, 0.35), 0 0 15px rgba(74, 66, 245, 0.25);
+                transform: translateY(0);
+            }
+            50% {
+                box-shadow: 0 12px 32px rgba(30, 167, 253, 0.65), 0 0 28px rgba(74, 66, 245, 0.55);
+                transform: translateY(-2px);
+            }
+        }
+
+        .daily-feed-card:hover {
+            transform: translateY(-4px) scale(1.015);
+            box-shadow: 0 14px 36px rgba(30, 167, 253, 0.75), 0 0 32px rgba(74, 66, 245, 0.7) !important;
+        }
+
+        .daily-feed-badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .daily-category-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #2fa4ff, #0077f6);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .daily-feed-date {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            opacity: 0.85;
+        }
+
+        .daily-feed-title {
+            font-size: 1.18rem;
+            font-weight: 800;
+            line-height: 1.5;
+            color: #0f172a;
+            margin: 2px 0;
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .daily-feed-snippet {
+            font-size: 0.94rem;
+            line-height: 1.6;
+            color: #1e293b;
+            opacity: 0.9;
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .daily-feed-btn-wrap {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        /* Bold Coral Red Action Link (Exact match to screenshot) */
+        .daily-feed-action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #ff3b30 !important;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+        .daily-feed-card:hover .daily-feed-action-link {
+            transform: translateX(4px);
+            filter: drop-shadow(0 0 6px rgba(255, 59, 48, 0.6));
+        }
+        
+        /* ─────────── COLOURFUL & ENGAGING DAILY MODAL STYLING ─────────── */
+        .daily-modal-styled {
+            max-width: 580px !important;
+            max-height: 85vh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+            border-radius: 24px !important;
+            overflow: hidden !important;
+            background: #ffffff !important;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25) !important;
+            border: 2px solid rgba(255, 255, 255, 0.8) !important;
+            animation: modalZoomIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        body.dark-mode .daily-modal-styled {
+            background: #151934 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+        }
+
+        @keyframes modalZoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .daily-modal-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.4rem;
+            background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+            border-bottom: 1.5px solid var(--border-color);
+        }
+        body.dark-mode .daily-modal-header-bar {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .daily-close-round-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.07);
+            border: none;
+            color: #2d3436;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        body.dark-mode .daily-close-round-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+        .daily-close-round-btn:hover {
+            background: #ff4757;
+            color: #ffffff;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .daily-modal-body {
+            padding: 1.4rem 1.6rem;
+            overflow-y: auto;
+            flex: 1;
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .daily-modal-main-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.45;
+            background: linear-gradient(135deg, #0984e3, #6c5ce7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        body.dark-mode .daily-modal-main-title {
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .daily-modal-text-flow {
+            font-size: 1.02rem;
+            line-height: 1.85;
+            color: #2d3436;
+        }
+        body.dark-mode .daily-modal-text-flow {
+            color: #f1f2f6;
+        }
+
+        .daily-modal-footer {
+            padding: 0.9rem 1.4rem 1.2rem 1.4rem;
+            background: rgba(0,0,0,0.02);
+            border-top: 1px solid var(--border-color);
+        }
+        body.dark-mode .daily-modal-footer {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-daily-close-action {
+            width: 100%;
+            padding: 13px 20px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #ffffff !important;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0, 123, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-daily-close-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 123, 255, 0.45);
+        }
     </style>
 </head>
 <body>
 
     <div class="app-header">
         <div id="sidebar-toggle" class="menu-toggle"><i class="fas fa-bars"></i></div>
+
+        <!-- Coin Earned Widget placed right beside the Sidebar Menu -->
+        <div id="user-coin-badge" class="coin-earned-badge" title="Coins Earned: 1 Coin per 10 Correct Answers">
+            <i class="fas fa-coins"></i>
+            <span id="user-coin-count">0</span>
+        </div>
 
         <!-- Theme Toggle & Notification Bell Grouped on the Top-Right -->
         <div class="header-actions-group">
@@ -1696,8 +1985,8 @@ body.dark-mode .class-header-title {
         <!-- SCREEN 0.5: CHOOSE CLASS SCREEN -->
         <div id="choose-class-screen" class="screen">
             <div class="card" style="border-radius: 20px; padding: 1.8rem 1.2rem;">
-                <div class="back-nav" onclick="handleClassScreenBack()" style="margin-bottom: 1rem;">
-                    <i class="fas fa-arrow-left"></i> Back
+                <div class="back-nav" id="class-screen-back-btn" onclick="handleClassScreenBack()" style="margin-bottom: 1rem; color: #dc3545;">
+                    <i class="fas fa-sign-out-alt"></i> Exit
                 </div>
                 <h2 class="class-header-title" id="choose-class-title">Select Class</h2>
                 <p class="class-header-sub" id="choose-class-sub">Choose your class (1 to 12)</p>
@@ -1716,6 +2005,9 @@ body.dark-mode .class-header-title {
                     <button class="class-box-btn" onclick="selectClass('Class 11')">Class 11</button>
                     <button class="class-box-btn" onclick="selectClass('Class 12')">Class 12</button>
                 </div>
+
+                <!-- 🌟 EYE-CATCHING DAILY NEWS / GK / CURRENT AFFAIRS SECTION -->
+                <div id="daily-feed-container" class="daily-feed-wrapper" style="display:none;"></div>
             </div>
         </div>
 
@@ -2105,6 +2397,33 @@ body.dark-mode .class-header-title {
             <button class="btn btn-secondary" style="margin-top:14px; width:100%;" onclick="closeModal('notification-modal')">Close</button>
         </div>
     </div>
+    
+    <!-- ENHANCED COLOURFUL & EYE-CATCHING DAILY FEED MODAL -->
+    <div id="daily-feed-modal" class="modal" onclick="if(event.target === this) closeDailyFeedModal()">
+        <div class="modal-content daily-modal-styled">
+            <!-- Modal Header with Colorful Gradient Bar -->
+            <div class="daily-modal-header-bar">
+                <span id="daily-modal-badge" class="daily-category-pill pill-news">
+                    <i class="fas fa-sparkles"></i> DAILY UPDATE
+                </span>
+                <button type="button" class="daily-close-round-btn" onclick="closeDailyFeedModal()" title="Close">✕</button>
+            </div>
+            
+            <!-- Scrollable Content Area -->
+            <div class="daily-modal-body">
+                <h2 id="daily-modal-title" class="daily-modal-main-title"></h2>
+                <div id="daily-modal-doc-btn" style="margin: 12px 0; display:none;"></div>
+                <div id="daily-modal-content-area" class="daily-modal-text-flow"></div>
+            </div>
+
+            <!-- Bottom Colorful Action Button -->
+            <div class="daily-modal-footer">
+                <button type="button" class="btn-daily-close-action" onclick="closeDailyFeedModal()">
+                    <i class="fas fa-check-circle"></i> GOT IT / CLOSE
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="about-modal" class="modal">
         <div class="modal-content">
@@ -2124,6 +2443,7 @@ body.dark-mode .class-header-title {
 
         let quizzes = [], subjects = [], currentQuizIndex = -1, currentQuestions = [], appContent = {};
         let selectedClassLevel = localStorage.getItem('csSelectedClass') || '';
+        let dailyFeedData = []; // Global scope so click handler always finds it
         let currentClassTargetSection = 'quizzes'; // tracks whether student is picking class for quizzes, notes, or qa
         let userData = { name: '', class: '', roll: '', profilePic: '' };
         
@@ -2247,6 +2567,11 @@ let selectedQASubjectId = '';
             if (appHeader) appHeader.style.setProperty('display', isLoginPage ? 'none' : 'block', 'important');
             if (appFooter) appFooter.style.setProperty('display', isLoginPage ? 'none' : 'flex', 'important');
             adContainers.forEach(ad => ad.style.setProperty('display', isLoginPage ? 'none' : 'flex', 'important'));
+            
+            const coinBadge = document.getElementById('user-coin-badge');
+            if (coinBadge) {
+                coinBadge.style.display = (isLoginPage || !userData.name) ? 'none' : 'inline-flex';
+            }
 
             // Update active sidebar selection style
             document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -2496,6 +2821,69 @@ let selectedQASubjectId = '';
                 subjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 renderSubjects();
             });
+            
+            // ─────────── LIVE REAL-TIME DAILY NEWS & GK LISTENER (RESTORED) ───────────
+            db.collection('daily_feed')
+              .where('status', '==', 'active')
+              .onSnapshot(snap => {
+                  const container = document.getElementById('daily-feed-container');
+                  if (!container) return;
+
+                  if (snap.empty) {
+                      container.style.display = 'none';
+                      container.innerHTML = '';
+                      dailyFeedData = [];
+                      return;
+                  }
+
+                  // Store in global array
+                  dailyFeedData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                  // Sort latest items first
+                  dailyFeedData.sort((a, b) => {
+                      const tA = (a.createdAt && a.createdAt.seconds) ? a.createdAt.seconds : (a.timestamp || 0);
+                      const tB = (b.createdAt && b.createdAt.seconds) ? b.createdAt.seconds : (b.timestamp || 0);
+                      return tB - tA;
+                  });
+
+                  container.style.display = 'block';
+                  container.innerHTML = `
+                      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                          <span style="font-size:1.25rem;">🔥</span>
+                          <h3 style="font-size:1.05rem; font-weight:800; color:#ff4757; margin:0; text-transform:uppercase; letter-spacing:0.5px;">Today's Special & Daily Updates</h3>
+                      </div>
+                      ${dailyFeedData.map((item, idx) => {
+                          let pillIcon = 'fa-brain';
+                          if (item.category === 'news') pillIcon = 'fa-newspaper';
+                          else if (item.category === 'thought') pillIcon = 'fa-lightbulb';
+                          else if (item.category === 'affairs') pillIcon = 'fa-bolt';
+                          else if (item.category === 'doc') pillIcon = 'fa-file-alt';
+
+                          const cleanTitle = formatOdiaText(item.title || '');
+                          const cleanSnippet = formatOdiaText(item.snippet || '');
+
+                          return `
+                              <div class="daily-feed-card" onclick="openDailyFeedDetail(${idx})">
+                                  <div class="daily-feed-badge-row">
+                                      <span class="daily-category-pill">
+                                          <i class="fas ${pillIcon}"></i> ${item.categoryLabel || 'DAILY GK BOOSTER'}
+                                      </span>
+                                      <span class="daily-feed-date">${item.date || 'Today'}</span>
+                                  </div>
+                                  <div class="daily-feed-title">${cleanTitle}</div>
+                                  ${cleanSnippet ? `<div class="daily-feed-snippet">${cleanSnippet}</div>` : ''}
+                                  <div class="daily-feed-btn-wrap">
+                                      <span class="daily-feed-action-link">
+                                          Read Full Details <i class="fas fa-arrow-right"></i>
+                                      </span>
+                                  </div>
+                              </div>
+                          `;
+                      }).join('')}
+                  `;
+              }, err => {
+                  console.error("Daily feed snapshot error:", err);
+              });
 
             db.collection('quizzes').onSnapshot(snap => {
                 quizzes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -2513,10 +2901,12 @@ let selectedQASubjectId = '';
         };
 
         const loginCompleted = () => {
-    document.getElementById('sidebar-toggle').style.display = 'block';
-    updateSidebarProfileInfo();
-    showScreen('choose-class-screen');
-};
+            document.getElementById('sidebar-toggle').style.display = 'block';
+            document.getElementById('user-coin-badge').style.display = 'inline-flex';
+            updateSidebarProfileInfo();
+            updateUserCoins();
+            showScreen('choose-class-screen');
+        };
 
         const updateSidebarProfileInfo = () => {
             document.getElementById('sidebar-user-name').innerText = userData.name || 'Welcome';
@@ -2526,12 +2916,43 @@ let selectedQASubjectId = '';
             } else {
                 avatarEl.innerHTML = userData.name ? userData.name.substring(0, 2).toUpperCase() : 'CS';
             }
+            updateUserCoins();
+        };
+
+        // ─────────── COIN REWARD ENGINE (1 COIN PER 10 CORRECT ANSWERS) ───────────
+        const updateUserCoins = async () => {
+            if (!userData || !userData.name) return;
+            const coinBadge = document.getElementById('user-coin-badge');
+            const coinCountEl = document.getElementById('user-coin-count');
+            
+            // 1. Check local cache first for instant display
+            let totalCorrect = parseInt(localStorage.getItem('cs_total_correct_' + userData.name) || '0', 10);
+            let coins = Math.floor(totalCorrect / 10);
+            if (coinCountEl) coinCountEl.innerText = coins;
+
+            // 2. Sync with database results to calculate lifetime correct answers
+            try {
+                const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
+                let serverTotalCorrect = 0;
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    serverTotalCorrect += (data.obtained || 0);
+                });
+
+                localStorage.setItem('cs_total_correct_' + userData.name, serverTotalCorrect);
+                const finalCoins = Math.floor(serverTotalCorrect / 10);
+                if (coinCountEl) coinCountEl.innerText = finalCoins;
+            } catch (err) {
+                console.error("Coin calculation error:", err);
+            }
         };
 
         const logoutApp = () => {
             localStorage.removeItem('csStudentProfile');
             userData = { name: '', class: '', roll: '', profilePic: '' };
             document.getElementById('sidebar-toggle').style.display = 'none';
+            const coinBadge = document.getElementById('user-coin-badge');
+            if (coinBadge) coinBadge.style.display = 'none';
             toggleSidebar(false);
             showScreen('login-screen');
         };
@@ -2633,16 +3054,29 @@ let selectedQASubjectId = '';
 
             const titleEl = document.getElementById('choose-class-title');
             const subEl = document.getElementById('choose-class-sub');
+            const navBtn = document.getElementById('class-screen-back-btn');
 
             if (target === 'notes') {
                 if (titleEl) titleEl.innerText = "Select Class - Notes";
                 if (subEl) subEl.innerText = "Choose your class (1 to 12) for Study Notes";
+                if (navBtn) {
+                    navBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
+                    navBtn.style.color = 'var(--header-title)';
+                }
             } else if (target === 'qa') {
                 if (titleEl) titleEl.innerText = "Select Class - Q&A";
                 if (subEl) subEl.innerText = "Choose your class (1 to 12) for Question Answers";
+                if (navBtn) {
+                    navBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
+                    navBtn.style.color = 'var(--header-title)';
+                }
             } else {
                 if (titleEl) titleEl.innerText = "Select Class";
                 if (subEl) subEl.innerText = "Choose your class (1 to 12) for Quizzes";
+                if (navBtn) {
+                    navBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Exit';
+                    navBtn.style.color = '#dc3545';
+                }
             }
 
             showScreen('choose-class-screen');
@@ -2652,7 +3086,9 @@ let selectedQASubjectId = '';
             if (currentClassTargetSection === 'notes' || currentClassTargetSection === 'qa') {
                 openClassSelection('quizzes');
             } else {
-                logoutApp();
+                if (confirm("Do you want to exit and return to the login screen?")) {
+                    logoutApp();
+                }
             }
         };
 
@@ -2950,6 +3386,9 @@ let selectedQASubjectId = '';
                     timeTaken: timeTakenStr,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp() 
                 });
+
+                // Immediately recalculate & update earned coins
+                await updateUserCoins();
 
                 const snap = await db.collection('leaderboard').where('quizId', '==', quizId).get();
                 let lbData = snap.docs.map(doc => doc.data());
@@ -4496,6 +4935,82 @@ const parseToLocalDateStr = (docData) => {
                 scaleCertificate();
             }
         });
+        
+        // ─────────── MODAL OPENER & CLOSER (CLEAN & ERROR-FREE) ───────────
+        window.openDailyFeedDetail = function(idx) {
+            if (!dailyFeedData || !dailyFeedData[idx]) {
+                console.warn("Item not found at index:", idx);
+                return;
+            }
+            const data = dailyFeedData[idx];
+
+            const modal = document.getElementById('daily-feed-modal');
+            const badgeEl = document.getElementById('daily-modal-badge');
+            const titleEl = document.getElementById('daily-modal-title');
+            const docBtnEl = document.getElementById('daily-modal-doc-btn');
+            const contentArea = document.getElementById('daily-modal-content-area');
+
+            if (!modal) return;
+
+            // Set Category Badge & Icon
+            let pillClass = 'pill-news';
+            let pillIcon = 'fa-newspaper';
+            if (data.category === 'gk') { pillClass = 'pill-gk'; pillIcon = 'fa-brain'; }
+            else if (data.category === 'thought') { pillClass = 'pill-thought'; pillIcon = 'fa-lightbulb'; }
+            else if (data.category === 'affairs') { pillClass = 'pill-affairs'; pillIcon = 'fa-bolt'; }
+            else if (data.category === 'doc') { pillClass = 'pill-doc'; pillIcon = 'fa-file-alt'; }
+
+            if (badgeEl) {
+                badgeEl.className = `daily-category-pill ${pillClass}`;
+                badgeEl.innerHTML = `<i class="fas ${pillIcon}"></i> ${data.categoryLabel || 'UPDATE'}`;
+            }
+
+            // Set Title
+            if (titleEl) {
+                titleEl.innerHTML = formatOdiaText(data.title || '');
+            }
+
+            // Set Document Link (Word / Excel / PDF)
+            if (docBtnEl) {
+                if (data.docUrl && data.docUrl.trim()) {
+                    docBtnEl.style.display = 'block';
+                    docBtnEl.innerHTML = `
+                        <a href="${data.docUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background:linear-gradient(135deg, #10ac84, #01a3a4); color:#fff; padding:11px 20px; border-radius:25px; font-size:0.92rem; font-weight:700; box-shadow: 0 4px 12px rgba(16, 172, 132, 0.3);">
+                            <i class="fas fa-file-download"></i> ${data.docButtonText || 'Open Attached Document / Excel Sheet'}
+                        </a>
+                    `;
+                } else {
+                    docBtnEl.style.display = 'none';
+                    docBtnEl.innerHTML = '';
+                }
+            }
+
+            // Set Content Area (Text or HTML with nice spacing)
+            if (contentArea) {
+                if (data.htmlContent && data.htmlContent.trim()) {
+                    contentArea.innerHTML = data.htmlContent;
+                } else if (data.content && data.content.trim()) {
+                    contentArea.innerHTML = formatOdiaText(data.content).replace(/\n/g, '<br>');
+                } else {
+                    contentArea.innerHTML = `<p>${formatOdiaText(data.snippet || 'No additional content provided.')}</p>`;
+                }
+            }
+
+            // Open modal with smooth flex display
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        };
+
+        // Complete close function that clears inline styles and classes
+        window.closeDailyFeedModal = function() {
+            const modal = document.getElementById('daily-feed-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+            }
+        };
         
         init();
     </script>
