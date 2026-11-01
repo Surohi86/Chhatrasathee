@@ -199,6 +199,7 @@
     transition: color 0.3s, filter 0.3s;
 }
 .sidebar-item .fa-home { color: #ff5e57; }             /* Coral Red */
+.sidebar-item .fa-atlas { color: #2ed573; }            /* Bright Emerald Green */
 .sidebar-item .fa-book-open { color: #ffa801; }        /* Vibrant Orange */
 .sidebar-item .fa-question-circle { color: #0be881; }  /* Bright Green */
 .sidebar-item .fa-chart-bar { color: #00d2d3; }        /* Ocean Cyan */
@@ -1654,8 +1655,7 @@ body.dark-mode .class-header-title {
         }
 
         .daily-feed-card {
-            /* Exact Tri-color gradient matching screenshot: Sage Green -> Electric Sky Blue -> Royal Indigo Blue */
-            background: linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%) !important;
+            background: linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%);
             border-radius: 18px !important;
             padding: 1.25rem 1.4rem !important;
             margin-bottom: 1rem !important;
@@ -1886,6 +1886,97 @@ body.dark-mode .class-header-title {
             transform: translateY(-2px);
             box-shadow: 0 8px 22px rgba(0, 123, 255, 0.45);
         }
+
+        /* ─────────── MODERN COLORFUL IMPORTANT LINK TRAYS ─────────── */
+        .link-tray-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.15rem 1.4rem;
+            border-radius: 18px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: #ffffff;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .link-tray-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+        }
+
+        .link-tray-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .link-tray-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(5px);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-tray-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .link-tray-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.4;
+            font-family: 'Poppins', 'Noto Sans Oriya', sans-serif;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        }
+
+        .link-tray-sub {
+            font-size: 0.82rem;
+            opacity: 0.9;
+            font-family: 'Poppins', 'Noto Sans Oriya', sans-serif;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-tray-btn {
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(5px);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            color: inherit;
+            padding: 8px 16px;
+            border-radius: 22px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            margin-left: 12px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .link-tray-card:hover .link-tray-btn {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -1941,6 +2032,7 @@ body.dark-mode .class-header-title {
         </div>
 <ul class="sidebar-menu">
     <li class="sidebar-item active" onclick="openClassSelection('quizzes')"><i class="fas fa-home"></i> Home</li>
+    <li class="sidebar-item" onclick="openClassSelection('books')"><i class="fas fa-atlas"></i> Books</li>
     <li class="sidebar-item" onclick="openClassSelection('notes')"><i class="fas fa-book-open"></i> Notes</li>
     <li class="sidebar-item" onclick="openClassSelection('qa')"><i class="fas fa-question-circle"></i> Questions Answers</li>
             <li class="sidebar-item" onclick="navigateSidebar('my-results-screen')"><i class="fas fa-chart-bar"></i> My Results</li>
@@ -2011,6 +2103,18 @@ body.dark-mode .class-header-title {
             </div>
         </div>
 
+<!-- SCREEN 0.7: BOOKS SCREEN -->
+        <div id="books-screen" class="screen">
+            <div class="back-nav" onclick="openClassSelection('books')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
+            <div class="card">
+                <h1 id="selected-books-class-title" style="text-align: center; margin-bottom: 0.4rem;">Class Books</h1>
+                <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem; font-size: 0.92rem;">Tap any book to read online or download PDF</p>
+                <div id="books-list-container">
+                    <p style="text-align:center; opacity:0.6;">Loading books...</p>
+                </div>
+            </div>
+        </div>
+
         <!-- SCREEN 1: SUBJECTS (HOME) -->
 <div id="subject-list-screen" class="screen">
     <div class="back-nav" onclick="openClassSelection('quizzes')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
@@ -2076,6 +2180,7 @@ body.dark-mode .class-header-title {
 
 <!-- SCREEN 4.5: CERTIFICATE OF ACHIEVEMENT SCREEN -->
         <div id="certificate-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card" style="text-align: center;">
                 <h1>My Dynamic Certificate</h1>
                 <p style="opacity:0.7; margin-bottom:1.5rem">Displays your live study streak, daily metrics, and academic rewards</p>
@@ -2192,6 +2297,7 @@ body.dark-mode .class-header-title {
         
         <!-- SCREEN 5: GRAPHICAL CHARTS MY RESULTS -->
         <div id="my-results-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card">
                 <h1 style="text-align: center; margin-bottom: 0.5rem;"><i class="fas fa-chart-line" style="color: var(--header-title);"></i> My Performance</h1>
                 <p style="text-align: center; opacity: 0.7; margin-bottom: 1.5rem; font-size: 0.9rem;">Analyze your learning journey and performance progress</p>
@@ -2235,6 +2341,7 @@ body.dark-mode .class-header-title {
 
         <!-- SCREEN 6: GLOBAL PODIUM LEADERBOARD -->
         <div id="leaderboard-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card">
                 <h1 style="text-align: center; margin-bottom: 1rem;"><i class="fas fa-trophy" style="color:#ffca08"></i> Hall of Fame</h1>
                 
@@ -2256,7 +2363,7 @@ body.dark-mode .class-header-title {
                 
                 <!-- Top Bar: Back | My Profile | Save -->
                 <div class="profile-top-bar">
-                    <div class="profile-top-back" onclick="showScreen('subject-list-screen')">
+                    <div class="profile-top-back" onclick="handleNavigationBack()">
                         <i class="fas fa-arrow-left"></i> Back
                     </div>
                     <h2 class="profile-top-heading">My Profile</h2>
@@ -2315,6 +2422,7 @@ body.dark-mode .class-header-title {
 
         <!-- SCREEN 8: IMPORTANT LINKS SCREEN -->
         <div id="links-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card">
                 <h1 style="text-align: center; margin-bottom: 1rem;">Important Links</h1>
                 <div id="links-container"></div>
@@ -2323,6 +2431,7 @@ body.dark-mode .class-header-title {
 
         <!-- SCREEN 9: REVIEWS SCREEN -->
         <div id="reviews-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card">
                 <h2>Write a Review</h2>
                 <div id="stars-review-selector" class="stars-container">
@@ -2347,6 +2456,7 @@ body.dark-mode .class-header-title {
 
         <!-- SCREEN 10: ORGANIC COUNTER -->
         <div id="stats-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card" style="text-align:center">
                 <h1>Our Student Community</h1>
                 <p style="opacity:0.8">CHHATRASATHEE is proud to support young minds across the nation.</p>
@@ -2359,6 +2469,7 @@ body.dark-mode .class-header-title {
 
         <!-- SCREEN 11: YOUTUBE LESSONS GRID -->
         <div id="youtube-screen" class="screen">
+            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
             <div class="card">
                 <h1 style="text-align: center; margin-bottom: 1rem;">Video Lessons</h1>
                 <div id="youtube-lessons-container" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1.5rem"></div>
@@ -2541,7 +2652,26 @@ let selectedQASubjectId = '';
             showScreen('quiz-list-screen');
         };
 
+        // ─────────── UNIVERSAL BACK NAVIGATION LOGIC ───────────
+        let lastActiveMainScreen = 'choose-class-screen';
+
+        const handleNavigationBack = () => {
+            if (lastActiveMainScreen && document.getElementById(lastActiveMainScreen)) {
+                showScreen(lastActiveMainScreen);
+            } else if (selectedClassLevel) {
+                showScreen('subject-list-screen');
+            } else {
+                showScreen('choose-class-screen');
+            }
+        };
+
         const showScreen = (id) => {
+            // Track primary hub screens so Back buttons return to where the student was
+            const mainHubScreens = ['choose-class-screen', 'books-screen', 'subject-list-screen', 'notes-screen', 'qa-screen', 'quiz-list-screen'];
+            if (mainHubScreens.includes(id)) {
+                lastActiveMainScreen = id;
+            }
+
             const screens = document.querySelectorAll('.screen');
             screens.forEach(s => {
                 s.classList.remove('active');
@@ -2578,12 +2708,13 @@ let selectedQASubjectId = '';
                 item.classList.remove('active');
             });
             const mapScreenToSidebarItemIndex = {
-                'choose-class-screen': currentClassTargetSection === 'notes' ? 1 : (currentClassTargetSection === 'qa' ? 2 : 0),
+                'choose-class-screen': currentClassTargetSection === 'books' ? 1 : (currentClassTargetSection === 'notes' ? 2 : (currentClassTargetSection === 'qa' ? 3 : 0)),
+                'books-screen': 1,
                 'subject-list-screen': 0, 'quiz-list-screen': 0, 'quiz-screen': 0, 'result-screen': 0,
-                'notes-screen': 1, 'qa-screen': 2, 'my-results-screen': 3, 
-                'certificate-screen': 4,
-                'leaderboard-screen': 5, 'profile-screen': 6, 'links-screen': 7, 
-                'reviews-screen': 8, 'stats-screen': 9, 'youtube-screen': 10
+                'notes-screen': 2, 'qa-screen': 3, 'my-results-screen': 4, 
+                'certificate-screen': 5,
+                'leaderboard-screen': 6, 'profile-screen': 7, 'links-screen': 8, 
+                'reviews-screen': 9, 'stats-screen': 10, 'youtube-screen': 11
             };
             const activeIdx = mapScreenToSidebarItemIndex[id];
             if (activeIdx !== undefined) {
@@ -2616,11 +2747,51 @@ let selectedQASubjectId = '';
         // Init App and listen for configuration updates
         const init = () => {
             db.collection('settings').doc('appConfig').onSnapshot(doc => { 
-                if(doc.exists && doc.data().logoUrl) {
-                    document.getElementById('app-logo').src = doc.data().logoUrl;
-                    document.getElementById('sidebar-logo-img').src = doc.data().logoUrl;
-                    const loginLogo = document.getElementById('login-screen-logo');
-                    if (loginLogo) loginLogo.src = doc.data().logoUrl;
+                if(doc.exists) {
+                    const data = doc.data();
+                    if(data.logoUrl) {
+                        document.getElementById('app-logo').src = data.logoUrl;
+                        document.getElementById('sidebar-logo-img').src = data.logoUrl;
+                        const loginLogo = document.getElementById('login-screen-logo');
+                        if (loginLogo) loginLogo.src = data.logoUrl;
+                    }
+                    // ─── DYNAMICALLY APPLY CLASS TRAY COLORS (ALL AT ONCE + ONE BY ONE) ───
+                    const defaultBg = data.classTrayBg || '#151d30';
+                    const defaultTextColor = data.classTrayTextColor || '#ffffff';
+                    const customMap = data.classTrayCustom || {};
+
+                    let styleTag = document.getElementById('dynamic-class-tray-style');
+                    if (!styleTag) {
+                        styleTag = document.createElement('style');
+                        styleTag.id = 'dynamic-class-tray-style';
+                        document.head.appendChild(styleTag);
+                    }
+
+                    // 1. Base rule for all classes
+                    let cssRules = `
+                        .class-box-btn {
+                            background: ${defaultBg} !important;
+                            color: ${defaultTextColor} !important;
+                            border-color: rgba(255, 255, 255, 0.25) !important;
+                        }
+                    `;
+
+                    // 2. Individual overrides for specific classes
+                    for (let i = 1; i <= 12; i++) {
+                        const classKey = `Class ${i}`;
+                        if (customMap[classKey] && customMap[classKey].bg) {
+                            const cBg = customMap[classKey].bg;
+                            const cText = customMap[classKey].textColor || '#ffffff';
+                            cssRules += `
+                                .class-box-btn[onclick*="'${classKey}'"] {
+                                    background: ${cBg} !important;
+                                    color: ${cText} !important;
+                                }
+                            `;
+                        }
+                    }
+
+                    styleTag.innerHTML = cssRules;
                 }
             });
 
@@ -2862,16 +3033,20 @@ let selectedQASubjectId = '';
                           const cleanTitle = formatOdiaText(item.title || '');
                           const cleanSnippet = formatOdiaText(item.snippet || '');
 
+                          const trayBg = item.trayBg || 'linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%)';
+                          const textColor = item.trayTextColor || '#0f172a';
+                          const dateColor = (textColor === '#ffffff') ? 'rgba(255,255,255,0.9)' : '#0f172a';
+
                           return `
-                              <div class="daily-feed-card" onclick="openDailyFeedDetail(${idx})">
+                              <div class="daily-feed-card" style="background: ${trayBg} !important;" onclick="openDailyFeedDetail(${idx})">
                                   <div class="daily-feed-badge-row">
                                       <span class="daily-category-pill">
                                           <i class="fas ${pillIcon}"></i> ${item.categoryLabel || 'DAILY GK BOOSTER'}
                                       </span>
-                                      <span class="daily-feed-date">${item.date || 'Today'}</span>
+                                      <span class="daily-feed-date" style="color: ${dateColor} !important;">${item.date || 'Today'}</span>
                                   </div>
-                                  <div class="daily-feed-title">${cleanTitle}</div>
-                                  ${cleanSnippet ? `<div class="daily-feed-snippet">${cleanSnippet}</div>` : ''}
+                                  <div class="daily-feed-title" style="color: ${textColor} !important;">${cleanTitle}</div>
+                                  ${cleanSnippet ? `<div class="daily-feed-snippet" style="color: ${textColor} !important;">${cleanSnippet}</div>` : ''}
                                   <div class="daily-feed-btn-wrap">
                                       <span class="daily-feed-action-link">
                                           Read Full Details <i class="fas fa-arrow-right"></i>
@@ -3056,7 +3231,14 @@ let selectedQASubjectId = '';
             const subEl = document.getElementById('choose-class-sub');
             const navBtn = document.getElementById('class-screen-back-btn');
 
-            if (target === 'notes') {
+            if (target === 'books') {
+                if (titleEl) titleEl.innerText = "Select Class - Books";
+                if (subEl) subEl.innerText = "Choose your class (1 to 12) for Textbooks & PDF Books";
+                if (navBtn) {
+                    navBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Back';
+                    navBtn.style.color = 'var(--header-title)';
+                }
+            } else if (target === 'notes') {
                 if (titleEl) titleEl.innerText = "Select Class - Notes";
                 if (subEl) subEl.innerText = "Choose your class (1 to 12) for Study Notes";
                 if (navBtn) {
@@ -3083,7 +3265,7 @@ let selectedQASubjectId = '';
         };
 
         const handleClassScreenBack = () => {
-            if (currentClassTargetSection === 'notes' || currentClassTargetSection === 'qa') {
+            if (currentClassTargetSection === 'books' || currentClassTargetSection === 'notes' || currentClassTargetSection === 'qa') {
                 openClassSelection('quizzes');
             } else {
                 if (confirm("Do you want to exit and return to the login screen?")) {
@@ -3096,7 +3278,10 @@ let selectedQASubjectId = '';
             selectedClassLevel = className;
             localStorage.setItem('csSelectedClass', className);
 
-            if (currentClassTargetSection === 'notes') {
+            if (currentClassTargetSection === 'books') {
+                loadBooksForClass(className);
+                showScreen('books-screen');
+            } else if (currentClassTargetSection === 'notes') {
                 loadNotesSubjects();
                 showScreen('notes-screen');
             } else if (currentClassTargetSection === 'qa') {
@@ -3108,6 +3293,89 @@ let selectedQASubjectId = '';
                 if (heading) heading.innerText = `${className} - Subjects`;
                 renderSubjects();
                 showScreen('subject-list-screen');
+            }
+        };
+
+        // ─────────── LOAD CLASS BOOKS LOGIC ───────────
+        const loadBooksForClass = async (className) => {
+            const container = document.getElementById('books-list-container');
+            const titleEl = document.getElementById('selected-books-class-title');
+            if (titleEl) titleEl.innerText = `${className} - Books & Textbooks`;
+            if (!container) return;
+
+            container.innerHTML = '<p style="text-align:center; padding:25px; opacity:0.7;"><i class="fas fa-spinner fa-spin"></i> Loading Books for ' + className + '...</p>';
+
+            const fallbackGradients = [
+                'linear-gradient(135deg, #007bff, #0056b3)',
+                'linear-gradient(135deg, #11998e, #38ef7d)',
+                'linear-gradient(135deg, #6a11cb, #2575fc)',
+                'linear-gradient(135deg, #f92edc, #811fee)',
+                'linear-gradient(135deg, #ff0844, #ffb199)',
+                'linear-gradient(135deg, #ff5858, #f09819)',
+                'linear-gradient(135deg, #bf953f, #fcf6ba, #b38728)'
+            ];
+
+            try {
+                const snap = await db.collection('books').where('classLevel', '==', className).get();
+                container.innerHTML = '';
+
+                if (snap.empty) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:3rem 1rem; opacity:0.75;">
+                            <div style="font-size:3rem; color:#ff9933; margin-bottom:0.8rem;"><i class="fas fa-atlas"></i></div>
+                            <h3 style="font-size:1.25rem; font-weight:700;">No Books Found for ${className}</h3>
+                            <p style="font-size:0.9rem;">Textbooks and PDF study materials will appear here once added in Admin Panel.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let books = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Sort newest first
+                books.sort((a, b) => {
+                    const tA = (a.createdAt && a.createdAt.seconds) ? a.createdAt.seconds : 0;
+                    const tB = (b.createdAt && b.createdAt.seconds) ? b.createdAt.seconds : 0;
+                    return tB - tA;
+                });
+
+                books.forEach((b, index) => {
+                    const trayCard = document.createElement('div');
+                    const bgStyle = b.bg || fallbackGradients[index % fallbackGradients.length];
+                    const textColor = b.textColor || '#ffffff';
+
+                    trayCard.className = 'link-tray-card';
+                    trayCard.style.background = bgStyle;
+                    trayCard.style.color = textColor;
+
+                    const cleanTitle = formatOdiaText(b.title || 'Textbook');
+                    const cleanSub = formatOdiaText(b.subtitle || `${className} • Prescribed Book`);
+
+                    trayCard.innerHTML = `
+                        <div class="link-tray-left">
+                            <div class="link-tray-icon-box">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="link-tray-info">
+                                <div class="link-tray-title">${cleanTitle}</div>
+                                <div class="link-tray-sub">${cleanSub}</div>
+                            </div>
+                        </div>
+                        <div class="link-tray-btn">
+                            <span>READ / PDF</span> <i class="fas fa-external-link-alt"></i>
+                        </div>
+                    `;
+
+                    trayCard.onclick = () => {
+                        if (b.url) {
+                            window.open(b.url, '_blank', 'noopener,noreferrer');
+                        }
+                    };
+
+                    container.appendChild(trayCard);
+                });
+            } catch (err) {
+                console.error("Books load error:", err);
+                container.innerHTML = '<p style="color:red; text-align:center; padding:20px;">Failed to load books for ' + className + '.</p>';
             }
         };
 
@@ -4403,33 +4671,85 @@ const loadQASubjects = () => {
         };
 
 
-        // ─────────── 6. IMPORTANT LINKS MODULE ───────────
+        // ─────────── 6. IMPORTANT LINKS MODULE (COLORFUL & INTERACTIVE) ───────────
         const loadImportantLinks = async () => {
             const container = document.getElementById('links-container');
-            container.innerHTML = '<p style="text-align:center; padding:20px;">Fetching official links repository...</p>';
+            if (!container) return;
+            container.innerHTML = '<p style="text-align:center; padding:25px; opacity:0.7;"><i class="fas fa-spinner fa-spin"></i> Loading Important Links...</p>';
+
+            // Fallback gradient cycle for older link records
+            const fallbackGradients = [
+                'linear-gradient(135deg, #007bff, #0056b3)',
+                'linear-gradient(135deg, #11998e, #38ef7d)',
+                'linear-gradient(135deg, #6a11cb, #2575fc)',
+                'linear-gradient(135deg, #f92edc, #811fee)',
+                'linear-gradient(135deg, #ff0844, #ffb199)',
+                'linear-gradient(135deg, #0ad3fa, #c74d97)',
+                'linear-gradient(135deg, #ff5858, #f09819)',
+                'linear-gradient(135deg, #4776e6, #8e54e9)'
+            ];
 
             try {
                 const snap = await db.collection('importantLinks').get();
                 container.innerHTML = '';
-                if(snap.empty) {
-                    container.innerHTML = '<p style="text-align:center; opacity:0.6; padding:20px;">No links uploaded by system administration.</p>';
+                if (snap.empty) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:3rem 1rem; opacity:0.7;">
+                            <div style="font-size:2.8rem; color:#ff9933; margin-bottom:0.8rem;"><i class="fas fa-link"></i></div>
+                            <h3 style="font-size:1.2rem; font-weight:700;">No Links Available</h3>
+                            <p style="font-size:0.88rem;">Important official bookmarks will appear here once added by Admin.</p>
+                        </div>
+                    `;
                     return;
                 }
 
-                snap.forEach(doc => {
-                    const data = doc.data();
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.cssText = "display:flex; justify-content:space-between; align-items:center; cursor:pointer;";
-                    card.innerHTML = `
-                        <div style="font-weight:600; font-size:1.05rem;">${data.title}</div>
-                        <i class="fas fa-external-link-alt" style="color:var(--header-title)"></i>
+                let links = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Sort latest first
+                links.sort((a, b) => {
+                    const tA = (a.createdAt && a.createdAt.seconds) ? a.createdAt.seconds : 0;
+                    const tB = (b.createdAt && b.createdAt.seconds) ? b.createdAt.seconds : 0;
+                    return tB - tA;
+                });
+
+                links.forEach((data, index) => {
+                    const trayCard = document.createElement('div');
+                    const bgStyle = data.bg || fallbackGradients[index % fallbackGradients.length];
+                    const textColor = data.textColor || '#ffffff';
+                    const iconClass = data.icon || 'fas fa-globe';
+
+                    trayCard.className = 'link-tray-card';
+                    trayCard.style.background = bgStyle;
+                    trayCard.style.color = textColor;
+
+                    const cleanTitle = formatOdiaText(data.title || 'Official Link');
+                    const cleanSub = formatOdiaText(data.subtitle || '');
+
+                    trayCard.innerHTML = `
+                        <div class="link-tray-left">
+                            <div class="link-tray-icon-box">
+                                <i class="${iconClass}"></i>
+                            </div>
+                            <div class="link-tray-info">
+                                <div class="link-tray-title">${cleanTitle}</div>
+                                ${cleanSub ? `<div class="link-tray-sub">${cleanSub}</div>` : ''}
+                            </div>
+                        </div>
+                        <div class="link-tray-btn">
+                            <span>OPEN</span> <i class="fas fa-external-link-alt"></i>
+                        </div>
                     `;
-                    card.onclick = () => window.open(data.url, '_blank');
-                    container.appendChild(card);
+
+                    trayCard.onclick = () => {
+                        if (data.url) {
+                            window.open(data.url, '_blank', 'noopener,noreferrer');
+                        }
+                    };
+
+                    container.appendChild(trayCard);
                 });
             } catch (err) {
-                container.innerHTML = '<p style="color:red">Failed to establish link modules configuration.</p>';
+                console.error("Links load error:", err);
+                container.innerHTML = '<p style="color:red; text-align:center; padding:20px;">Failed to load Important Links repository.</p>';
             }
         };
 
