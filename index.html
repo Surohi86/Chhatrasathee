@@ -6,8 +6,24 @@
     <title>CHHATRASATHEE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
-<!-- High-Quality Multilingual and Symbols Font Stack -->
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<!-- High-Quality Multilingual, Sanskrit & Symbols Font Stack -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Oriya:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Serif+Devanagari:wght@400;700&family=Noto+Sans+Math&family=Poppins:wght@300;400;500;600;700&family=STIX+Two+Math&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+<!-- MathJax 3 for Scientific, Trigonometric, Algebraic & Geometric Formulas -->
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+        },
+        svg: { fontCache: 'global' },
+        options: {
+            enableMenu: false
+        }
+    };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <!-- Chart.js for graphical colorful bar charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -46,31 +62,59 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
             background: var(--bg-color);
-            background-attachment: fixed;
+            /* Removed background-attachment: fixed which destroys mobile scroll framerates */
             color: var(--text-main);
             line-height: 1.6;
-            transition: background 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+            touch-action: manipulation;
         }
         
         /* Specialized math, symbols, and text styling for Q&A and HTML Notes cards */
         #qa-detail-card, #note-detail-card, .html-note-content {
-            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
-            line-height: 1.7;
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
+            line-height: 1.85;
             word-wrap: break-word;
             overflow-wrap: break-word;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
+            color: var(--text-main);
         }
 
-        /* Prevent HTML diagrams, images & banners from overflowing the card */
-        .html-note-content img, #note-detail-card img, #qa-detail-card img {
+        /* Full support for superscripts, subscripts, fractions, formulas, and math tags */
+        .html-note-content sup {
+            font-size: 0.78em;
+            line-height: 0;
+            vertical-align: super;
+        }
+        .html-note-content sub {
+            font-size: 0.78em;
+            line-height: 0;
+            vertical-align: sub;
+        }
+        .html-note-content code, .html-note-content pre {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+        body.dark-mode .html-note-content code, body.dark-mode .html-note-content pre {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Prevent HTML diagrams, SVG, canvas & banners from overflowing */
+        .html-note-content img, #note-detail-card img, #qa-detail-card img,
+        .html-note-content svg, #note-detail-card svg {
             max-width: 100% !important;
             height: auto !important;
             display: block;
-            margin: 10px auto;
+            margin: 14px auto;
             border-radius: 12px;
             box-sizing: border-box;
         }
@@ -81,8 +125,21 @@
             max-width: 100% !important;
             display: block;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 18px 0;
+            border-radius: 10px;
+        }
+        .html-note-content th, #note-detail-card th,
+        .html-note-content td, #note-detail-card td {
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            text-align: left;
+        }
+        .html-note-content th, #note-detail-card th {
+            background: rgba(0, 123, 255, 0.1);
+            color: var(--header-title);
+            font-weight: 700;
         }
 
         .html-note-content div, .html-note-content section, .html-note-content p {
@@ -100,13 +157,12 @@
         .screen { 
             display: none; 
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            will-change: opacity;
+            transition: opacity 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .screen.active { 
             display: block; 
             opacity: 1;
-            transform: translateY(0);
         }
 
         .back-nav {
@@ -240,7 +296,22 @@
         .app-title-sub { font-weight: 700; color: #dc3545; display: block; }
         body.dark-mode .app-title-sub { color: #ffe33f; }
 
-        .card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card { 
+            background: var(--card-bg); 
+            /* Fallback clean transparency without heavy blur processing on low-end chipsets */
+            border: 1px solid var(--border-color); 
+            border-radius: 18px; 
+            padding: 1.25rem; 
+            margin-bottom: 1.25rem; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04); 
+            contain: content; /* Isolates DOM subtree rendering for ultra-fast painting */
+        }
+        @supports (-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px)) {
+            .card {
+                -webkit-backdrop-filter: blur(8px);
+                backdrop-filter: blur(8px);
+            }
+        }
 
         .subject-tray {
             background: linear-gradient(90deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fcf6ba 75%, #bf953f 100%);
@@ -1130,17 +1201,18 @@ body.dark-mode .class-header-title {
     gap: 14px;
 }
 .class-box-btn {
-    background: #151d30;
-    color: #ffffff;
-    border: 1.5px solid #283759;
+    /* Dynamic theme fallback: uses primary theme blue instead of harsh black */
+    background: var(--class-tray-bg, linear-gradient(135deg, #007bff, #0056b3));
+    color: var(--class-tray-text, #ffffff);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
     border-radius: 14px;
     padding: 16px 8px;
     font-size: 1.05rem;
     font-weight: 700;
     text-align: center;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     user-select: none;
 }
 .class-box-btn:hover {
@@ -1657,32 +1729,23 @@ body.dark-mode .class-header-title {
         .daily-feed-card {
             background: linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%);
             border-radius: 18px !important;
-            padding: 1.25rem 1.4rem !important;
-            margin-bottom: 1rem !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+            padding: 1.15rem 1.25rem !important;
+            margin-bottom: 0.9rem !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
             position: relative;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            /* Glowing Shadow Animation */
-            box-shadow: 0 8px 24px rgba(30, 167, 253, 0.4), 0 0 18px rgba(74, 66, 245, 0.3) !important;
-            animation: feed-glow-pulse 3s infinite ease-in-out;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            /* Clean static shadow; avoids high-frequency GPU compositing */
+            box-shadow: 0 6px 18px rgba(30, 167, 253, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        /* Continuous Ambient Glow Animation */
-        @keyframes feed-glow-pulse {
-            0%, 100% {
-                box-shadow: 0 6px 20px rgba(30, 167, 253, 0.35), 0 0 15px rgba(74, 66, 245, 0.25);
-                transform: translateY(0);
-            }
-            50% {
-                box-shadow: 0 12px 32px rgba(30, 167, 253, 0.65), 0 0 28px rgba(74, 66, 245, 0.55);
-                transform: translateY(-2px);
-            }
+        .daily-feed-card:active {
+            transform: scale(0.98);
         }
 
         .daily-feed-card:hover {
@@ -2001,7 +2064,7 @@ body.dark-mode .class-header-title {
             </div>
         </div>
 
-        <img id="app-logo" src="https://i.imgur.com/gO142Tf.png" class="app-logo" alt="Logo">
+        <img id="app-logo" src="https://i.imgur.com/gO142Tf.png" class="app-logo" alt="Logo" onerror="this.style.display='none'">
         <span class="app-title-main">CHHATRASATHEE</span>
         <span class="app-title-sub">ଛାତ୍ରସାଥୀ</span>
         
@@ -2083,19 +2146,9 @@ body.dark-mode .class-header-title {
                 <h2 class="class-header-title" id="choose-class-title">Select Class</h2>
                 <p class="class-header-sub" id="choose-class-sub">Choose your class (1 to 12)</p>
 
-                <div class="class-grid">
-                    <button class="class-box-btn" onclick="selectClass('Class 1')">Class 1</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 2')">Class 2</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 3')">Class 3</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 4')">Class 4</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 5')">Class 5</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 6')">Class 6</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 7')">Class 7</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 8')">Class 8</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 9')">Class 9</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 10')">Class 10</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 11')">Class 11</button>
-                    <button class="class-box-btn" onclick="selectClass('Class 12')">Class 12</button>
+                <!-- Dynamically rendered class grid synced with Admin Panel -->
+                <div class="class-grid" id="user-class-grid">
+                    <!-- Populated dynamically from Firebase & local cache -->
                 </div>
 
                 <!-- 🌟 EYE-CATCHING DAILY NEWS / GK / CURRENT AFFAIRS SECTION -->
@@ -2537,10 +2590,18 @@ body.dark-mode .class-header-title {
     </div>
 
     <div id="about-modal" class="modal">
-        <div class="modal-content">
-            <h2>About Us</h2>
-            <p id="about-text" style="margin: 1rem 0; white-space: pre-wrap;"></p>
-            <button class="btn btn-secondary" onclick="closeModal('about-modal')">Close</button>
+        <div class="modal-content" style="max-width: 520px; max-height: 85vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;">
+                <h2 style="margin: 0; font-size: 1.4rem; color: var(--header-title);"><i class="fas fa-info-circle"></i> About Us</h2>
+                <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('about-modal')">✕</button>
+            </div>
+            
+            <div id="about-content-body" style="overflow-y: auto; flex: 1; padding-right: 5px; font-size: 0.96rem; line-height: 1.7; word-wrap: break-word;">
+                <div id="about-text" style="white-space: pre-wrap; margin-bottom: 12px;"></div>
+                <div id="about-link-container" style="display: none; margin-top: 14px; text-align: center;"></div>
+            </div>
+            
+            <button class="btn btn-secondary" style="margin-top: 12px; width: 100%;" onclick="closeModal('about-modal')">Close</button>
         </div>
     </div>
 
@@ -2651,6 +2712,41 @@ let selectedQASubjectId = '';
             clearInterval(timerInterval);
             showScreen('quiz-list-screen');
         };
+        
+        const DEFAULT_CLASSES = [
+            "Class 1", "Class 2", "Class 3", "Class 4", 
+            "Class 5", "Class 6", "Class 7", "Class 8", 
+            "Class 9", "Class 10", "Class 11", "Class 12"
+        ];
+        let userClassesList = [...DEFAULT_CLASSES];
+
+        // ─── DYNAMIC CLASS GRID & COLORS RENDERER ───
+        const renderUserClassGrid = (classes, defaultBg, defaultTextColor, customMap = {}) => {
+            const grid = document.getElementById('user-class-grid');
+            if (!grid) return;
+
+            userClassesList = (classes && Array.isArray(classes) && classes.length > 0) ? classes : DEFAULT_CLASSES;
+
+            grid.innerHTML = userClassesList.map(className => {
+                let bg = defaultBg || 'linear-gradient(135deg, #007bff, #0056b3)';
+                let textColor = defaultTextColor || '#ffffff';
+
+                if (customMap && customMap[className]) {
+                    if (customMap[className].bg) bg = customMap[className].bg;
+                    if (customMap[className].textColor) textColor = customMap[className].textColor;
+                }
+
+                const safeClassParam = className.replace(/'/g, "\\'");
+                return `
+                    <button type="button" 
+                        class="class-box-btn" 
+                        style="background: ${bg} !important; color: ${textColor} !important;" 
+                        onclick="selectClass('${safeClassParam}')">
+                        ${className}
+                    </button>
+                `;
+            }).join('');
+        };
 
         // ─────────── UNIVERSAL BACK NAVIGATION LOGIC ───────────
         let lastActiveMainScreen = 'choose-class-screen';
@@ -2666,21 +2762,27 @@ let selectedQASubjectId = '';
         };
 
         const showScreen = (id) => {
-            // Track primary hub screens so Back buttons return to where the student was
             const mainHubScreens = ['choose-class-screen', 'books-screen', 'subject-list-screen', 'notes-screen', 'qa-screen', 'quiz-list-screen'];
             if (mainHubScreens.includes(id)) {
                 lastActiveMainScreen = id;
             }
 
             const screens = document.querySelectorAll('.screen');
+            // Immediate batch switch without queued setTimeout delays
             screens.forEach(s => {
-                s.classList.remove('active');
-                setTimeout(() => { if(!s.classList.contains('active')) s.style.display = 'none'; }, 400);
+                if (s.id !== id) {
+                    s.classList.remove('active');
+                    s.style.display = 'none';
+                }
             });
+
             const target = document.getElementById(id);
+            if (!target) return;
             target.style.display = (id === 'login-screen') ? 'flex' : 'block';
-            setTimeout(() => target.classList.add('active'), 50);
-            window.scrollTo(0,0);
+            requestAnimationFrame(() => {
+                target.classList.add('active');
+            });
+            window.scrollTo({ top: 0, behavior: 'instant' });
 
             // Toggle body class and visibility for clean Login screen
             const isLoginPage = (id === 'login-screen');
@@ -2744,62 +2846,84 @@ let selectedQASubjectId = '';
             return array;
         };
 
-        // Init App and listen for configuration updates
+        // ─── 1. INSTANT ZERO-DELAY LOAD FROM CACHE ON STARTUP ───
+        try {
+            const cachedConfig = localStorage.getItem('cs_cached_app_config');
+            if (cachedConfig) {
+                const parsed = JSON.parse(cachedConfig);
+                renderUserClassGrid(
+                    parsed.classesList || DEFAULT_CLASSES, 
+                    parsed.classTrayBg, 
+                    parsed.classTrayTextColor, 
+                    parsed.classTrayCustom || {}
+                );
+                if (parsed.logoUrl) {
+                    const l1 = document.getElementById('app-logo');
+                    const l2 = document.getElementById('sidebar-logo-img');
+                    const l3 = document.getElementById('login-screen-logo');
+                    if (l1) l1.src = parsed.logoUrl;
+                    if (l2) l2.src = parsed.logoUrl;
+                    if (l3) l3.src = parsed.logoUrl;
+                }
+            } else {
+                renderUserClassGrid(DEFAULT_CLASSES, '#007bff', '#ffffff', {});
+            }
+        } catch (e) {
+            console.warn("Cached config parse error:", e);
+            renderUserClassGrid(DEFAULT_CLASSES, '#007bff', '#ffffff', {});
+        }
+
+        // ─── 2. REAL-TIME FIRESTORE LISTENER ───
         const init = () => {
             db.collection('settings').doc('appConfig').onSnapshot(doc => { 
                 if(doc.exists) {
                     const data = doc.data();
+                    const classes = data.classesList || DEFAULT_CLASSES;
+
+                    // Cache to localStorage for instant start on next launch
+                    localStorage.setItem('cs_cached_app_config', JSON.stringify({
+                        classesList: classes,
+                        classTrayBg: data.classTrayBg,
+                        classTrayTextColor: data.classTrayTextColor,
+                        classTrayCustom: data.classTrayCustom || {},
+                        logoUrl: data.logoUrl || ''
+                    }));
+
                     if(data.logoUrl) {
-                        document.getElementById('app-logo').src = data.logoUrl;
-                        document.getElementById('sidebar-logo-img').src = data.logoUrl;
-                        const loginLogo = document.getElementById('login-screen-logo');
-                        if (loginLogo) loginLogo.src = data.logoUrl;
-                    }
-                    // ─── DYNAMICALLY APPLY CLASS TRAY COLORS (ALL AT ONCE + ONE BY ONE) ───
-                    const defaultBg = data.classTrayBg || '#151d30';
-                    const defaultTextColor = data.classTrayTextColor || '#ffffff';
-                    const customMap = data.classTrayCustom || {};
-
-                    let styleTag = document.getElementById('dynamic-class-tray-style');
-                    if (!styleTag) {
-                        styleTag = document.createElement('style');
-                        styleTag.id = 'dynamic-class-tray-style';
-                        document.head.appendChild(styleTag);
+                        const l1 = document.getElementById('app-logo');
+                        const l2 = document.getElementById('sidebar-logo-img');
+                        const l3 = document.getElementById('login-screen-logo');
+                        if (l1) l1.src = data.logoUrl;
+                        if (l2) l2.src = data.logoUrl;
+                        if (l3) l3.src = data.logoUrl;
                     }
 
-                    // 1. Base rule for all classes
-                    let cssRules = `
-                        .class-box-btn {
-                            background: ${defaultBg} !important;
-                            color: ${defaultTextColor} !important;
-                            border-color: rgba(255, 255, 255, 0.25) !important;
-                        }
-                    `;
-
-                    // 2. Individual overrides for specific classes
-                    for (let i = 1; i <= 12; i++) {
-                        const classKey = `Class ${i}`;
-                        if (customMap[classKey] && customMap[classKey].bg) {
-                            const cBg = customMap[classKey].bg;
-                            const cText = customMap[classKey].textColor || '#ffffff';
-                            cssRules += `
-                                .class-box-btn[onclick*="'${classKey}'"] {
-                                    background: ${cBg} !important;
-                                    color: ${cText} !important;
-                                }
-                            `;
-                        }
-                    }
-
-                    styleTag.innerHTML = cssRules;
+                    // Dynamically render class buttons with real-time names & colors
+                    renderUserClassGrid(classes, data.classTrayBg, data.classTrayTextColor, data.classTrayCustom || {});
                 }
             });
 
+            // Restore the missing appContent listener for About Us and Social Media Links
             db.collection('settings').doc('appContent').onSnapshot(doc => {
                 if(doc.exists) {
                     appContent = doc.data();
-                    const links = { 'footer-facebook': appContent.appFacebookLink, 'footer-whatsapp': appContent.appWhatsAppLink, 'footer-instagram': appContent.appInstagramLink, 'footer-youtube': appContent.appYouTubeLink };
-                    for (const [id, url] of Object.entries(links)) { const el = document.getElementById(id); if(url) { el.href = url; el.style.display = 'block'; } else { el.style.display = 'none'; } }
+                    const links = { 
+                        'footer-facebook': appContent.appFacebookLink, 
+                        'footer-whatsapp': appContent.appWhatsAppLink, 
+                        'footer-instagram': appContent.appInstagramLink, 
+                        'footer-youtube': appContent.appYouTubeLink 
+                    };
+                    for (const [id, url] of Object.entries(links)) { 
+                        const el = document.getElementById(id); 
+                        if(el) { 
+                            if(url) { 
+                                el.href = url; 
+                                el.style.display = 'block'; 
+                            } else { 
+                                el.style.display = 'none'; 
+                            } 
+                        } 
+                    }
                 }
             });
 
@@ -3891,6 +4015,7 @@ let selectedQASubjectId = '';
         const showNoteDetails = (noteData) => {
             document.getElementById('notes-topic-list-view').style.display = 'none';
             document.getElementById('notes-detail-view').style.display = 'block';
+            window.scrollTo(0, 0);
             const detailCard = document.getElementById('note-detail-card');
             
             let pdfButtonHtml = '';
@@ -3904,25 +4029,35 @@ let selectedQASubjectId = '';
                 `;
             }
 
-            const cleanHtmlMarkup = (rawHtml) => {
+            // Preserves styles, head components, and extracts valid content safely
+            const prepareFullHtml = (rawHtml) => {
                 if (!rawHtml) return '';
-                const bodyMatch = rawHtml.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-                return bodyMatch ? bodyMatch[1] : rawHtml;
+                let html = rawHtml;
+                if (/<html[\s\S]*>/i.test(html)) {
+                    let styles = '';
+                    const styleMatches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+                    if (styleMatches) styles = styleMatches.join('\n');
+                    const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                    html = styles + (bodyMatch ? bodyMatch[1] : html);
+                }
+                return formatOdiaText(html);
             };
 
             let renderedBody = '';
             if (noteData.htmlContent && noteData.htmlContent.trim()) {
                 renderedBody = `
-                    <div class="html-note-content" style="font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif; line-height: 1.8; word-wrap: break-word; font-size: 1.05rem; width: 100%; max-width: 100%; box-sizing: border-box;">
-                        ${cleanHtmlMarkup(noteData.htmlContent)}
+                    <div class="html-note-content" style="font-size: 1.05rem; width: 100%; max-width: 100%; box-sizing: border-box;">
+                        ${prepareFullHtml(noteData.htmlContent)}
                     </div>
                 `;
             } else if (noteData.content && noteData.content.trim()) {
                 renderedBody = `
-                    <div style="font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Sans', sans-serif; line-height: 1.8; word-wrap: break-word; width: 100%; max-width: 100%; box-sizing: border-box;">
+                    <div style="width: 100%; max-width: 100%; box-sizing: border-box;">
                         ${formatNotesContent(noteData.content)}
                     </div>
                 `;
+            } else {
+                renderedBody = `<p style="text-align:center; opacity:0.6; padding:2rem;">No study content found.</p>`;
             }
 
             detailCard.innerHTML = `
@@ -3931,6 +4066,11 @@ let selectedQASubjectId = '';
                     ${renderedBody}
                 </div>
             `;
+
+            // Trigger MathJax 3 to parse and render formulas, geometry & symbols
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([detailCard]).catch(err => console.warn('MathJax render error:', err));
+            }
         };
 
         // ─────────── NOTES BACK NAVIGATION HANDLERS ───────────
@@ -5022,7 +5162,53 @@ if (loginFormEl) {
 
         const themeToggle = document.getElementById('theme-toggle');
         themeToggle.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); themeToggle.innerHTML = document.body.classList.contains('dark-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; });
-        document.getElementById('footer-about-us').onclick = (e) => { e.preventDefault(); document.getElementById('about-text').innerText = appContent.appAboutUs || "Educational App"; document.getElementById('about-modal').classList.add('active'); };
+        // ─────────── ADVANCED ABOUT US (TEXT & URL LINK) CONTROLLER ───────────
+        document.getElementById('footer-about-us').onclick = (e) => {
+            e.preventDefault();
+            const rawContent = (appContent.appAboutUs || "Educational App").trim();
+            
+            // Check if content is exclusively a URL
+            const urlRegexStrict = /^(https?:\/\/[^\s]+)$/i;
+            if (urlRegexStrict.test(rawContent)) {
+                window.open(rawContent, '_blank', 'noopener,noreferrer');
+                return;
+            }
+
+            // Extract any web links contained inside the text
+            const urlExtractRegex = /(https?:\/\/[^\s]+)/gi;
+            const extractedUrls = rawContent.match(urlExtractRegex);
+            
+            // Format Markdown (Bold **text**, Italics *text*) and clickable hyperlinks in the text
+            let formattedText = formatOdiaText(rawContent)
+                .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--text-main); font-weight:700;">$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:var(--header-title); text-decoration:underline; word-break:break-all;">$1</a>');
+
+            const textContainer = document.getElementById('about-text');
+            const linkContainer = document.getElementById('about-link-container');
+
+            if (textContainer) {
+                textContainer.innerHTML = formattedText;
+            }
+
+            // If a link was detected inside the text, create a prominent primary action button
+            if (linkContainer) {
+                if (extractedUrls && extractedUrls.length > 0) {
+                    const primaryLink = extractedUrls[0];
+                    linkContainer.style.display = 'block';
+                    linkContainer.innerHTML = `
+                        <a href="${primaryLink}" target="_blank" class="btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; text-decoration: none; padding: 12px 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,123,255,0.3);">
+                            <i class="fas fa-external-link-alt"></i> Visit Official Link / Website
+                        </a>
+                    `;
+                } else {
+                    linkContainer.style.display = 'none';
+                    linkContainer.innerHTML = '';
+                }
+            }
+
+            document.getElementById('about-modal').classList.add('active');
+        };
 // Robust copy fallback helper function
         const copyTextToClipboard = (text) => {
             if (navigator.clipboard && window.isSecureContext) {
