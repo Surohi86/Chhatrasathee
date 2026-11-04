@@ -75,16 +75,85 @@
         }
         
         /* Specialized math, symbols, and text styling for Q&A and HTML Notes cards */
-        #qa-detail-card, #note-detail-card, .html-note-content {
-            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
-            line-height: 1.85;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            color: var(--text-main);
-        }
+#qa-detail-card, #note-detail-card, .html-note-content {
+    font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
+    line-height: 1.85;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    color: var(--text-main);
+}
+
+/* ─────────── PERMANENT FIX: REMOVE OUTER TRAYS & DOUBLE BORDERS ─────────── */
+/* 1. Strip all borders, backgrounds, and padding from the outer wrapper card */
+#notes-screen > .card,
+#qa-screen > .card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 2. Re-apply cards ONLY to the Subject and Topic selection screens */
+#notes-subject-view,
+#notes-topic-list-view,
+#qa-subject-view,
+#qa-topic-list-view {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 18px !important;
+    padding: 1.25rem !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
+    margin-bottom: 1.25rem !important;
+}
+
+/* 3. Detail View wrapper is completely borderless and fills 100% width */
+#notes-detail-view,
+#qa-detail-view {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* ─────────── 100% BORDERLESS NOTES & QA DETAIL VIEW ─────────── */
+#notes-detail-view,
+#qa-detail-view {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Removes the outer line, white background, tray shadow & padding */
+#note-detail-card,
+#qa-detail-card {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    margin: 0 0 2rem 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+body.dark-mode #note-detail-card,
+body.dark-mode #qa-detail-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
 
         /* Full support for superscripts, subscripts, fractions, formulas, and math tags */
         .html-note-content sup {
@@ -246,6 +315,204 @@
             font-weight: 500; display: flex; align-items: center; gap: 15px; color: var(--text-main); transition: 0.2s;
         }
         .sidebar-item:hover, .sidebar-item.active { background: var(--header-title); color: #fff; }
+        
+        /* ─────────── EYE-CATCHING STUDY STREAK HEADER & DASHBOARD STYLES ─────────── */
+        /* 1. Header Group for Coins & Flame Streak */
+        .header-badges-group {
+            position: absolute;
+            top: 17px;
+            left: 62px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .streak-earned-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
+            border: 2px solid #ffffff;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .streak-earned-badge:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 18px rgba(255, 71, 87, 0.55);
+        }
+        .streak-earned-badge i.fa-fire {
+            color: #ffeaa7;
+            font-size: 1.15rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            animation: flame-pulse 1.6s infinite ease-in-out;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #ffd700); }
+            50% { transform: scale(1.25) rotate(-3deg); filter: drop-shadow(0 0 8px #ff4757); }
+        }
+
+        @media (max-width: 480px) {
+            .header-badges-group {
+                left: 54px;
+                gap: 5px;
+            }
+            .coin-earned-badge, .streak-earned-badge {
+                padding: 4px 8px;
+                font-size: 0.82rem;
+            }
+        }
+
+        /* 2. Main Dashboard Interactive Streak Card */
+        .streak-dashboard-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
+            border: 1.5px solid #fed7aa;
+            border-radius: 18px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 18px rgba(251, 146, 60, 0.12);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        body.dark-mode .streak-dashboard-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #172554 100%);
+            border-color: rgba(251, 146, 60, 0.3);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .streak-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .streak-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .streak-flame-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #ff4757, #ff9f43);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.35);
+            animation: flame-pulse 2s infinite ease-in-out;
+        }
+        .streak-count-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #9a3412;
+            line-height: 1.2;
+            margin: 0;
+        }
+        body.dark-mode .streak-count-title {
+            color: #fdba74;
+        }
+        .streak-sub-caption {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #78350f;
+            opacity: 0.85;
+            margin: 2px 0 0 0;
+        }
+        body.dark-mode .streak-sub-caption {
+            color: #fed7aa;
+        }
+
+        .streak-milestone-pill {
+            background: #ffedd5;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        body.dark-mode .streak-milestone-pill {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+            border-color: rgba(251, 146, 60, 0.3);
+        }
+
+        /* 7-Day Day Trackers */
+        .streak-week-track {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(251, 146, 60, 0.25);
+        }
+        .streak-day-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .streak-day-name {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #78350f;
+            text-transform: uppercase;
+        }
+        body.dark-mode .streak-day-name {
+            color: #cbd5e1;
+        }
+        .streak-day-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            background: rgba(0, 0, 0, 0.04);
+            color: #94a3b8;
+            border: 1.5px solid transparent;
+            transition: all 0.25s ease;
+        }
+        body.dark-mode .streak-day-circle {
+            background: rgba(255, 255, 255, 0.06);
+            color: #64748b;
+        }
+        /* Completed Active Day */
+        .streak-day-circle.active {
+            background: linear-gradient(135deg, #ff4757, #ff9f43);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(255, 71, 87, 0.4);
+            border-color: #ffd700;
+        }
+        /* Today Pending Day */
+        .streak-day-circle.today-pending {
+            border: 2px dashed #ff9f43;
+            color: #ff9f43;
+            background: rgba(255, 159, 67, 0.1);
+            animation: pulse-ring 1.8s infinite;
+        }
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
         
         /* Custom Vibrant Colors for Sidebar Icons */
 .sidebar-item i {
@@ -432,8 +699,138 @@
 
         .quiz-footer { position: sticky; bottom: 0; background: var(--quiz-footer-bg); padding: 1rem; border-top: 1px solid var(--border-color); text-align: center; backdrop-filter: blur(10px); z-index: 10; }
 
-        .score-visuals { display: flex; justify-content: center; gap: 2rem; align-items: center; margin: 2rem 0; }
-        .fraction { font-size: 2rem; text-align: center; border: 3px solid #0ad3fa; border-radius: 50%; width: 100px; height: 100px; display: flex; flex-direction: column; justify-content: center; }
+        /* ─────────── MODERN EYE-CATCHING SCORE CIRCLE & STATS ─────────── */
+.score-card-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem auto 1.2rem auto;
+}
+
+.score-dial-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popScoreRing 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.score-dial-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.score-dial-bg {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.06);
+    stroke-width: 12;
+}
+body.dark-mode .score-dial-bg {
+    stroke: rgba(255, 255, 255, 0.08);
+}
+
+.score-dial-progress {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 4px 10px rgba(0, 123, 255, 0.35));
+}
+
+.score-dial-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.score-dial-icon {
+    font-size: 1.6rem;
+    margin-bottom: 2px;
+    animation: pulseIcon 2s infinite ease-in-out;
+}
+
+.score-dial-percent {
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+.score-dial-fraction {
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: 5px;
+    color: var(--text-sub);
+    background: rgba(0, 0, 0, 0.05);
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+body.dark-mode .score-dial-fraction {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Performance badge below the circle */
+.score-performance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-top: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Micro Stats Summary Chips */
+.score-stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.score-stat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+body.dark-mode .score-stat-chip {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes popScoreRing {
+    0% { transform: scale(0.65); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
         .status-box { padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 0.9rem; }
         .status-correct { background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; color: #28a745; }
         .status-wrong { background: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; color: #dc3545; }
@@ -599,19 +996,20 @@
         .trans-wipe        { animation: animWipe 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .trans-bounce      { animation: animBounce 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
-        /* ─────────── MODERN RUNNING TICKER AD STYLING ─────────── */
+        /* ─────────── MODERN RUNNING TICKER AD STYLING (EXACT MATCH TO SCREENSHOT 1) ─────────── */
         .ticker-container {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             border-radius: 30px;
-            padding: 6px 12px;
-            margin: 10px auto 0 auto;
+            padding: clamp(3px, 1vw, 5px) clamp(6px, 1.5vw, 10px);
+            margin: 8px auto 4px auto;
             max-width: 760px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            height: clamp(34px, 5.2vw, 42px); /* Keeps the bar slim & sleek */
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             box-sizing: border-box;
             position: relative;
@@ -622,60 +1020,71 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
+        /* Slim, compact badge pill matching Screenshot 1 */
         .ticker-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 4px;
             background: linear-gradient(135deg, #ff4757, #ff6b81);
             color: #fff;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 12px;
+            font-size: clamp(0.62rem, 1.8vw, 0.74rem); /* Compact font so it doesn't take up half the screen */
+            font-weight: 800;
+            padding: clamp(2px, 0.8vw, 4px) clamp(6px, 1.6vw, 11px);
+            height: clamp(24px, 3.8vw, 29px);
             border-radius: 20px;
             white-space: nowrap;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
             flex-shrink: 0;
             z-index: 2;
         }
 
         .ticker-badge i {
             animation: pulse-ticker-icon 1.5s infinite;
+            font-size: clamp(0.72rem, 1.9vw, 0.85rem);
         }
         
         .ticker-emoji-icon {
-            font-size: 1.15rem;
+            font-size: clamp(0.85rem, 2.2vw, 1rem); /* Proportional emoji size */
             line-height: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
             animation: pulse-ticker-icon 1.5s infinite;
         }
 
         @keyframes pulse-ticker-icon {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.15); }
         }
 
+        /* Gives 75%+ of the bar width to the scrolling text */
         .ticker-track {
             flex: 1;
             overflow: hidden;
             white-space: nowrap;
-            margin-left: 12px;
+            margin-left: clamp(6px, 1.5vw, 10px);
             position: relative;
-            mask-image: linear-gradient(to right, transparent, black 15px, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15px, black 90%, transparent);
+            display: flex;
+            align-items: center;
+            height: 100%;
+            mask-image: linear-gradient(to right, transparent, black 8px, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 8px, black 92%, transparent);
         }
 
+        /* Clean, sharp running text */
         .ticker-content {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
             white-space: nowrap;
             padding-left: 100%;
             animation: ticker-marquee 18s linear infinite;
-            font-size: 0.92rem;
+            font-size: clamp(0.76rem, 2.1vw, 0.88rem); /* Slightly smaller so many words fit smoothly */
             font-weight: 600;
+            line-height: 1;
             color: var(--text-main);
             text-decoration: none;
             cursor: default;
@@ -1198,22 +1607,22 @@ body.dark-mode .class-header-title {
 .class-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: clamp(6px, 1.8vw, 12px);
 }
 .class-box-btn {
-    /* Dynamic theme fallback: uses primary theme blue instead of harsh black */
     background: var(--class-tray-bg, linear-gradient(135deg, #007bff, #0056b3));
     color: var(--class-tray-text, #ffffff);
     border: 1.5px solid rgba(255, 255, 255, 0.25);
-    border-radius: 14px;
-    padding: 16px 8px;
-    font-size: 1.05rem;
+    border-radius: 12px;
+    padding: clamp(8px, 1.8vw, 12px) 4px;
+    font-size: clamp(0.82rem, 2.3vw, 1rem);
     font-weight: 700;
     text-align: center;
     cursor: pointer;
     transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     user-select: none;
+    white-space: nowrap;
 }
 .class-box-btn:hover {
     background: linear-gradient(135deg, #007bff, #0056b3);
@@ -1722,27 +2131,26 @@ body.dark-mode .class-header-title {
 
         /* ─────────── EXACT COLOURFUL TRAY WITH GLOWING ANIMATION (MATCHING SCREENSHOT) ─────────── */
         .daily-feed-wrapper {
-            margin-top: 1.8rem;
-            width: 100%;
-        }
+    margin-top: 0.8rem;
+    width: 100%;
+}
 
-        .daily-feed-card {
-            background: linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%);
-            border-radius: 18px !important;
-            padding: 1.15rem 1.25rem !important;
-            margin-bottom: 0.9rem !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            /* Clean static shadow; avoids high-frequency GPU compositing */
-            box-shadow: 0 6px 18px rgba(30, 167, 253, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+.daily-feed-card {
+    background: linear-gradient(118deg, #8fa988 0%, #1ea7fd 42%, #4a42f5 100%);
+    border-radius: 14px !important;
+    padding: clamp(0.6rem, 1.8vw, 0.95rem) clamp(0.75rem, 2.2vw, 1.15rem) !important;
+    margin-bottom: 0.6rem !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 14px rgba(30, 167, 253, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
         .daily-feed-card:active {
             transform: scale(0.98);
@@ -1761,64 +2169,73 @@ body.dark-mode .class-header-title {
         }
 
         .daily-category-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.76rem;
-            font-weight: 800;
-            padding: 5px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #ffffff !important;
-            background: linear-gradient(135deg, #2fa4ff, #0077f6);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-        }
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: clamp(0.62rem, 1.8vw, 0.74rem);
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #2fa4ff, #0077f6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
 
-        .daily-feed-date {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #0f172a;
-            opacity: 0.85;
-        }
+.daily-feed-date {
+    font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+    font-weight: 700;
+    color: #0f172a;
+    opacity: 0.85;
+    white-space: nowrap;
+}
 
-        .daily-feed-title {
-            font-size: 1.18rem;
-            font-weight: 800;
-            line-height: 1.5;
-            color: #0f172a;
-            margin: 2px 0;
-            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
-        }
+/* Keeps title strictly on 1 line with ellipsis just like in Screenshot 1 */
+.daily-feed-title {
+    font-size: clamp(0.85rem, 2.6vw, 1.12rem);
+    font-weight: 800;
+    line-height: 1.35;
+    color: #0f172a;
+    margin: 2px 0 1px 0;
+    font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        .daily-feed-snippet {
-            font-size: 0.94rem;
-            line-height: 1.6;
-            color: #1e293b;
-            opacity: 0.9;
-            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
-        }
+/* Keeps snippet strictly on 1 line with ellipsis just like in Screenshot 1 */
+.daily-feed-snippet {
+    font-size: clamp(0.68rem, 2.1vw, 0.86rem);
+    line-height: 1.35;
+    color: #1e293b;
+    opacity: 0.9;
+    font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
 
-        .daily-feed-btn-wrap {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 4px;
-        }
+.daily-feed-btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1px;
+}
 
-        /* Bold Coral Red Action Link (Exact match to screenshot) */
-        .daily-feed-action-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #ff3b30 !important;
-            font-size: 0.95rem;
-            font-weight: 800;
-            cursor: pointer;
-            letter-spacing: 0.3px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }
+.daily-feed-action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #ff3b30 !important;
+    font-size: clamp(0.72rem, 2.2vw, 0.88rem);
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
         .daily-feed-card:hover .daily-feed-action-link {
             transform: translateX(4px);
             filter: drop-shadow(0 0 6px rgba(255, 59, 48, 0.6));
@@ -2040,6 +2457,56 @@ body.dark-mode .class-header-title {
             background: rgba(255, 255, 255, 0.35);
             transform: scale(1.05);
         }
+        
+        /* ─────────── STREAK BONUS COIN CELEBRATION MODAL ─────────── */
+        .streak-reward-modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%) !important;
+            border: 2.5px solid #ff9f43 !important;
+            border-radius: 24px !important;
+            text-align: center;
+            padding: 2rem 1.5rem !important;
+            box-shadow: 0 15px 40px rgba(255, 159, 67, 0.35) !important;
+            animation: bounceModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        body.dark-mode .streak-reward-modal-content {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%) !important;
+            border-color: #ff9f43 !important;
+        }
+
+        .streak-reward-icon-ring {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ff9f43);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin: 0 auto 1.2rem auto;
+            box-shadow: 0 8px 25px rgba(255, 159, 67, 0.5);
+            animation: pulse-coin 1.8s infinite;
+        }
+
+        .streak-reward-bonus-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ffd700, #ff9f43);
+            color: #4a3500;
+            font-size: 1.4rem;
+            font-weight: 900;
+            padding: 8px 24px;
+            border-radius: 30px;
+            margin: 1rem auto;
+            box-shadow: 0 4px 15px rgba(255, 160, 0, 0.3);
+            border: 2px solid #ffffff;
+        }
+
+        @keyframes bounceModal {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -2048,7 +2515,7 @@ body.dark-mode .class-header-title {
         <div id="sidebar-toggle" class="menu-toggle"><i class="fas fa-bars"></i></div>
 
         <!-- Coin Earned Widget placed right beside the Sidebar Menu -->
-        <div id="user-coin-badge" class="coin-earned-badge" title="Coins Earned: 1 Coin per 10 Correct Answers">
+        <div id="user-coin-badge" class="coin-earned-badge" title="Coins Earned: 1 Coin per 10 Correct Answers" onclick="openClassSelection('quizzes')">
             <i class="fas fa-coins"></i>
             <span id="user-coin-count">0</span>
         </div>
@@ -2139,10 +2606,31 @@ body.dark-mode .class-header-title {
         
         <!-- SCREEN 0.5: CHOOSE CLASS SCREEN -->
         <div id="choose-class-screen" class="screen">
-            <div class="card" style="border-radius: 20px; padding: 1.8rem 1.2rem;">
+    <div class="card" style="border-radius: 18px; padding: clamp(0.85rem, 2.4vw, 1.3rem);">
                 <div class="back-nav" id="class-screen-back-btn" onclick="handleClassScreenBack()" style="margin-bottom: 1rem; color: #dc3545;">
                     <i class="fas fa-sign-out-alt"></i> Exit
                 </div>
+                <!-- 🌟 EYE-CATCHING STUDY STREAK DASHBOARD CARD 🌟 -->
+                <div id="streak-dashboard-widget" class="streak-dashboard-card">
+                    <div class="streak-top-row">
+                        <div class="streak-title-wrap">
+                            <div class="streak-flame-icon-box">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div>
+                                <h3 id="streak-card-days-title" class="streak-count-title">0 Days Streak!</h3>
+                                <p id="streak-card-caption" class="streak-sub-caption">Solve a quiz today to light up your streak! 🔥</p>
+                            </div>
+                        </div>
+                        <span id="streak-card-milestone-pill" class="streak-milestone-pill">🔥 Active Streak</span>
+                    </div>
+
+                    <!-- 7-Day Live Weekly Track (Mon to Sun) -->
+                    <div class="streak-week-track" id="streak-week-track-container">
+                        <!-- Populated dynamically with checkmarks & flame icons -->
+                    </div>
+                </div>
+
                 <h2 class="class-header-title" id="choose-class-title">Select Class</h2>
                 <p class="class-header-sub" id="choose-class-sub">Choose your class (1 to 12)</p>
 
@@ -2208,145 +2696,158 @@ body.dark-mode .class-header-title {
 
         <div id="result-screen" class="screen"></div>
 
-        <!-- SCREEN 4: SUBJECT WISE NOTES SCREEN -->
+        <!-- SCREEN 4: SUBJECT WISE NOTES SCREEN (NO OUTER TRAY) -->
         <div id="notes-screen" class="screen">
-            <div class="card">
-                <!-- Wrapper for Subject selection with Back to Classes button -->
-                <div id="notes-subject-view">
-                    <div class="back-nav" onclick="openClassSelection('notes')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
-                    <h1 id="notes-screen-heading" style="text-align: center; margin-bottom: 1rem;">Subject Notes</h1>
-                    <div id="notes-subject-container"></div>
-                </div>
+            <!-- 1. Subject list -->
+            <div id="notes-subject-view" class="card">
+                <div class="back-nav" onclick="openClassSelection('notes')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
+                <h1 id="notes-screen-heading" style="text-align: center; margin-bottom: 1rem;">Subject Notes</h1>
+                <div id="notes-subject-container"></div>
+            </div>
 
-                <div id="notes-topic-list-view" style="display:none">
-                    <div class="back-nav" onclick="goBackToNotesSubjects()"><i class="fas fa-arrow-left"></i> Back to Subject Notes</div>
-                    <h2 id="selected-notes-subject" style="margin-bottom:1rem"></h2>
-                    <div id="notes-topics-container"></div>
-                </div>
+            <!-- 2. Topics list -->
+            <div id="notes-topic-list-view" class="card" style="display:none;">
+                <div class="back-nav" onclick="goBackToNotesSubjects()"><i class="fas fa-arrow-left"></i> Back to Subject Notes</div>
+                <h2 id="selected-notes-subject" style="margin-bottom:1rem"></h2>
+                <div id="notes-topics-container"></div>
+            </div>
 
-                <div id="notes-detail-view" style="display:none">
-                    <div class="back-nav" onclick="goBackToNotesTopics()"><i class="fas fa-arrow-left"></i> Back to Topic list</div>
-                    <div id="note-detail-card" class="card"></div>
-                </div>
+            <!-- 3. Notes Detail View: Single card, full page width -->
+            <div id="notes-detail-view" style="display:none;">
+                <div class="back-nav" onclick="goBackToNotesTopics()"><i class="fas fa-arrow-left"></i> Back to Topic list</div>
+                <div id="note-detail-card"></div>
             </div>
         </div>
 
 <!-- SCREEN 4.5: CERTIFICATE OF ACHIEVEMENT SCREEN -->
-        <div id="certificate-screen" class="screen">
-            <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
-            <div class="card" style="text-align: center;">
-                <h1>My Dynamic Certificate</h1>
-                <p style="opacity:0.7; margin-bottom:1.5rem">Displays your live study streak, daily metrics, and academic rewards</p>
+<div id="certificate-screen" class="screen">
+    <div class="back-nav" onclick="handleNavigationBack()"><i class="fas fa-arrow-left"></i> Back</div>
+
+    <!-- LOCKED STATE (If student has < 100 Coins) -->
+    <div id="cert-locked-state" class="card" style="display:none; text-align:center; padding: 2.5rem 1.5rem;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(255, 193, 7, 0.15); color: #ff9f43; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto;">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Certificate Locked!</h2>
+        <p style="color: var(--text-sub); max-width: 480px; margin: 0 auto 1.5rem auto; font-size: 0.95rem;">
+            Earn at least <b id="cert-lock-min-coins" style="color:#007bff;">100 Coins</b> to unlock your official verified certificate. (1 Coin earned for every 10 correct answers).
+        </p>
+        
+        <!-- Progress Bar -->
+        <div style="max-width: 360px; margin: 0 auto 1.5rem auto; background: rgba(0,0,0,0.06); border-radius: 20px; height: 18px; overflow: hidden; position: relative;">
+            <div id="cert-lock-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ffd700, #ff9f43); transition: width 0.6s ease;"></div>
+        </div>
+        <div style="font-size: 1.1rem; font-weight: 800; color: #4a3500; margin-bottom: 1.5rem;">
+            Current Coins: <span id="cert-lock-current-coins" style="color: #ff9f43;">0</span> / <span id="cert-lock-target-coins">100</span>
+        </div>
+
+        <button class="btn" onclick="openClassSelection('quizzes')"><i class="fas fa-play"></i> Solve Quizzes to Earn Coins</button>
+    </div>
+
+    <!-- UNLOCKED STATE (If student has >= 100 Coins) -->
+    <div id="cert-unlocked-state" class="card" style="display:none; text-align:center;">
+        <h1 id="cert-display-header-title">My Dynamic Certificate</h1>
+        <p style="opacity:0.7; margin-bottom:1rem">Official verified certificate of accomplishment</p>
+
+        <!-- Milestone Selector (100 Coins, 500 Coins, etc.) -->
+        <div id="cert-milestone-tabs-container" style="display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1.2rem;"></div>
+        
+        <div style="display:flex; justify-content:center; gap:10px; margin-bottom:1.5rem">
+            <button class="btn" onclick="downloadCertificatePDF()"><i class="fas fa-download"></i> Download Certificate (PDF)</button>
+        </div>
+
+        <!-- Scrollable wrapper configured for vector scaling on mobile -->
+        <div id="cert-scroll-wrapper" style="width:100%; position: relative; overflow: hidden; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15)">
+            <div id="certificate-pdf-target" style="width: 1122px; height: 793px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
                 
-                <div style="display:flex; justify-content:center; gap:10px; margin-bottom:1.5rem">
-                    <button class="btn" onclick="downloadCertificatePDF()"><i class="fas fa-download"></i> Download Certificate (PDF)</button>
-                </div>
+                <!-- Double Border Frame with Dynamic Color -->
+                <div id="cert-outer-frame" style="border: 8px double #d4af37; height: 100%; width: 100%; position: relative; box-sizing: border-box; padding: 40px; background: radial-gradient(circle, #ffffff 60%, #fffbf2 100%);">
+                    
+                    <!-- Corner Ribbon -->
+                    <div style="position: absolute; top: -4px; right: -4px; width: 140px; height: 140px; overflow: hidden; z-index: 10;">
+                        <div id="cert-corner-ribbon" style="position: absolute; display: block; width: 220px; padding: 8px 0; background: linear-gradient(135deg, #d4af37, #aa771c); color: #fff; text-align: center; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; top: 28px; right: -55px; transform: rotate(45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">EXCELLENCE</div>
+                    </div>
 
-<!-- Scrollable wrapper configured for automatic vector scaling on mobile screen viewports -->
-                <div id="cert-scroll-wrapper" style="width:100%; position: relative; overflow: hidden; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.15)">
-                    <!-- Width and Height updated to exact A4 96 DPI pixels to achieve 100% full-page landscape layout -->
-                    <div id="certificate-pdf-target" style="width: 1122px; height: 793px; background: #fff; position: relative; box-sizing: border-box; padding: 40px; color:#212529; font-family:'Poppins', sans-serif; flex-shrink: 0;">
-                        
-                        <!-- Premium Double Border Frame -->
-                        <div style="border: 8px double #d4af37; height: 100%; width: 100%; position: relative; box-sizing: border-box; padding: 40px; background: radial-gradient(circle, #ffffff 60%, #fffbf2 100%);">
-                            
-                            <!-- Gold Ribbon Corner Ribbon (Top Right) -->
-                            <div style="position: absolute; top: -4px; right: -4px; width: 130px; height: 130px; overflow: hidden; z-index: 10;">
-                                <div style="position: absolute; display: block; width: 200px; padding: 8px 0; background: linear-gradient(135deg, #d4af37, #aa771c); color: #fff; text-align: center; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; top: 25px; right: -50px; transform: rotate(45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">EXCELLENCE</div>
-                            </div>
-
-                            <!-- Best Award Seal Badge (Top Left) -->
-                            <div style="position: absolute; top: 20px; left: 20px; width: 110px; height: 155px; text-align: center; z-index:5;">
-                                <div style="position: absolute; bottom: 0; left: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
-                                <div style="position: absolute; bottom: 0; right: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(-20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
-                                <div style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, #ffe259 0%, #ffa751 100%); border: 4px dashed #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.65rem; line-height: 1.2; position: relative; z-index:2; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                                    <span>★ ★ ★</span>
-                                    <span style="font-size: 0.8rem; letter-spacing: 0.5px;">BEST</span>
-                                    <span style="font-size: 0.8rem; letter-spacing: 0.5px;">AWARD</span>
-                                    <span>★ ★ ★</span>
-                                </div>
-                            </div>
-
-                            <!-- Certificate Headline Header with centered App Logo -->
-                            <div style="text-align: center; margin-top: 5px;">
-                                <img id="cert-logo" src="https://i.imgur.com/gO142Tf.png" style="height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 5px;" alt="Chhatrasathee Logo">
-                                <h1 style="font-family: 'Playfair Display', 'Georgia', serif; font-size: 3rem; letter-spacing: 4px; font-weight: 800; color: #5a136e; margin: 0; text-transform: uppercase;">Certificate</h1>
-                                <p style="font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #c86400; margin-top: 5px; text-transform: uppercase;">
-                                    of Appreciation & Compliance / <span style="font-family: 'Noto Sans Oriya', sans-serif; letter-spacing: normal;">ପ୍ରଶଂସା ପତ୍ର</span>
-                                </p>
-                            </div>
-
-                            <!-- Presented to segment -->
-                            <div style="text-align: center; margin-top: 20px;">
-                                <p style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; color: #7f8c8d; text-transform: uppercase; margin: 0;">
-                                    Proudly Presented To / <span style="font-family: 'Noto Sans Oriya', sans-serif; letter-spacing: normal;">ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା</span>
-                                </p>
-                                <h2 id="cert-student-name" style="font-family: 'Playfair Display', 'Georgia', serif; font-style: italic; font-size: 3rem; color: #c86400; font-weight: 700; margin: 15px 0 5px 0; text-shadow: 0 1px 1px rgba(0,0,0,0.1);">Student Name</h2>
-                                <div style="width: 450px; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin: 0 auto; position: relative;">
-                                    <div style="width: 12px; height: 12px; background: #d4af37; transform: rotate(45deg); position: absolute; top: -5px; left: 50%; margin-left: -6px;"></div>
-                                </div>
-                            </div>
-
-                            <!-- Certificate Body Content -->
-                            <div style="text-align: center; margin-top: 20px; padding: 0 40px; line-height: 1.5;">
-                                <p style="font-size: 0.95rem; color: #34495e; margin: 0 0 8px 0;">
-                                    For exceptional commitment and study consistency in completing the daily Class <b id="cert-class" style="color: #5a136e;">[Class]</b> academic workouts, successfully solving <b id="cert-solved-today" style="color: #5a136e;">0</b> questions today and securing an active continuous study streak of <b id="cert-streak" style="color: #c86400;">0</b> days.
-                                </p>
-                                <p style="font-family: 'Noto Sans Oriya', 'Kalinga', 'Gautami', Arial, sans-serif; font-size: 0.78rem; font-weight: bold; font-style: italic; color: #2c3e50; direction: ltr; margin: 0; white-space: nowrap; letter-spacing: normal;">
-                                    ଛାତ୍ରସାଥୀ କମିଟି ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ପ୍ରତିଦିନ ନିଷ୍ଠାପୂର୍ବକ ପ୍ରଶ୍ନୋତ୍ତର ଅଭ୍ୟାସ ସମ୍ପୂର୍ଣ୍ଣ କରି ଏହି ଗୌରବମୟ ଲକ୍ଷ୍ୟ ପୂରଣ କରିଥିବାରୁ ଏହା ପ୍ରଦାନ କରାଗଲା ।
-                                </p>
-                            </div>
-
-                            <!-- Signatures and bottom central Streak Badge -->
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
-                                <!-- Left Signature: Director -->
-                                <div style="text-align: center; width: 220px;">
-                                    <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
-                                    <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Director, Chhatrasathee</p>
-                                </div>
-
-                                <!-- Hidden hook element to maintain compatibility with script sets -->
-                                <span id="cert-badge-streak" style="display: none;"></span>
-
-                                <!-- Right Signature: Mentor Coordinator -->
-                                <div style="text-align: center; width: 220px;">
-                                    <p style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
-                                    <p style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Mentor Coordinator</p>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Border Accent Ribbon Bar -->
-                            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 18px; background: #0a0c21; border-top: 3px solid #d4af37; border-radius: 0 0 8px 8px;"></div>
-                        
+                    <!-- Seal Badge -->
+                    <div style="position: absolute; top: 20px; left: 20px; width: 110px; height: 155px; text-align: center; z-index:5;">
+                        <div style="position: absolute; bottom: 0; left: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
+                        <div style="position: absolute; bottom: 0; right: 15px; width: 40px; height: 80px; background: #c86400; transform: skewY(-20deg); box-shadow: 0 4px 10px rgba(0,0,0,0.15)"></div>
+                        <div id="cert-seal-circle" style="width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, #ffe259 0%, #ffa751 100%); border: 4px dashed #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.65rem; line-height: 1.2; position: relative; z-index:2; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                            <span>★ ★ ★</span>
+                            <span id="cert-seal-text" style="font-size: 0.8rem; letter-spacing: 0.5px; text-align: center;">BEST AWARD</span>
+                            <span>★ ★ ★</span>
                         </div>
                     </div>
-                </div>
 
+                    <!-- Certificate Header & Logo -->
+                    <div style="text-align: center; margin-top: 5px;">
+                        <img id="cert-logo" src="https://i.imgur.com/gO142Tf.png" style="height: 60px; max-width: 100%; object-fit: contain; margin-bottom: 5px;" alt="Logo">
+                        <h1 id="cert-main-title" style="font-family: 'Playfair Display', 'Georgia', serif; font-size: 3rem; letter-spacing: 4px; font-weight: 800; color: #5a136e; margin: 0; text-transform: uppercase;">Certificate</h1>
+                        <p style="font-size: 0.9rem; font-weight: 700; letter-spacing: 1.5px; color: #c86400; margin-top: 5px; text-transform: uppercase;">
+                            <span id="cert-sub-en">of Appreciation & Compliance</span> / <span id="cert-sub-or" style="font-family: 'Noto Sans Oriya', sans-serif; letter-spacing: normal;">ପ୍ରଶଂସା ପତ୍ର</span>
+                        </p>
+                    </div>
+
+                    <!-- Presented To Section -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p id="cert-presented-tag" style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; color: #7f8c8d; text-transform: uppercase; margin: 0;">
+                            Proudly Presented To / <span style="font-family: 'Noto Sans Oriya', sans-serif; letter-spacing: normal;">ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା</span>
+                        </p>
+                        <h2 id="cert-student-name" style="font-family: 'Playfair Display', 'Georgia', serif; font-style: italic; font-size: 3rem; color: #c86400; font-weight: 700; margin: 15px 0 5px 0; text-shadow: 0 1px 1px rgba(0,0,0,0.1);">Student Name</h2>
+                        <div style="width: 450px; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin: 0 auto; position: relative;">
+                            <div style="width: 12px; height: 12px; background: #d4af37; transform: rotate(45deg); position: absolute; top: -5px; left: 50%; margin-left: -6px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Body Paragraphs -->
+                    <div style="text-align: center; margin-top: 20px; padding: 0 40px; line-height: 1.55;">
+                        <p id="cert-body-en" style="font-size: 0.95rem; color: #34495e; margin: 0 0 8px 0;">
+                            For exceptional commitment and study consistency in solving tests and securing milestone achievements.
+                        </p>
+                        <p id="cert-body-or" style="font-family: 'Noto Sans Oriya', sans-serif; font-size: 0.8rem; font-weight: bold; font-style: italic; color: #2c3e50; margin: 0;">
+                            ଛାତ୍ରସାଥୀ କମିଟି ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ପ୍ରତିଦିନ ନିଷ୍ଠାପୂର୍ବକ ପ୍ରଶ୍ନୋତ୍ତର ଅଭ୍ୟାସ ସମ୍ପୂର୍ଣ୍ଣ କରି ଏହି ଗୌରବମୟ ଲକ୍ଷ୍ୟ ପୂରଣ କରିଥିବାରୁ ଏହା ପ୍ରଦାନ କରାଗଲା ।
+                        </p>
+                    </div>
+
+                    <!-- Signatures -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; position: absolute; bottom: 40px; left: 40px; right: 40px;">
+                        <div style="text-align: center; width: 220px;">
+                            <p id="cert-left-sign" style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
+                            <p id="cert-left-desig" style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Director, Chhatrasathee</p>
+                        </div>
+
+                        <div style="text-align: center; width: 220px;">
+                            <p id="cert-right-sign" style="font-family: 'Georgia', serif; font-style: italic; font-size: 1.35rem; color: #5a136e; font-weight: 700; margin-bottom: 5px; border-bottom: 1.5px solid #bdc3c7; padding-bottom: 5px;">Chhatrasathee</p>
+                            <p id="cert-right-desig" style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; letter-spacing: 0.8px; text-transform: uppercase; margin: 0;">Mentor Coordinator</p>
+                        </div>
+                    </div>
+
+                    <div id="cert-bottom-bar" style="position: absolute; bottom: 0; left: 0; right: 0; height: 18px; background: #0a0c21; border-top: 3px solid #d4af37; border-radius: 0 0 8px 8px;"></div>
+                </div>
             </div>
         </div>
+    </div>
+</div>
         
-<!-- SCREEN 12: QUESTIONS ANSWERS SCREEN -->
-        <div id="qa-screen" class="screen">
-            <div class="card">
-                <!-- Wrapper for Subject selection with Back to Classes button -->
-                <div id="qa-subject-view">
-                    <div class="back-nav" onclick="openClassSelection('qa')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
-                    <h1 id="qa-screen-heading" style="text-align: center; margin-bottom: 1rem;">Questions & Answers</h1>
-                    <div id="qa-subject-container"></div>
-                </div>
+<!-- SCREEN 12: QUESTIONS ANSWERS SCREEN (NO EXTRA OUTER TRAYS) -->
+      <div id="qa-screen" class="screen">
+          <div id="qa-subject-view" class="card">
+              <div class="back-nav" onclick="openClassSelection('qa')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
+              <h1 id="qa-screen-heading" style="text-align: center; margin-bottom: 1rem;">Questions & Answers</h1>
+              <div id="qa-subject-container"></div>
+          </div>
 
-                <div id="qa-topic-list-view" style="display:none">
-                    <div class="back-nav" onclick="goBackToQASubjects()"><i class="fas fa-arrow-left"></i> Back to Q&A Subjects</div>
-                    <h2 id="selected-qa-subject" style="margin-bottom:1rem"></h2>
-                    <div id="qa-topics-container"></div>
-                </div>
+          <div id="qa-topic-list-view" class="card" style="display:none;">
+              <div class="back-nav" onclick="goBackToQASubjects()"><i class="fas fa-arrow-left"></i> Back to Q&A Subjects</div>
+              <h2 id="selected-qa-subject" style="margin-bottom:1rem"></h2>
+              <div id="qa-topics-container"></div>
+          </div>
 
-                <div id="qa-detail-view" style="display:none">
-                    <div class="back-nav" onclick="goBackToQATopics()"><i class="fas fa-arrow-left"></i> Back to Q&A Topic list</div>
-                    <div id="qa-detail-card" class="card"></div>
-                </div>
-            </div>
-        </div>
+          <div id="qa-detail-view" style="display:none;">
+              <div class="back-nav" onclick="goBackToQATopics()"><i class="fas fa-arrow-left"></i> Back to Q&A Topic list</div>
+              <div id="qa-detail-card"></div>
+          </div>
+      </div>
         
         <!-- SCREEN 5: GRAPHICAL CHARTS MY RESULTS -->
         <div id="my-results-screen" class="screen">
@@ -2542,6 +3043,33 @@ body.dark-mode .class-header-title {
         <a href="#" id="footer-whatsapp" style="display:none" target="_blank"><i class="fab fa-whatsapp"></i></a>
         <a href="#" id="footer-instagram" style="display:none" target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="#" id="footer-youtube" style="display:none" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+    
+    <!-- STREAK BONUS COIN CELEBRATION MODAL -->
+    <div id="streak-reward-modal" class="modal" onclick="if(event.target === this) closeModal('streak-reward-modal')">
+        <div class="modal-content streak-reward-modal-content" style="max-width: 440px;">
+            <div class="streak-reward-icon-ring">
+                🔥
+            </div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: #ff5252; margin-bottom: 4px;">
+                7-DAY STREAK UNLOCKED!
+            </h2>
+            <p style="font-size: 0.95rem; color: var(--text-sub); margin-bottom: 0;">
+                Incredible dedication! You have studied consistently for 7 days in a row!
+            </p>
+
+            <div class="streak-reward-bonus-badge">
+                <i class="fas fa-coins" style="color: #ffffff;"></i> +5 BONUS COINS!
+            </div>
+
+            <p style="font-size: 0.85rem; color: #78350f; font-weight: 600;">
+                These bonus coins have been added to your balance to help unlock certificates faster!
+            </p>
+
+            <button type="button" class="btn" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #ff4757, #ff9f43);" onclick="closeModal('streak-reward-modal')">
+                <i class="fas fa-check-circle"></i> AWESOME / CLAIM
+            </button>
+        </div>
     </div>
     
     <!-- USER NOTIFICATIONS MODAL -->
@@ -3143,10 +3671,10 @@ let selectedQASubjectId = '';
 
                   container.style.display = 'block';
                   container.innerHTML = `
-                      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                          <span style="font-size:1.25rem;">🔥</span>
-                          <h3 style="font-size:1.05rem; font-weight:800; color:#ff4757; margin:0; text-transform:uppercase; letter-spacing:0.5px;">Today's Special & Daily Updates</h3>
-                      </div>
+    <div style="display:flex; align-items:center; gap:6px; margin: 10px 0 8px 0; width:100%; overflow:hidden;">
+        <span style="font-size: clamp(1rem, 2.8vw, 1.25rem); flex-shrink:0;">🔥</span>
+        <h3 style="font-size: clamp(0.78rem, 2.7vw, 1.05rem); font-weight:800; color:#ff4757; margin:0; text-transform:uppercase; letter-spacing:0.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Today's Special & Daily Updates</h3>
+    </div>
                       ${dailyFeedData.map((item, idx) => {
                           let pillIcon = 'fa-brain';
                           if (item.category === 'news') pillIcon = 'fa-newspaper';
@@ -3204,6 +3732,7 @@ let selectedQASubjectId = '';
             document.getElementById('user-coin-badge').style.display = 'inline-flex';
             updateSidebarProfileInfo();
             updateUserCoins();
+            updateUserStudyStreak();
             showScreen('choose-class-screen');
         };
 
@@ -3218,31 +3747,209 @@ let selectedQASubjectId = '';
             updateUserCoins();
         };
 
-        // ─────────── COIN REWARD ENGINE (1 COIN PER 10 CORRECT ANSWERS) ───────────
+        // ─────────── COIN REWARD ENGINE (CORRECT ANSWERS + STREAK BONUSES) ───────────
         const updateUserCoins = async () => {
             if (!userData || !userData.name) return;
-            const coinBadge = document.getElementById('user-coin-badge');
             const coinCountEl = document.getElementById('user-coin-count');
             
             // 1. Check local cache first for instant display
             let totalCorrect = parseInt(localStorage.getItem('cs_total_correct_' + userData.name) || '0', 10);
-            let coins = Math.floor(totalCorrect / 10);
+            let bonusCoins = parseInt(localStorage.getItem('cs_bonus_coins_' + userData.name) || '0', 10);
+            let coins = Math.floor(totalCorrect / 10) + bonusCoins;
             if (coinCountEl) coinCountEl.innerText = coins;
 
-            // 2. Sync with database results to calculate lifetime correct answers
+            // 2. Sync with database results to calculate lifetime correct answers & server bonus coins
             try {
                 const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
                 let serverTotalCorrect = 0;
                 snap.forEach(doc => {
-                    const data = doc.data();
-                    serverTotalCorrect += (data.obtained || 0);
+                    serverTotalCorrect += (doc.data().obtained || 0);
                 });
 
                 localStorage.setItem('cs_total_correct_' + userData.name, serverTotalCorrect);
-                const finalCoins = Math.floor(serverTotalCorrect / 10);
+
+                // Fetch persistent streak bonus coins from Firestore
+                const rewardDocId = userData.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                const rewardSnap = await db.collection('user_rewards').doc(rewardDocId).get();
+                if (rewardSnap.exists) {
+                    bonusCoins = rewardSnap.data().bonusCoins || 0;
+                    localStorage.setItem('cs_bonus_coins_' + userData.name, bonusCoins);
+                }
+
+                const finalCoins = Math.floor(serverTotalCorrect / 10) + bonusCoins;
                 if (coinCountEl) coinCountEl.innerText = finalCoins;
             } catch (err) {
                 console.error("Coin calculation error:", err);
+            }
+        };
+
+// ─────────── LIVE GLOBAL STUDY STREAK & BONUS REWARD ENGINE ───────────
+        const updateUserStudyStreak = async () => {
+            if (!userData || !userData.name) return;
+
+            const streakTitle = document.getElementById('streak-card-days-title');
+            const streakCaption = document.getElementById('streak-card-caption');
+            const streakPill = document.getElementById('streak-card-milestone-pill');
+            const weekTrack = document.getElementById('streak-week-track-container');
+
+            let streakDays = 0;
+            const activeDates = [];
+            const localToday = new Date();
+            const todayIso = `${localToday.getFullYear()}-${String(localToday.getMonth() + 1).padStart(2, '0')}-${String(localToday.getDate()).padStart(2, '0')}`;
+
+            try {
+                const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
+
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const dateIso = parseToLocalDateStr(d);
+                    if (dateIso && !activeDates.includes(dateIso)) {
+                        activeDates.push(dateIso);
+                    }
+                });
+
+                if (activeDates.length > 0) {
+                    activeDates.sort((a, b) => new Date(b) - new Date(a));
+                    const latest = activeDates[0];
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayIso = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
+                    if (latest === todayIso || latest === yesterdayIso) {
+                        streakDays = 1;
+                        let lastDate = new Date(latest);
+
+                        for (let i = 1; i < activeDates.length; i++) {
+                            const nextDate = new Date(activeDates[i]);
+                            const diffDays = Math.ceil(Math.abs(lastDate - nextDate) / (1000 * 60 * 60 * 24));
+                            if (diffDays === 1) {
+                                streakDays++;
+                                lastDate = nextDate;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Streak calculation error:", err);
+            }
+
+            // ─── 🎁 REWARD +5 BONUS COINS ON 7-DAY STREAK ───
+            await checkAndAward7DayStreakBonus(streakDays);
+
+            // Update Dashboard Streak Card Text & Badges
+            if (streakTitle) {
+                streakTitle.innerText = `${streakDays} Day${streakDays === 1 ? '' : 's'} Streak!`;
+            }
+
+            const solvedToday = activeDates.includes(todayIso);
+
+            if (streakCaption) {
+                if (streakDays >= 7) {
+                    streakCaption.innerHTML = `🔥 7-Day Streak Complete! You unlocked +5 Bonus Coins! 🪙`;
+                } else if (solvedToday) {
+                    streakCaption.innerHTML = `Great job! You kept your streak burning today! (${streakDays}/7 days toward +5 Bonus Coins) 🔥`;
+                } else if (streakDays > 0) {
+                    streakCaption.innerHTML = `Solve a quiz today to protect your streak! (${streakDays}/7 days toward +5 Bonus Coins) ⏳`;
+                } else {
+                    streakCaption.innerHTML = `Solve a quiz today to start! Reach a 7-day streak for +5 Bonus Coins! 🚀`;
+                }
+            }
+
+            if (streakPill) {
+                if (streakDays >= 7) streakPill.innerText = '🎁 +5 Coins Awarded!';
+                else if (streakDays > 0) streakPill.innerText = `🎁 ${streakDays}/7 toward +5 Coins`;
+                else streakPill.innerText = '🎯 7-Day Bonus: +5 Coins';
+            }
+
+            // Render 7-Day Week Circular Trackers (Mon to Sun)
+            if (weekTrack) {
+                const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+                const now = new Date();
+                const currentDayIndex = (now.getDay() + 6) % 7; // Monday = 0, Sunday = 6
+                const mondayDate = new Date(now);
+                mondayDate.setDate(now.getDate() - currentDayIndex);
+
+                weekTrack.innerHTML = dayLabels.map((lbl, idx) => {
+                    const thisDate = new Date(mondayDate);
+                    thisDate.setDate(mondayDate.getDate() + idx);
+                    const iso = `${thisDate.getFullYear()}-${String(thisDate.getMonth() + 1).padStart(2, '0')}-${String(thisDate.getDate()).padStart(2, '0')}`;
+                    
+                    const isCompleted = activeDates.includes(iso);
+                    const isToday = (iso === todayIso);
+
+                    let circleClass = '';
+                    let innerContent = lbl;
+
+                    if (isCompleted) {
+                        circleClass = 'active';
+                        innerContent = '<i class="fas fa-fire"></i>';
+                    } else if (isToday && !solvedToday) {
+                        circleClass = 'today-pending';
+                        innerContent = lbl;
+                    }
+
+                    return `
+                        <div class="streak-day-cell">
+                            <span class="streak-day-name">${lbl}</span>
+                            <div class="streak-day-circle ${circleClass}">
+                                ${innerContent}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        };
+
+        // ─────────── 7-DAY STREAK REWARD CHECKER & CLAIM LOGIC ───────────
+        const checkAndAward7DayStreakBonus = async (streakDays) => {
+            if (!userData || !userData.name) return;
+
+            // Reset claimed tracker if streak breaks below 7, so they can earn it again on their next 7-day streak!
+            if (streakDays < 7) {
+                localStorage.removeItem('cs_7day_claimed_' + userData.name);
+                return;
+            }
+
+            // If already claimed for this active 7-day streak run, prevent duplicates
+            const alreadyClaimed = localStorage.getItem('cs_7day_claimed_' + userData.name);
+            if (alreadyClaimed === 'true') return;
+
+            try {
+                const rewardDocId = userData.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                const rewardRef = db.collection('user_rewards').doc(rewardDocId);
+                const doc = await rewardRef.get();
+
+                let currentBonus = 0;
+                if (doc.exists) {
+                    currentBonus = doc.data().bonusCoins || 0;
+                }
+
+                const newBonus = currentBonus + 5;
+
+                // Save to Firestore permanently
+                await rewardRef.set({
+                    studentName: userData.name,
+                    bonusCoins: newBonus,
+                    lastMilestone: 7,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                // Update local storage
+                localStorage.setItem('cs_bonus_coins_' + userData.name, newBonus);
+                localStorage.setItem('cs_7day_claimed_' + userData.name, 'true');
+
+                // Update coin display immediately
+                await updateUserCoins();
+
+                // Trigger victory sound chime and open celebratory reward modal
+                playCorrectSound();
+                const modal = document.getElementById('streak-reward-modal');
+                if (modal) modal.classList.add('active');
+
+            } catch (err) {
+                console.error("Failed to award 7-day streak bonus:", err);
             }
         };
 
@@ -3779,8 +4486,9 @@ let selectedQASubjectId = '';
                     timestamp: firebase.firestore.FieldValue.serverTimestamp() 
                 });
 
-                // Immediately recalculate & update earned coins
+                // Immediately recalculate & update earned coins and streak
                 await updateUserCoins();
+                await updateUserStudyStreak();
 
                 const snap = await db.collection('leaderboard').where('quizId', '==', quizId).get();
                 let lbData = snap.docs.map(doc => doc.data());
@@ -3791,7 +4499,55 @@ let selectedQASubjectId = '';
                 });
 
                 const lbHTML = lbData.slice(0, 20).map((d, i) => `<tr><td>${i+1}</td><td>${d.name}</td><td>${d.date}</td><td>${d.total}</td><td>${d.obtained}</td><td>${d.percent}%</td><td>${d.timeTaken || 'N/A'}</td></tr>`).join('');
-                const reviewHTML = currentQuestions.map((q, i) => `<div class="card"><p><strong>${i+1}. ${q.question}</strong></p><div class="status-box ${answers[i] === q.answer ? 'status-correct' : 'status-wrong'}">Your: ${answers[i] || 'Skipped'} | Correct: ${q.answer}</div>${q.description ? `<p style="margin-top:10px; font-size:0.85rem; opacity:0.8"><em>${q.description}</em></p>` : ''}${q.descriptionImage ? `<img src="${q.descriptionImage}" class="quiz-question-image" style="margin-top:10px">` : ''}</div>`).join('');
+                const reviewHTML = currentQuestions.map((q, i) => {
+    const isCorrect = (answers[i] && q.answer && answers[i].trim() === q.answer.trim());
+    
+    // If correct: all green. If wrong: "Your: ... |" is Red, "Correct: ..." is Green
+    const statusText = isCorrect
+        ? `<span style="color: #28a745; font-weight: 600;">Your: ${answers[i]} | Correct: ${q.answer}</span>`
+        : `<span style="color: #dc3545; font-weight: 600;">Your: ${answers[i] || 'Skipped'} | </span><span style="color: #28a745; font-weight: 700;">Correct: ${q.answer}</span>`;
+
+    return `
+        <div class="card">
+            <p><strong>${i+1}. ${q.question}</strong></p>
+            <div class="status-box ${isCorrect ? 'status-correct' : 'status-wrong'}">
+                ${statusText}
+            </div>
+            ${q.description ? `<p style="margin-top:10px; font-size:0.85rem; opacity:0.8"><em>${q.description}</em></p>` : ''}
+            ${q.descriptionImage ? `<img src="${q.descriptionImage}" class="quiz-question-image" style="margin-top:10px">` : ''}
+        </div>
+    `;
+}).join('');
+
+                // Calculate circumference & dynamic progress offset (radius = 74 -> circumference ≈ 465)
+                const circumference = 465;
+                const strokeOffset = circumference - (circumference * percent) / 100;
+
+                // Color palette & celebration badge based on percentage
+                let gradientStart = '#00c6ff', gradientEnd = '#0072ff', badgeText = 'Good Effort!', badgeIcon = '🎯', badgeBg = 'rgba(0,123,255,0.12)', badgeColor = '#007bff';
+
+                if (percent >= 80) {
+                    gradientStart = '#10ac84';
+                    gradientEnd = '#2ed573';
+                    badgeText = 'Outstanding Mastery!';
+                    badgeIcon = '🏆';
+                    badgeBg = 'rgba(46,213,115,0.15)';
+                    badgeColor = '#2ed573';
+                } else if (percent >= 50) {
+                    gradientStart = '#ff9f43';
+                    gradientEnd = '#ff5252';
+                    badgeText = 'Well Done! Keep Going';
+                    badgeIcon = '⭐';
+                    badgeBg = 'rgba(255,159,67,0.15)';
+                    badgeColor = '#ff9f43';
+                } else {
+                    gradientStart = '#ee5253';
+                    gradientEnd = '#ff7675';
+                    badgeText = 'Practice Makes Perfect';
+                    badgeIcon = '💪';
+                    badgeBg = 'rgba(238,82,83,0.15)';
+                    badgeColor = '#ee5253';
+                }
 
                 document.getElementById('result-screen').innerHTML = `
                     <div class="back-nav" onclick="showScreen('subject-list-screen')"><i class="fas fa-arrow-left"></i> Home</div>
@@ -3799,18 +4555,52 @@ let selectedQASubjectId = '';
                         <script>atOptions = { 'key' : 'f6db9d038a3b7fddbee9c6b335d35872', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };<\/script>
                         <script src="https://www.highperformanceformat.com/f6db9d038a3b7fddbee9c6b335d35872/invoke.js"><\/script>
                     </div>
-                    <div class="card" style="text-align:center">
-                        <h2>Final Score</h2>
-                        <div class="score-visuals">
-                            <div class="fraction"><span>${correct}</span><hr style="width:50%; margin:2px auto"><span>${total}</span></div>
-                            <div style="font-size: 2.5rem; font-weight: 700; color:#0ad3fa">${percent}%</div>
+
+                    <div class="card" style="text-align:center;">
+                        <h2 style="font-size: 1.4rem; color: var(--text-main); font-weight: 800; letter-spacing: 0.5px;">Quiz Completed!</h2>
+
+                        <!-- 🌟 GORGEOUS RADIAL SCORE CIRCLE 🌟 -->
+                        <div class="score-card-hero">
+                            <div class="score-dial-container">
+                                <svg class="score-dial-svg" viewBox="0 0 180 180">
+                                    <defs>
+                                        <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="${gradientStart}" />
+                                            <stop offset="100%" stop-color="${gradientEnd}" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="score-dial-bg" cx="90" cy="90" r="74" />
+                                    <circle class="score-dial-progress" cx="90" cy="90" r="74"
+                                            stroke="url(#scoreGradient)"
+                                            stroke-dasharray="${circumference}"
+                                            stroke-dashoffset="${strokeOffset}" />
+                                </svg>
+                                <div class="score-dial-inner">
+                                    <div class="score-dial-icon">${badgeIcon}</div>
+                                    <div class="score-dial-percent">${percent}%</div>
+                                    <div class="score-dial-fraction">${correct} / ${total} Correct</div>
+                                </div>
+                            </div>
+
+                            <!-- Performance Pill Badge -->
+                            <div class="score-performance-badge" style="background:${badgeBg}; color:${badgeColor}; border: 1.5px solid ${badgeColor};">
+                                <span>${badgeIcon}</span> <span>${badgeText}</span>
+                            </div>
+
+                            <!-- Stats Chips: Time, Correct, Incorrect -->
+                            <div class="score-stats-row">
+                                <span class="score-stat-chip"><i class="fas fa-clock" style="color:#007bff;"></i> ${timeTakenStr}</span>
+                                <span class="score-stat-chip"><i class="fas fa-check-circle" style="color:#28a745;"></i> ${correct} Correct</span>
+                                <span class="score-stat-chip"><i class="fas fa-times-circle" style="color:#dc3545;"></i> ${total - correct} Wrong</span>
+                            </div>
                         </div>
-                        <p style="margin-bottom:15px">Time Taken: <b>${timeTakenStr}</b></p>
-                        <div style="display:flex; gap:10px; margin-top:1rem">
-                            <button class="btn" style="flex:1" onclick="startQuiz(true)">Shuffle & Retry</button>
-                            <button class="btn btn-secondary" style="flex:1" onclick="location.reload()">Home</button>
+
+                        <div style="display:flex; gap:10px; margin-top:1.2rem">
+                            <button class="btn" style="flex:1" onclick="startQuiz(true)"><i class="fas fa-redo"></i> Retry</button>
+                            <button class="btn btn-secondary" style="flex:1" onclick="location.reload()"><i class="fas fa-home"></i> Home</button>
                         </div>
                     </div>
+
                     <div class="card">
                       <h3 style="color:var(--header-title); margin-bottom:10px"><i class="fas fa-trophy"></i> Leader Board (Top 20)</h3>
                       <div class="leaderboard-container">
@@ -3819,7 +4609,7 @@ let selectedQASubjectId = '';
                               <tbody>${lbHTML}</tbody>
                           </table>
                       </div>
-                  </div>
+                    </div>
                     <div class="card"><h3>Question Review</h3><br>${reviewHTML}</div>`;
                 showScreen('result-screen');
             } catch (err) { console.error(err); alert("Error saving results. Check connection."); }
@@ -4061,11 +4851,11 @@ let selectedQASubjectId = '';
             }
 
             detailCard.innerHTML = `
-                <div style="padding: 10px 5px; width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden;">
-                    ${pdfButtonHtml}
-                    ${renderedBody}
-                </div>
-            `;
+              <div style="width: 100%; max-width: 100%; box-sizing: border-box;">
+                  ${pdfButtonHtml}
+                  ${renderedBody}
+              </div>
+          `;
 
             // Trigger MathJax 3 to parse and render formulas, geometry & symbols
             if (window.MathJax && window.MathJax.typesetPromise) {
@@ -4410,11 +5200,7 @@ const loadQASubjects = () => {
             }
 
             detailCard.innerHTML = `
-                <div style="width: 100%; box-sizing: border-box;">
-                    <div class="qa-hero-header">
-                        <div class="qa-hero-badge"><i class="fas fa-book-reader"></i> Questions & Answers</div>
-                        <h2 class="qa-hero-title">${topicTitle}</h2>
-                    </div>
+                <div style="width: 100%; max-width: 100%; box-sizing: border-box;">
                     ${pdfButtonHtml}
                     ${renderedBody}
                 </div>
@@ -5276,92 +6062,224 @@ const parseToLocalDateStr = (docData) => {
     const dayVal = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${dayVal}`;
 };
-            const loadStudentCertificate = async () => {
-    // Apply standard name & class fallbacks
-    document.getElementById('cert-student-name').innerText = userData.name || 'Student Name';
-    document.getElementById('cert-class').innerText = userData.class || '10';
+            let activeSelectedMilestone = 100;
+let cachedCertConfig = null;
 
-    // Sync with your Firestore configure logo (or use the active header logo fallback)
-    const appLogo = document.getElementById('app-logo');
-    const certLogo = document.getElementById('cert-logo');
-    if (appLogo && certLogo && appLogo.src) {
-        certLogo.src = appLogo.src;
+const loadStudentCertificate = async () => {
+    const lockedCard = document.getElementById('cert-locked-state');
+    const unlockedCard = document.getElementById('cert-unlocked-state');
+
+    // 1. Fetch live or cached Certificate Config from Admin
+    if (!cachedCertConfig) {
+        try {
+            const configDoc = await db.collection('settings').doc('certificateConfig').get();
+            if (configDoc.exists) cachedCertConfig = configDoc.data();
+        } catch (e) {
+            console.warn("Cert config fallback:", e);
+        }
     }
 
+    const cfg = cachedCertConfig || {
+        minCoins: 100,
+        milestones: [100, 500, 1000, 2000],
+        title: "Certificate",
+        subEn: "of Appreciation & Compliance",
+        subOr: "ପ୍ରଶଂସା ପତ୍ର",
+        presentedTo: "Proudly Presented To / ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା",
+        ribbonText: "EXCELLENCE",
+        sealText: "BEST AWARD",
+        themeColor: "#d4af37",
+        bodyEn: "For exceptional commitment and study consistency in completing academic workouts, successfully achieving the {milestone} Coins Milestone with an active continuous study streak of {streak} days.",
+        bodyOr: "ଛାତ୍ରସାଥୀ କମିଟି ନିର୍ଦ୍ଦେଶାବଳୀ ଅନୁଯାୟୀ ପ୍ରତିଦିନ ନିଷ୍ଠାପୂର୍ବକ ପ୍ରଶ୍ନୋତ୍ତର ଅଭ୍ୟାସ ସମ୍ପୂର୍ଣ୍ଣ କରି {milestone} କଏନ୍ସ ଅର୍ଜନ ପୂର୍ବକ ଏହି ଗୌରବମୟ ଲକ୍ଷ୍ୟ ପୂରଣ କରିଥିବାରୁ ଏହା ପ୍ରଦାନ କରାଗଲା ।",
+        leftSign: "Chhatrasathee",
+        leftDesig: "Director, Chhatrasathee",
+        rightSign: "Chhatrasathee",
+        rightDesig: "Mentor Coordinator"
+    };
+
+    // 2. Calculate Student's Coins & Streak
+    let totalCorrect = parseInt(localStorage.getItem('cs_total_correct_' + userData.name) || '0', 10);
+    let bonusCoins = parseInt(localStorage.getItem('cs_bonus_coins_' + userData.name) || '0', 10);
+    let userCoins = Math.floor(totalCorrect / 10) + bonusCoins;
+
+    let streakDays = 0;
     try {
-        // Fetch leaderboard score logs specifically for the logged-in student
         const snap = await db.collection('leaderboard').where('name', '==', userData.name).get();
-        
-        // 1. Calculate the total questions solved TODAY
-        let solvedTodayCount = 0;
-        
-        // Standardize current local date format to YYYY-MM-DD
+        let serverCorrect = 0;
+        const activeDates = [];
         const localToday = new Date();
         const todayIso = `${localToday.getFullYear()}-${String(localToday.getMonth() + 1).padStart(2, '0')}-${String(localToday.getDate()).padStart(2, '0')}`;
 
-        // Collect unique calendar activity strings for consecutive study streak calculation
-        const activeDates = [];
-
         snap.forEach(doc => {
             const d = doc.data();
-            const entryDateIso = parseToLocalDateStr(d);
-            
-            if (entryDateIso) {
-                // Check match for today's solved count
-                if (entryDateIso === todayIso) {
-                    solvedTodayCount += (d.obtained || 0);
-                }
-
-                if (!activeDates.includes(entryDateIso)) {
-                    activeDates.push(entryDateIso);
-                }
-            }
+            serverCorrect += (d.obtained || 0);
+            const dateIso = parseToLocalDateStr(d);
+            if (dateIso && !activeDates.includes(dateIso)) activeDates.push(dateIso);
         });
 
-        document.getElementById('cert-solved-today').innerText = solvedTodayCount;
+        userCoins = Math.floor(serverCorrect / 10);
+        localStorage.setItem('cs_total_correct_' + userData.name, serverCorrect);
 
-        // 2. Compute the exact Active Continuous Study Streak (consecutive days)
-        let activeStreakCount = 0;
         if (activeDates.length > 0) {
-            // Sort calendar date arrays descending (latest study sessions first)
             activeDates.sort((a, b) => new Date(b) - new Date(a));
-
-            const latestDateStr = activeDates[0];
-            
+            const latest = activeDates[0];
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayIso = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
 
-            // User must have solved questions today or yesterday for the streak to remain active
-            if (latestDateStr === todayIso || latestDateStr === yesterdayIso) {
-                activeStreakCount = 1;
-                let lastDate = new Date(latestDateStr);
-
+            if (latest === todayIso || latest === yesterdayIso) {
+                streakDays = 1;
+                let lastDate = new Date(latest);
                 for (let i = 1; i < activeDates.length; i++) {
                     const nextDate = new Date(activeDates[i]);
-                    const diffTime = Math.abs(lastDate - nextDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
+                    const diffDays = Math.ceil(Math.abs(lastDate - nextDate) / (1000 * 60 * 60 * 24));
                     if (diffDays === 1) {
-                        activeStreakCount++;
-                        lastDate = nextDate; // Move down check
-                    } else if (diffDays > 1) {
-                        break; // Gap detected, stop counting consecutive values
-                    }
+                        streakDays++;
+                        lastDate = nextDate;
+                    } else break;
                 }
             }
         }
+    } catch (e) {
+        console.error("Streak calculation error:", e);
+    }
 
-        // Render compiled streak strings inside certificate template
-        document.getElementById('cert-streak').innerText = activeStreakCount;
-        const badgeStreak = document.getElementById('cert-badge-streak');
-        if (badgeStreak) {
-            badgeStreak.innerText = activeStreakCount + 'd';
+    const minRequired = cfg.minCoins || 100;
+
+    // ─── 3. CHECK COIN LOCK ───
+    if (userCoins < minRequired) {
+        lockedCard.style.display = 'block';
+        unlockedCard.style.display = 'none';
+
+        document.getElementById('cert-lock-min-coins').innerText = `${minRequired} Coins`;
+        document.getElementById('cert-lock-current-coins').innerText = userCoins;
+        document.getElementById('cert-lock-target-coins').innerText = minRequired;
+
+        const progressPercent = Math.min(100, Math.round((userCoins / minRequired) * 100));
+        document.getElementById('cert-lock-progress-bar').style.width = `${progressPercent}%`;
+        return;
+    }
+
+    // ─── 4. UNLOCKED: BUILD CERTIFICATE ───
+    lockedCard.style.display = 'none';
+    unlockedCard.style.display = 'block';
+
+    const milestones = cfg.milestones || [100, 500, 1000, 2000];
+    const unlockedMilestones = milestones.filter(m => userCoins >= m);
+    if (!unlockedMilestones.includes(activeSelectedMilestone)) {
+        activeSelectedMilestone = unlockedMilestones[unlockedMilestones.length - 1] || minRequired;
+    }
+
+    // Build milestone tabs
+    const tabsContainer = document.getElementById('cert-milestone-tabs-container');
+    tabsContainer.innerHTML = milestones.map(m => {
+        const isUnlocked = userCoins >= m;
+        const isActive = activeSelectedMilestone === m;
+        const bg = isActive ? 'linear-gradient(135deg, #ffd700, #ff9f43)' : (isUnlocked ? 'rgba(0,123,255,0.1)' : 'rgba(0,0,0,0.04)');
+        const color = isActive ? '#4a3500' : (isUnlocked ? '#007bff' : '#999');
+        const icon = isUnlocked ? (isActive ? 'fa-award' : 'fa-check') : 'fa-lock';
+
+        return `
+            <button type="button" 
+                style="padding:6px 14px; border-radius:20px; font-weight:700; font-size:0.85rem; border:1px solid ${isActive ? '#ffca08' : 'var(--border-color)'}; background:${bg}; color:${color}; cursor:${isUnlocked ? 'pointer' : 'not-allowed'}; display:inline-flex; align-items:center; gap:6px;"
+                ${isUnlocked ? `onclick="activeSelectedMilestone=${m}; applyCertificateContent();"` : 'disabled'}>
+                <i class="fas ${icon}"></i> ${m} Coins
+            </button>
+        `;
+    }).join('');
+
+    // Apply Admin Configured Content (Supports Custom HTML Tray)
+    let defaultUserCertTemplateHtml = '';
+
+    window.applyCertificateContent = () => {
+        const certTarget = document.getElementById('certificate-pdf-target');
+        if (!certTarget) return;
+
+        if (!defaultUserCertTemplateHtml) {
+            defaultUserCertTemplateHtml = certTarget.innerHTML;
         }
 
-    } catch (err) {
-        console.error("Certificate compilation failed:", err);
-    }
+        const certLogoUrl = (cfg.logoUrl && cfg.logoUrl.trim()) 
+            ? cfg.logoUrl.trim() 
+            : ((document.getElementById('app-logo') && document.getElementById('app-logo').src) || '');
+
+        const replacePlaceholders = (text) => {
+            return (text || '')
+                .replace(/{milestone}/g, activeSelectedMilestone)
+                .replace(/{coins}/g, userCoins)
+                .replace(/{streak}/g, streakDays)
+                .replace(/{name}/g, userData.name || 'Student')
+                .replace(/{class}/g, userData.class || '10')
+                .replace(/{logo}/g, certLogoUrl)
+                .replace(/{date}/g, new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }));
+        };
+
+        // ─── IF ADMIN ENTERED CUSTOM HTML IN THE TRAY ───
+        if (cfg.customHtml && cfg.customHtml.trim()) {
+            certTarget.style.padding = '0';
+            certTarget.style.boxSizing = 'border-box';
+            certTarget.innerHTML = formatOdiaText(replacePlaceholders(cfg.customHtml));
+            return;
+        }
+
+        // ─── FALLBACK TO STANDARD DEFAULT TEMPLATE ───
+        certTarget.innerHTML = defaultUserCertTemplateHtml;
+
+        const certLogo = document.getElementById('cert-logo');
+        if (certLogo) certLogo.src = certLogoUrl;
+
+        const themeColor = cfg.themeColor || '#d4af37';
+        const frameEl = document.getElementById('cert-outer-frame');
+        const ribbonEl = document.getElementById('cert-corner-ribbon');
+        const barEl = document.getElementById('cert-bottom-bar');
+        if (frameEl) frameEl.style.borderColor = themeColor;
+        if (ribbonEl) ribbonEl.style.background = `linear-gradient(135deg, ${themeColor}, #aa771c)`;
+        if (barEl) barEl.style.borderTopColor = themeColor;
+
+        if (ribbonEl) ribbonEl.innerText = cfg.ribbonText || 'EXCELLENCE';
+        const sealEl = document.getElementById('cert-seal-text');
+        if (sealEl) sealEl.innerText = cfg.sealText || 'BEST AWARD';
+        const titleEl = document.getElementById('cert-main-title');
+        if (titleEl) titleEl.innerText = cfg.title || 'Certificate';
+        const subEnEl = document.getElementById('cert-sub-en');
+        if (subEnEl) subEnEl.innerText = cfg.subEn || 'of Appreciation & Compliance';
+        const subOrEl = document.getElementById('cert-sub-or');
+        if (subOrEl) subOrEl.innerText = cfg.subOr || 'ପ୍ରଶଂସା ପତ୍ର';
+        const presEl = document.getElementById('cert-presented-tag');
+        if (presEl) presEl.innerHTML = formatOdiaText(cfg.presentedTo || 'Proudly Presented To / ସମ୍ମାନେ ପ୍ରଦାନ କରାଗଲା');
+        const nameEl = document.getElementById('cert-student-name');
+        if (nameEl) nameEl.innerText = userData.name || 'Student Name';
+
+        const bodyEnEl = document.getElementById('cert-body-en');
+        if (bodyEnEl) bodyEnEl.innerHTML = replacePlaceholders(cfg.bodyEn);
+        const bodyOrEl = document.getElementById('cert-body-or');
+        if (bodyOrEl) bodyOrEl.innerHTML = formatOdiaText(replacePlaceholders(cfg.bodyOr));
+
+        const lSign = document.getElementById('cert-left-sign');
+        if (lSign) lSign.innerText = cfg.leftSign || 'Chhatrasathee';
+        const lDesig = document.getElementById('cert-left-desig');
+        if (lDesig) lDesig.innerText = cfg.leftDesig || 'Director, Chhatrasathee';
+        const rSign = document.getElementById('cert-right-sign');
+        if (rSign) rSign.innerText = cfg.rightSign || 'Chhatrasathee';
+        const rDesig = document.getElementById('cert-right-desig');
+        if (rDesig) rDesig.innerText = cfg.rightDesig || 'Mentor Coordinator';
+
+        // Re-highlight active tab button styling
+        document.querySelectorAll('#cert-milestone-tabs-container button').forEach((btn, idx) => {
+            const m = milestones[idx];
+            if (m === activeSelectedMilestone) {
+                btn.style.background = 'linear-gradient(135deg, #ffd700, #ff9f43)';
+                btn.style.color = '#4a3500';
+                btn.style.borderColor = '#ffca08';
+            } else if (userCoins >= m) {
+                btn.style.background = 'rgba(0,123,255,0.1)';
+                btn.style.color = '#007bff';
+                btn.style.borderColor = 'var(--border-color)';
+            }
+        });
+    };
+
+    applyCertificateContent();
 };
 
         // Intelligent full-screen scaling for responsive viewports
