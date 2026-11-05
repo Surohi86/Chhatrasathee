@@ -74,55 +74,7 @@
             touch-action: manipulation;
         }
         
-        /* Specialized math, symbols, and text styling for Q&A and HTML Notes cards */
-#qa-detail-card, #note-detail-card, .html-note-content {
-    font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
-    line-height: 1.85;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    color: var(--text-main);
-}
-
-/* ─────────── PERMANENT FIX: REMOVE OUTER TRAYS & DOUBLE BORDERS ─────────── */
-/* 1. Strip all borders, backgrounds, and padding from the outer wrapper card */
-#notes-screen > .card,
-#qa-screen > .card {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-/* 2. Re-apply cards ONLY to the Subject and Topic selection screens */
-#notes-subject-view,
-#notes-topic-list-view,
-#qa-subject-view,
-#qa-topic-list-view {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 18px !important;
-    padding: 1.25rem !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
-    margin-bottom: 1.25rem !important;
-}
-
-/* 3. Detail View wrapper is completely borderless and fills 100% width */
-#notes-detail-view,
-#qa-detail-view {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-/* ─────────── 100% BORDERLESS NOTES & QA DETAIL VIEW ─────────── */
+        /* ─────────── NOTES & QA UNIFIED RESPONSIVE STYLING ─────────── */
 #notes-detail-view,
 #qa-detail-view {
     background: transparent !important;
@@ -134,25 +86,54 @@
     max-width: 100% !important;
 }
 
-/* Removes the outer line, white background, tray shadow & padding */
+/* Fix CSS Specificity: Ensure Subject & Topic Cards retain clean background, padding & radius */
+#notes-screen > #notes-subject-view,
+#notes-screen > #notes-topic-list-view,
+#qa-screen > #qa-subject-view,
+#qa-screen > #qa-topic-list-view {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 18px !important;
+    padding: clamp(0.9rem, 2.6vw, 1.35rem) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 1.25rem !important;
+    box-sizing: border-box !important;
+}
+
+/* Detail Reading Card: Clean borderless reading container */
 #note-detail-card,
-#qa-detail-card {
+#qa-detail-card,
+.html-note-content {
+    font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
+    line-height: 1.8;
+    font-size: clamp(0.92rem, 2.3vw, 1.05rem);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    color: var(--text-main);
     background: transparent !important;
     border: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
     box-shadow: none !important;
+    padding: 0 !important;
     margin: 0 0 2rem 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    display: block !important;
 }
 
 body.dark-mode #note-detail-card,
-body.dark-mode #qa-detail-card {
+body.dark-mode #qa-detail-card,
+body.dark-mode .html-note-content {
+    color: #f1f2f6;
     background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+}
+
+/* Prevent MathJax formulas from overflowing mobile viewports */
+mjx-container {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    max-width: 100% !important;
+    padding: 4px 0 !important;
+    -webkit-overflow-scrolling: touch;
 }
 
         /* Full support for superscripts, subscripts, fractions, formulas, and math tags */
@@ -376,14 +357,14 @@ body.dark-mode #qa-detail-card {
             background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
             border: 1.5px solid #fed7aa;
             border-radius: 18px;
-            padding: 1rem 1.25rem;
+            padding: clamp(0.75rem, 2.2vw, 1.15rem);
             margin-bottom: 1.2rem;
             box-shadow: 0 4px 18px rgba(251, 146, 60, 0.12);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         body.dark-mode .streak-dashboard-card {
             background: linear-gradient(135deg, #1e1b4b 0%, #172554 100%);
@@ -393,59 +374,67 @@ body.dark-mode #qa-detail-card {
 
         .streak-top-row {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            align-items: flex-start;
+            gap: clamp(8px, 2.2vw, 14px);
+            width: 100%;
         }
-        .streak-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+
         .streak-flame-icon-box {
-            width: 48px;
-            height: 48px;
+            width: clamp(38px, 9vw, 48px);
+            height: clamp(38px, 9vw, 48px);
+            min-width: clamp(38px, 9vw, 48px);
             border-radius: 14px;
             background: linear-gradient(135deg, #ff4757, #ff9f43);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: clamp(1.2rem, 3.2vw, 1.6rem);
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(255, 71, 87, 0.35);
             animation: flame-pulse 2s infinite ease-in-out;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
+
+        .streak-content-col {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            gap: 3px;
+        }
+
+        .streak-heading-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
         .streak-count-title {
-            font-size: 1.25rem;
+            font-size: clamp(0.95rem, 3.4vw, 1.25rem);
             font-weight: 800;
             color: #9a3412;
             line-height: 1.2;
             margin: 0;
+            white-space: nowrap;
         }
         body.dark-mode .streak-count-title {
             color: #fdba74;
-        }
-        .streak-sub-caption {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #78350f;
-            opacity: 0.85;
-            margin: 2px 0 0 0;
-        }
-        body.dark-mode .streak-sub-caption {
-            color: #fed7aa;
         }
 
         .streak-milestone-pill {
             background: #ffedd5;
             color: #c2410c;
             border: 1px solid #fdba74;
-            padding: 4px 10px;
+            padding: clamp(2px, 0.8vw, 4px) clamp(6px, 1.6vw, 10px);
             border-radius: 14px;
-            font-size: 0.76rem;
+            font-size: clamp(0.66rem, 1.9vw, 0.78rem);
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         body.dark-mode .streak-milestone-pill {
             background: rgba(251, 146, 60, 0.15);
@@ -453,11 +442,25 @@ body.dark-mode #qa-detail-card {
             border-color: rgba(251, 146, 60, 0.3);
         }
 
+        .streak-sub-caption {
+            font-size: clamp(0.72rem, 2.2vw, 0.84rem);
+            font-weight: 600;
+            color: #78350f;
+            opacity: 0.9;
+            line-height: 1.38;
+            margin: 0;
+            word-break: normal;
+            overflow-wrap: break-word;
+        }
+        body.dark-mode .streak-sub-caption {
+            color: #fed7aa;
+        }
+
         /* 7-Day Day Trackers */
         .streak-week-track {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
+            gap: clamp(4px, 1.2vw, 8px);
             margin-top: 4px;
             padding-top: 8px;
             border-top: 1px dashed rgba(251, 146, 60, 0.25);
@@ -469,7 +472,7 @@ body.dark-mode #qa-detail-card {
             gap: 4px;
         }
         .streak-day-name {
-            font-size: 0.7rem;
+            font-size: clamp(0.64rem, 1.8vw, 0.72rem);
             font-weight: 700;
             color: #78350f;
             text-transform: uppercase;
@@ -478,13 +481,13 @@ body.dark-mode #qa-detail-card {
             color: #cbd5e1;
         }
         .streak-day-circle {
-            width: 32px;
-            height: 32px;
+            width: clamp(28px, 6.5vw, 34px);
+            height: clamp(28px, 6.5vw, 34px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: clamp(0.72rem, 2vw, 0.85rem);
             font-weight: 800;
             background: rgba(0, 0, 0, 0.04);
             color: #94a3b8;
@@ -835,10 +838,31 @@ body.dark-mode .score-stat-chip {
         .status-correct { background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; color: #28a745; }
         .status-wrong { background: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; color: #dc3545; }
 
-        .leaderboard-container { overflow-x: auto; margin-top: 10px; }
-        .leaderboard-table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.85rem; }
-        .leaderboard-table th { background: var(--header-title); color: white; padding: 10px; text-align: left; white-space: nowrap; }
-        .leaderboard-table td { padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .leaderboard-container { 
+            width: 100%; 
+            overflow-x: auto; 
+            margin-top: 10px; 
+            -webkit-overflow-scrolling: touch; 
+            box-sizing: border-box;
+        }
+        .leaderboard-table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0 6px; 
+            font-size: 0.85rem; 
+        }
+        .leaderboard-table th { 
+            background: var(--header-title); 
+            color: white; 
+            padding: 10px 6px; 
+            text-align: center; 
+            white-space: nowrap; 
+        }
+        .leaderboard-table td { 
+            padding: 10px 6px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: center;
+        }
         .leaderboard-table tr:nth-child(even) { background: rgba(0,0,0,0.02); }
         body.dark-mode .leaderboard-table tr:nth-child(even) { background: rgba(255,255,255,0.03); }
 
@@ -1114,14 +1138,16 @@ body.dark-mode .score-stat-chip {
         .modal-content { background: var(--card-bg); width: 90%; max-width: 450px; padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-main); }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; margin-bottom: 1rem; background: rgba(0,0,0,0.03); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); font-family: inherit; }
 
-/* Enhanced Modern Global Podium Leaderboard styling */
+/* ─────────── ENHANCED FLUID PODIUM LEADERBOARD STYLING ─────────── */
         .podium-container { 
             display: flex; 
             justify-content: center; 
             align-items: flex-end; 
-            gap: 1.2rem; 
-            margin: 3rem 0 2rem 0; 
+            gap: clamp(6px, 2vw, 16px); 
+            margin: 2.2rem 0 1.5rem 0; 
             padding-top: 1.5rem; 
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .podium-step { 
@@ -1130,20 +1156,22 @@ body.dark-mode .score-stat-chip {
             align-items: center; 
             text-align: center; 
             flex: 1; 
-            border-radius: 20px 20px 15px 15px; 
-            padding: 30px 10px 15px 10px; /* Optimized top padding to maximize vertical inside space */
+            min-width: 0;
+            border-radius: 18px 18px 14px 14px; 
+            padding: 24px 6px 12px 6px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
             position: relative; 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
         }
         .podium-step:hover {
             transform: translateY(-4px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
-        /* Proportionately staggered heights providing complete container space */
+        /* Proportional Min-Heights: Pillars expand if content or Odia names require more room */
         .podium-step.first { 
-            height: 260px; 
+            min-height: clamp(250px, 58vw, 285px); 
             background: linear-gradient(135deg, #ff9f43, #ff5252); 
             color: #fff; 
             z-index: 2; 
@@ -1152,14 +1180,14 @@ body.dark-mode .score-stat-chip {
             animation: floating-podium 3s ease-in-out infinite;
         }
         .podium-step.second { 
-            height: 230px; 
+            min-height: clamp(220px, 50vw, 250px); 
             background: linear-gradient(135deg, #54a0ff, #5f27cd); 
             color: #fff; 
             z-index: 1; 
             box-shadow: 0 10px 24px rgba(84, 160, 255, 0.3);
         }
         .podium-step.third { 
-            height: 200px; /* Raised to 200px to ensure the percentage bubble sits fully inside */
+            min-height: clamp(210px, 47vw, 235px); 
             background: linear-gradient(135deg, #10ac84, #01a3a4); 
             color: #fff; 
             z-index: 1; 
@@ -1171,11 +1199,10 @@ body.dark-mode .score-stat-chip {
             50% { transform: translateY(-7px); }
         }
 
-        /* Float elements and pulse styles for top-performing icons */
         .podium-badge {
             position: absolute;
-            top: -15px; /* Adjusted slightly upward for optimal alignment */
-            font-size: 2.2rem;
+            top: -15px; 
+            font-size: clamp(1.6rem, 4.5vw, 2.2rem);
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
             z-index: 10;
         }
@@ -1189,143 +1216,140 @@ body.dark-mode .score-stat-chip {
         }
 
         .podium-avatar { 
-            width: 58px !important; 
-            height: 58px !important; 
-            min-width: 58px !important;
-            min-height: 58px !important;
-            border-radius: 50% !important; /* Forces perfect circle execution */
-            border: 3.5px solid #fff; 
+            width: clamp(42px, 11vw, 56px) !important; 
+            height: clamp(42px, 11vw, 56px) !important; 
+            min-width: clamp(42px, 11vw, 56px) !important;
+            min-height: clamp(42px, 11vw, 56px) !important;
+            border-radius: 50% !important; 
+            border: 3px solid #fff; 
             background: rgba(255, 255, 255, 0.25); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            flex-shrink: 0 !important; /* Prevents compression into an oval */
-            margin-bottom: 10px; 
+            flex-shrink: 0 !important; 
+            margin-bottom: 6px; 
             font-weight: 800; 
-            font-size: 1.25rem;
-            line-height: 1; /* Aligns text cleanly in the center */
+            font-size: clamp(0.95rem, 2.6vw, 1.25rem);
+            line-height: 1; 
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             white-space: nowrap;
-            /* Removed overflow: hidden so accented vowel signs display beautifully without clipping */
         }
         
         .podium-rank { 
-            font-size: 1.6rem; 
+            font-size: clamp(1.2rem, 3.2vw, 1.55rem); 
             font-weight: 900; 
             margin-bottom: 2px; 
             text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            line-height: 1.1;
         }
+        
         .podium-name { 
-            font-size: 1rem; 
+            font-size: clamp(0.72rem, 2.1vw, 0.95rem); 
             font-weight: 700; 
-            line-height: 1.3; 
-            word-break: break-word; 
+            line-height: 1.28; 
+            overflow-wrap: anywhere; 
+            word-break: normal;
             text-shadow: 0 1px 3px rgba(0,0,0,0.2);
             color: #ffffff;
-            margin: 4px 0;
+            margin: 2px 0 6px 0;
+            padding: 0 2px;
         }
+        
+        /* Pins the 100% score pill inside the bottom of the pillar */
         .podium-score { 
-            font-size: 0.85rem; 
+            font-size: clamp(0.72rem, 1.9vw, 0.85rem); 
             font-weight: 800; 
             background: rgba(255, 255, 255, 0.25);
-            padding: 3px 10px;
+            padding: 3px clamp(6px, 1.6vw, 10px);
             border-radius: 14px;
-            margin-top: 6px;
+            margin-top: auto !important;
+            margin-bottom: 2px;
             backdrop-filter: blur(5px);
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.35);
         }
 
-        /* Sleek Fluid Floating Table Row Design */
-.leaderboard-container { 
-    overflow-x: auto; 
-    margin-top: 10px; 
-    -webkit-overflow-scrolling: touch;
-}
-.leaderboard-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 8px; /* Space out rows for card-like feel */
-    margin-bottom: 1rem;
-}
-.leaderboard-table th {
-    background: var(--header-title);
-    color: white;
-    padding: 15px;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.8px;
-    border: none;
-}
-
-/* Responsive Table Scaling for Mobile and Tablets */
-@media (max-width: 768px) {
-    .container {
-        padding: 0.5rem !important; /* Recover screen space on sides */
-    }
-    .card {
-        padding: 1rem !important; /* Recover padding inside layout card */
-        border-radius: 14px !important;
-        margin-bottom: 1rem !important;
-    }
-    .leaderboard-table th, .leaderboard-table td {
-        padding: 10px 6px !important; /* Shrink cell padding slightly */
-        font-size: 0.82rem !important; 
-    }
-    .leaderboard-table th {
-        font-size: 0.72rem !important;
-        letter-spacing: 0.4px !important;
-    }
-    .leaderboard-table td span.rank-badge {
-        width: 24px !important;
-        height: 24px !important;
-        font-size: 0.75rem !important;
-    }
-    /* Set name column max layout to prevent extreme stretching */
-    .leaderboard-table td b {
-        display: block;
-        max-width: 120px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    /* Hide visual icon to optimize narrow viewport spacing */
-    .leaderboard-table td i.fa-clock {
-        display: none !important;
-    }
-}
+        /* ─────────── RESPONSIVE LEADERBOARD TABLE STYLES ─────────── */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+            margin-bottom: 1rem;
+        }
         .leaderboard-table th {
             background: var(--header-title);
             color: white;
-            padding: 15px;
+            padding: 12px 6px;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.8px;
+            font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+            letter-spacing: 0.4px;
             border: none;
+            text-align: center;
+            white-space: nowrap;
         }
-        .leaderboard-table th:first-child { border-radius: 12px 0 0 12px; }
-        .leaderboard-table th:last-child { border-radius: 0 12px 12px 0; }
+        .leaderboard-table th:first-child { border-radius: 10px 0 0 10px; }
+        .leaderboard-table th:last-child { border-radius: 0 10px 10px 0; }
+        .leaderboard-table th:nth-child(2) { text-align: left; padding-left: 10px; }
 
         .leaderboard-table tr {
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .leaderboard-table td {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 10px 6px;
             border: none;
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             color: var(--text-main);
-            font-size: 0.95rem;
+            font-size: clamp(0.74rem, 1.9vw, 0.88rem);
+            text-align: center;
+            white-space: nowrap;
         }
         .leaderboard-table td:first-child {
             border-left: 1px solid var(--border-color);
-            border-radius: 12px 0 0 12px;
+            border-radius: 10px 0 0 10px;
         }
         .leaderboard-table td:last-child {
             border-right: 1px solid var(--border-color);
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .leaderboard-table td:nth-child(2) {
+            text-align: left;
+            padding-left: 10px;
+        }
+        .leaderboard-table td b {
+            display: inline-block;
+            max-width: clamp(90px, 24vw, 160px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        body.dark-mode .leaderboard-table tbody tr:hover {
+            box-shadow: 0 6px 16px rgba(255,255,255,0.03);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0.5rem !important;
+            }
+            .card {
+                padding: 0.85rem !important;
+                border-radius: 14px !important;
+            }
+            .leaderboard-table th, .leaderboard-table td {
+                padding: 8px 4px !important;
+            }
+            .leaderboard-table td i.fa-clock {
+                display: none !important;
+            }
         }
 
         /* Row elevation on hover */
@@ -1368,7 +1392,36 @@ body.dark-mode .score-stat-chip {
 
         @media (max-width: 600px) { 
             .app-footer { gap: 1.2rem; padding: 1rem 0.5rem 2.5rem 0.5rem; } 
-            .quiz-list-item { flex-direction: column; text-align: center; gap: 0.5rem; }
+            /* Keeps topic items as sleek horizontal bars on mobile */
+            .quiz-list-item {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                text-align: left !important;
+                padding: clamp(0.85rem, 2.5vw, 1.2rem) clamp(0.95rem, 3vw, 1.35rem) !important;
+                gap: 10px !important;
+                border-radius: 14px !important;
+                margin-bottom: 0.75rem !important;
+            }
+            .quiz-list-item > div:first-child {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+            .quiz-list-item h3 {
+                font-size: clamp(0.92rem, 2.8vw, 1.15rem) !important;
+                line-height: 1.35 !important;
+                margin: 0 !important;
+            }
+            .quiz-list-item p {
+                font-size: clamp(0.72rem, 2vw, 0.82rem) !important;
+                margin-top: 3px !important;
+            }
+            .quiz-list-item .btn {
+                padding: 6px 12px !important;
+                font-size: 0.75rem !important;
+                flex-shrink: 0 !important;
+            }
         }
         /* ─────────── PERFORMANCE STATS GRID & BANNER STYLES ─────────── */
         .stats-grid {
@@ -2613,16 +2666,16 @@ body.dark-mode .class-header-title {
                 <!-- 🌟 EYE-CATCHING STUDY STREAK DASHBOARD CARD 🌟 -->
                 <div id="streak-dashboard-widget" class="streak-dashboard-card">
                     <div class="streak-top-row">
-                        <div class="streak-title-wrap">
-                            <div class="streak-flame-icon-box">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                            <div>
-                                <h3 id="streak-card-days-title" class="streak-count-title">0 Days Streak!</h3>
-                                <p id="streak-card-caption" class="streak-sub-caption">Solve a quiz today to light up your streak! 🔥</p>
-                            </div>
+                        <div class="streak-flame-icon-box">
+                            <i class="fas fa-fire"></i>
                         </div>
-                        <span id="streak-card-milestone-pill" class="streak-milestone-pill">🔥 Active Streak</span>
+                        <div class="streak-content-col">
+                            <div class="streak-heading-row">
+                                <h3 id="streak-card-days-title" class="streak-count-title">0 Days Streak!</h3>
+                                <span id="streak-card-milestone-pill" class="streak-milestone-pill">🔥 Active Streak</span>
+                            </div>
+                            <p id="streak-card-caption" class="streak-sub-caption">Solve a quiz today to light up your streak! 🔥</p>
+                        </div>
                     </div>
 
                     <!-- 7-Day Live Weekly Track (Mon to Sun) -->
@@ -4724,7 +4777,7 @@ let selectedQASubjectId = '';
             }
         };
 
-        // ─────────── SUBJECT NOTES MARKDOWN PARSER ───────────
+        // ─────────── SUBJECT NOTES MARKDOWN PARSER (MOBILE & DESKTOP TUNED) ───────────
         const formatNotesContent = (text) => {
             if (!text) return '';
             
@@ -4736,7 +4789,7 @@ let selectedQASubjectId = '';
                 let line = lines[i].trim();
 
                 if (!line) {
-                    htmlOutput.push('<div style="height: 12px;"></div>');
+                    htmlOutput.push('<div style="height: 10px;"></div>');
                     continue;
                 }
 
@@ -4746,54 +4799,55 @@ let selectedQASubjectId = '';
                     .replace(/\*(.*?)\*/g, '<em>$1</em>')
                     .replace(/_(.*?)_/g, '<em>$1</em>');
 
+                // Clean headline for Note Title (adapts to light/dark themes and viewport widths)
                 if (firstNonEmptyLine) {
                     firstNonEmptyLine = false;
                     let titleText = line.replace(/\*\*/g, '').replace(/__/g, '');
                     htmlOutput.push(`
-                        <div style="text-align: center; margin-bottom: 25px; width: 100%;">
-                            <h2 style="font-family: 'Poppins', 'Noto Sans Oriya', sans-serif; font-size: 1.8rem; font-weight: 800; color: #5a136e; display: inline-block; margin: 0; padding-bottom: 5px; border-bottom: 2px dotted #dc3545;">${titleText}</h2>
+                        <div style="text-align: center; margin-bottom: 20px; width: 100%;">
+                            <h2 style="font-family: inherit; font-size: clamp(1.25rem, 4vw, 1.75rem); font-weight: 800; color: var(--header-title); display: inline-block; margin: 0; padding-bottom: 6px; border-bottom: 2.5px solid var(--header-title); line-height: 1.35;">${titleText}</h2>
                         </div>
                     `);
                     continue;
                 }
 
+                // Section headings (e.g., 1. Introduction, ୨. ସଂଜ୍ଞା)
                 const headingRegex = /^(?:\s*|<strong[^>]*>)*(?:\*\*|__)?([0-9୦-୯]+)\.\s*(.*?)(?:\*\*|__)?(?:<\/strong>)*$/i;
                 const headingMatch = line.match(headingRegex);
                 
                 if (headingMatch) {
                     const num = headingMatch[1];
-                    let title = headingMatch[2];
-                    title = title.replace(/\*\*/g, '').replace(/__/g, '');
+                    let title = headingMatch[2].replace(/\*\*/g, '').replace(/__/g, '');
                     htmlOutput.push(`
-                        <h3 style="color: #007bff; font-size: 1.25rem; font-weight: bold; margin-top: 25px; margin-bottom: 12px; font-family: inherit;">
+                        <h3 style="color: var(--header-title); font-size: clamp(1.05rem, 3.2vw, 1.25rem); font-weight: 800; margin-top: 20px; margin-bottom: 8px; font-family: inherit; line-height: 1.4;">
                             ${num}. ${title}
                         </h3>
                     `);
                     continue;
                 }
 
+                // Bullet items
                 const bulletRegex = /^\s*[\*\-•]\s*(.*)$/;
                 const bulletMatch = line.match(bulletRegex);
                 
                 if (bulletMatch) {
-                    let bulletText = bulletMatch[1];
-                    let formattedBullet = bulletText
+                    let bulletText = bulletMatch[1]
                         .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
                         .replace(/__(.*?)__/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
                         .replace(/\*(.*?)\*/g, '<em>$1</em>')
                         .replace(/_(.*?)_/g, '<em>$1</em>');
 
                     htmlOutput.push(`
-                        <div style="display: flex; align-items: flex-start; margin-left: 15px; margin-bottom: 8px; line-height: 1.7;">
-                            <span style="color: var(--text-main); margin-right: 10px; font-size: 1.2rem; line-height: 1;">•</span>
-                            <span style="flex: 1; color: var(--text-main); font-size: 1.05rem; font-family: inherit;">${formattedBullet}</span>
+                        <div style="display: flex; align-items: flex-start; margin-left: 6px; margin-bottom: 8px; line-height: 1.75;">
+                            <span style="color: var(--header-title); margin-right: 8px; font-size: 1.1rem; line-height: 1.5;">•</span>
+                            <span style="flex: 1; color: var(--text-main); font-size: clamp(0.92rem, 2.3vw, 1.05rem); font-family: inherit;">${bulletText}</span>
                         </div>
                     `);
                     continue;
                 }
 
                 htmlOutput.push(`
-                    <p style="color: var(--text-main); font-size: 1.05rem; margin-bottom: 10px; line-height: 1.7; font-family: inherit;">
+                    <p style="color: var(--text-main); font-size: clamp(0.92rem, 2.3vw, 1.05rem); margin-bottom: 10px; line-height: 1.8; font-family: inherit;">
                         ${formattedLine}
                     </p>
                 `);
@@ -4811,15 +4865,14 @@ let selectedQASubjectId = '';
             let pdfButtonHtml = '';
             if (noteData.pdfUrl && noteData.pdfUrl.trim()) {
                 pdfButtonHtml = `
-                    <div style="margin-bottom: 20px; text-align: center;">
-                        <a href="${noteData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; box-shadow:0 4px 15px rgba(214, 48, 49, 0.35);">
-                            <i class="fas fa-file-pdf" style="font-size:1.3rem;"></i> Open / Download PDF Notes
+                    <div style="margin-bottom: 18px; text-align: center;">
+                        <a href="${noteData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: clamp(8px, 2vw, 12px) clamp(16px, 3.5vw, 24px); border-radius: 25px; font-size: clamp(0.82rem, 2.2vw, 0.95rem); font-weight: 700; box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3);">
+                            <i class="fas fa-file-pdf" style="font-size:1.15rem;"></i> Open / Download PDF Notes
                         </a>
                     </div>
                 `;
             }
 
-            // Preserves styles, head components, and extracts valid content safely
             const prepareFullHtml = (rawHtml) => {
                 if (!rawHtml) return '';
                 let html = rawHtml;
@@ -4836,7 +4889,7 @@ let selectedQASubjectId = '';
             let renderedBody = '';
             if (noteData.htmlContent && noteData.htmlContent.trim()) {
                 renderedBody = `
-                    <div class="html-note-content" style="font-size: 1.05rem; width: 100%; max-width: 100%; box-sizing: border-box;">
+                    <div class="html-note-content" style="width: 100%; max-width: 100%; box-sizing: border-box;">
                         ${prepareFullHtml(noteData.htmlContent)}
                     </div>
                 `;
@@ -4851,17 +4904,16 @@ let selectedQASubjectId = '';
             }
 
             detailCard.innerHTML = `
-              <div style="width: 100%; max-width: 100%; box-sizing: border-box;">
-                  ${pdfButtonHtml}
-                  ${renderedBody}
-              </div>
-          `;
+                <div style="width: 100%; max-width: 100%; box-sizing: border-box;">
+                    ${pdfButtonHtml}
+                    ${renderedBody}
+                </div>
+            `;
 
-            // Trigger MathJax 3 to parse and render formulas, geometry & symbols
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([detailCard]).catch(err => console.warn('MathJax render error:', err));
             }
-        };
+        }; 
 
         // ─────────── NOTES BACK NAVIGATION HANDLERS ───────────
         const goBackToNotesSubjects = () => {
