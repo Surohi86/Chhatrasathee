@@ -59,6 +59,21 @@
             --quiz-footer-bg: #0a0c21;
         }
 
+        /* Prevent dark blue titles from blending into the dark navy background */
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode h4 {
+            color: #f1f2f6 !important;
+        }
+
+        body.dark-mode #notes-screen-heading,
+        body.dark-mode #selected-notes-subject,
+        body.dark-mode #qa-screen-heading,
+        body.dark-mode #selected-qa-subject {
+            color: var(--header-title) !important;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -75,66 +90,240 @@
         }
         
         /* ─────────── NOTES & QA UNIFIED RESPONSIVE STYLING ─────────── */
-#notes-detail-view,
-#qa-detail-view {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-}
+        #notes-detail-view,
+        #qa-detail-view {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
 
-/* Fix CSS Specificity: Ensure Subject & Topic Cards retain clean background, padding & radius */
-#notes-screen > #notes-subject-view,
-#notes-screen > #notes-topic-list-view,
-#qa-screen > #qa-subject-view,
-#qa-screen > #qa-topic-list-view {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 18px !important;
-    padding: clamp(0.9rem, 2.6vw, 1.35rem) !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
-    margin-bottom: 1.25rem !important;
-    box-sizing: border-box !important;
-}
+        #notes-screen > #notes-subject-view,
+        #notes-screen > #notes-topic-list-view,
+        #qa-screen > #qa-subject-view,
+        #qa-screen > #qa-topic-list-view {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 18px !important;
+            padding: clamp(0.9rem, 2.6vw, 1.35rem) !important;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
+            margin-bottom: 1.25rem !important;
+            box-sizing: border-box !important;
+        }
 
-/* Detail Reading Card: Clean borderless reading container */
-#note-detail-card,
-#qa-detail-card,
-.html-note-content {
-    font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
-    line-height: 1.8;
-    font-size: clamp(0.92rem, 2.3vw, 1.05rem);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    color: var(--text-main);
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 0 2rem 0 !important;
-}
+        #note-detail-card,
+        #qa-detail-card,
+        .html-note-content {
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', 'Segoe UI Symbol', sans-serif;
+            line-height: 1.8;
+            font-size: clamp(0.92rem, 2.3vw, 1.05rem);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 0 2rem 0 !important;
+        }
 
-body.dark-mode #note-detail-card,
-body.dark-mode #qa-detail-card,
-body.dark-mode .html-note-content {
-    color: #f1f2f6;
-    background: transparent !important;
-}
+        /* ========================================================
+           100% BULLETPROOF THEME ENFORCER (LIGHT & DARK CONTRAST)
+           ======================================================== */
 
-/* Prevent MathJax formulas from overflowing mobile viewports */
-mjx-container {
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    max-width: 100% !important;
-    padding: 4px 0 !important;
-    -webkit-overflow-scrolling: touch;
-}
+        /* ─── LIGHT MODE (Default) ─── */
+        body:not(.dark-mode) .html-note-content {
+            color: #1e293b !important;
+        }
+
+        /* Force all cards, steps, sections, and tables to clean white with dark text */
+        body:not(.dark-mode) .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
+        body:not(.dark-mode) .html-note-content section,
+        body:not(.dark-mode) .html-note-content article,
+        body:not(.dark-mode) .html-note-content table,
+        body:not(.dark-mode) .html-note-content tr,
+        body:not(.dark-mode) .html-note-content td,
+        body:not(.dark-mode) .html-note-content ul,
+        body:not(.dark-mode) .html-note-content ol,
+        body:not(.dark-mode) .html-note-content li {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        /* Light mode alternate table rows */
+        body:not(.dark-mode) .html-note-content tr:nth-child(even) td {
+            background-color: #f8fafc !important;
+        }
+
+        /* Light mode table headers */
+        body:not(.dark-mode) .html-note-content th {
+            background-color: #0284c7 !important;
+            color: #ffffff !important;
+            border-color: #0284c7 !important;
+        }
+
+        /* Light mode paragraphs, text, and headings */
+        body:not(.dark-mode) .html-note-content p,
+        body:not(.dark-mode) .html-note-content span:not([style*="gradient"]),
+        body:not(.dark-mode) .html-note-content a {
+            color: #1e293b !important;
+            background-color: transparent !important;
+        }
+
+        body:not(.dark-mode) .html-note-content strong,
+        body:not(.dark-mode) .html-note-content b {
+            color: #0f172a !important;
+            font-weight: 700 !important;
+        }
+
+        body:not(.dark-mode) .html-note-content h1,
+        body:not(.dark-mode) .html-note-content h2,
+        body:not(.dark-mode) .html-note-content h3,
+        body:not(.dark-mode) .html-note-content h4 {
+            color: #0369a1 !important;
+        }
+
+
+        /* ─── DARK MODE (Solid High Contrast) ─── */
+        body.dark-mode #note-detail-card,
+        body.dark-mode #qa-detail-card,
+        body.dark-mode .html-note-content {
+            color: #f8fafc !important;
+            background: transparent !important;
+        }
+
+        /* Force all cards, steps, sections, and tables to deep navy with white text */
+        body.dark-mode .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
+        body.dark-mode .html-note-content section,
+        body.dark-mode .html-note-content article,
+        body.dark-mode .html-note-content table,
+        body.dark-mode .html-note-content tr,
+        body.dark-mode .html-note-content td,
+        body.dark-mode .html-note-content ul,
+        body.dark-mode .html-note-content ol,
+        body.dark-mode .html-note-content li {
+            background-color: #141836 !important;
+            color: #f8fafc !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        /* Dark mode alternate table rows */
+        body.dark-mode .html-note-content tr:nth-child(even) td {
+            background-color: #1a2046 !important;
+        }
+
+        /* Dark mode table headers */
+        body.dark-mode .html-note-content th {
+            background-color: #0369a1 !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        /* Dark mode paragraphs, text, and headings */
+        body.dark-mode .html-note-content p,
+        body.dark-mode .html-note-content span:not([style*="gradient"]),
+        body.dark-mode .html-note-content a {
+            color: #f1f5f9 !important;
+            background-color: transparent !important;
+        }
+
+        body.dark-mode .html-note-content strong,
+        body.dark-mode .html-note-content b {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+
+        body.dark-mode .html-note-content h1,
+        body.dark-mode .html-note-content h2,
+        body.dark-mode .html-note-content h3,
+        body.dark-mode .html-note-content h4 {
+            color: #38bdf8 !important;
+        }
+
+
+        /* ─── HERO GRADIENT BANNERS (KEEP VIBRANT IN BOTH MODES) ─── */
+        .html-note-content [style*="linear-gradient"],
+        .html-note-content [style*="background: linear-gradient"],
+        .html-note-content [style*="background:linear-gradient"] {
+            color: #ffffff !important;
+        }
+        .html-note-content [style*="linear-gradient"] *,
+        .html-note-content [style*="background: linear-gradient"] * {
+            background-color: transparent !important;
+            color: #ffffff !important;
+        }
+
+        /* MathJax formulas */
+        mjx-container {
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            max-width: 100% !important;
+            padding: 4px 0 !important;
+            -webkit-overflow-scrolling: touch;
+        }
+        body.dark-mode mjx-container {
+            color: #f1f5f9 !important;
+        }
+        body.dark-mode mjx-container svg {
+            fill: currentColor !important;
+        }
+
+        /* ─── RESPONSIVE HTML NOTE HERO BANNERS & PILL BADGES (MOBILE) ─── */
+        @media (max-width: 600px) {
+            .html-note-content [style*="linear-gradient"],
+            .html-note-content [style*="background: linear-gradient"],
+            .html-note-content [style*="background:linear-gradient"] {
+                padding: clamp(10px, 3vw, 16px) clamp(8px, 2.5vw, 12px) !important;
+                border-radius: 12px !important;
+            }
+
+            .html-note-content [style*="border-radius: 20px"],
+            .html-note-content [style*="border-radius: 25px"],
+            .html-note-content [style*="border-radius: 30px"],
+            .html-note-content [style*="border-radius: 50px"] {
+                font-size: clamp(0.55rem, 1.7vw, 0.68rem) !important;
+                padding: 2px clamp(6px, 1.8vw, 10px) !important;
+                margin: 2px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                white-space: nowrap !important;
+                line-height: 1.25 !important;
+                max-width: 98% !important;
+            }
+
+            .html-note-content h1,
+            .html-note-content h2,
+            .html-note-content [style*="font-size: 2rem"],
+            .html-note-content [style*="font-size: 2.2rem"] {
+                font-size: clamp(1.2rem, 3.8vw, 1.6rem) !important;
+                line-height: 1.3 !important;
+                margin: 4px 0 2px 0 !important;
+            }
+
+            .html-note-content [style*="background: rgba(0, 0, 0"],
+            .html-note-content [style*="background:rgba(0, 0, 0"] {
+                padding: 6px 10px !important;
+                font-size: clamp(0.62rem, 1.8vw, 0.76rem) !important;
+                line-height: 1.45 !important;
+                margin-top: 6px !important;
+                border-radius: 8px !important;
+            }
+
+            .html-note-content [style*="border: 1px solid"],
+            .html-note-content [style*="border:1px solid"] {
+                padding: clamp(10px, 2.8vw, 16px) clamp(8px, 2.4vw, 14px) !important;
+                margin-top: 10px !important;
+                margin-bottom: 10px !important;
+                border-radius: 12px !important;
+            }
+        }
 
         /* Full support for superscripts, subscripts, fractions, formulas, and math tags */
         .html-note-content sup {
@@ -164,8 +353,8 @@ mjx-container {
             max-width: 100% !important;
             height: auto !important;
             display: block;
-            margin: 14px auto;
-            border-radius: 12px;
+            margin: 12px auto;
+            border-radius: 10px;
             box-sizing: border-box;
         }
 
@@ -177,13 +366,13 @@ mjx-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             border-collapse: collapse;
-            margin: 18px 0;
+            margin: 14px 0;
             border-radius: 10px;
         }
         .html-note-content th, #note-detail-card th,
         .html-note-content td, #note-detail-card td {
             border: 1px solid var(--border-color);
-            padding: 10px 14px;
+            padding: 8px 12px;
             text-align: left;
         }
         .html-note-content th, #note-detail-card th {
@@ -357,7 +546,7 @@ mjx-container {
             background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
             border: 1.5px solid #fed7aa;
             border-radius: 18px;
-            padding: clamp(0.75rem, 2.2vw, 1.15rem);
+            padding: clamp(0.65rem, 2vw, 1rem) clamp(0.65rem, 2vw, 1.15rem);
             margin-bottom: 1.2rem;
             box-shadow: 0 4px 18px rgba(251, 146, 60, 0.12);
             position: relative;
@@ -365,6 +554,7 @@ mjx-container {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            box-sizing: border-box;
         }
         body.dark-mode .streak-dashboard-card {
             background: linear-gradient(135deg, #1e1b4b 0%, #172554 100%);
@@ -375,20 +565,21 @@ mjx-container {
         .streak-top-row {
             display: flex;
             align-items: flex-start;
-            gap: clamp(8px, 2.2vw, 14px);
+            gap: clamp(6px, 1.8vw, 12px);
             width: 100%;
+            box-sizing: border-box;
         }
 
         .streak-flame-icon-box {
-            width: clamp(38px, 9vw, 48px);
-            height: clamp(38px, 9vw, 48px);
-            min-width: clamp(38px, 9vw, 48px);
-            border-radius: 14px;
+            width: clamp(34px, 8.5vw, 44px);
+            height: clamp(34px, 8.5vw, 44px);
+            min-width: clamp(34px, 8.5vw, 44px);
+            border-radius: 12px;
             background: linear-gradient(135deg, #ff4757, #ff9f43);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(1.2rem, 3.2vw, 1.6rem);
+            font-size: clamp(1.15rem, 3vw, 1.5rem);
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(255, 71, 87, 0.35);
             animation: flame-pulse 2s infinite ease-in-out;
@@ -401,23 +592,26 @@ mjx-container {
             flex-direction: column;
             flex: 1;
             min-width: 0;
-            gap: 3px;
+            gap: 2px;
+            overflow: hidden;
         }
 
         .streak-heading-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 6px;
+            gap: 4px;
+            width: 100%;
         }
 
         .streak-count-title {
-            font-size: clamp(0.95rem, 3.4vw, 1.25rem);
+            font-size: clamp(0.86rem, 2.7vw, 1.2rem);
             font-weight: 800;
             color: #9a3412;
             line-height: 1.2;
             margin: 0;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         body.dark-mode .streak-count-title {
             color: #fdba74;
@@ -427,14 +621,15 @@ mjx-container {
             background: #ffedd5;
             color: #c2410c;
             border: 1px solid #fdba74;
-            padding: clamp(2px, 0.8vw, 4px) clamp(6px, 1.6vw, 10px);
-            border-radius: 14px;
-            font-size: clamp(0.66rem, 1.9vw, 0.78rem);
+            padding: 2px clamp(5px, 1.2vw, 8px);
+            border-radius: 12px;
+            font-size: clamp(0.6rem, 1.6vw, 0.74rem);
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0px;
             white-space: nowrap;
             flex-shrink: 0;
+            margin-left: auto;
         }
         body.dark-mode .streak-milestone-pill {
             background: rgba(251, 146, 60, 0.15);
@@ -1274,36 +1469,37 @@ body.dark-mode .score-stat-chip {
         .leaderboard-table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 6px;
+            border-spacing: 0 5px;
             margin-bottom: 1rem;
+            table-layout: auto;
         }
         .leaderboard-table th {
             background: var(--header-title);
             color: white;
-            padding: 12px 6px;
-            font-weight: 600;
+            padding: 10px 4px;
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: clamp(0.68rem, 1.8vw, 0.78rem);
-            letter-spacing: 0.4px;
+            font-size: clamp(0.62rem, 1.7vw, 0.78rem);
+            letter-spacing: 0px;
             border: none;
             text-align: center;
             white-space: nowrap;
         }
         .leaderboard-table th:first-child { border-radius: 10px 0 0 10px; }
         .leaderboard-table th:last-child { border-radius: 0 10px 10px 0; }
-        .leaderboard-table th:nth-child(2) { text-align: left; padding-left: 10px; }
+        .leaderboard-table th:nth-child(2) { text-align: left; padding-left: 6px; }
 
         .leaderboard-table tr {
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .leaderboard-table td {
             background: var(--card-bg);
-            padding: 10px 6px;
+            padding: 9px 3px;
             border: none;
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
             color: var(--text-main);
-            font-size: clamp(0.74rem, 1.9vw, 0.88rem);
+            font-size: clamp(0.7rem, 1.8vw, 0.86rem);
             text-align: center;
             white-space: nowrap;
         }
@@ -1317,15 +1513,21 @@ body.dark-mode .score-stat-chip {
         }
         .leaderboard-table td:nth-child(2) {
             text-align: left;
-            padding-left: 10px;
+            padding-left: 6px;
         }
         .leaderboard-table td b {
             display: inline-block;
-            max-width: clamp(90px, 24vw, 160px);
+            max-width: clamp(72px, 20vw, 150px);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             vertical-align: middle;
+            font-size: clamp(0.72rem, 1.9vw, 0.88rem);
+        }
+
+        /* Scales down the 100% percentage span on mobile so it doesn't push the TIME column out */
+        .leaderboard-table td span[style*="font-size"] {
+            font-size: clamp(0.78rem, 2vw, 0.95rem) !important;
         }
 
         .leaderboard-table tbody tr:hover {
@@ -1338,14 +1540,23 @@ body.dark-mode .score-stat-chip {
 
         @media (max-width: 600px) {
             .container {
-                padding: 0.5rem !important;
+                padding: 0.4rem !important;
             }
-            .card {
-                padding: 0.85rem !important;
+            #leaderboard-screen .card {
+                padding: 0.75rem 0.35rem !important;
                 border-radius: 14px !important;
             }
             .leaderboard-table th, .leaderboard-table td {
-                padding: 8px 4px !important;
+                padding: 7px 2px !important;
+            }
+            .leaderboard-table th:nth-child(2),
+            .leaderboard-table td:nth-child(2) {
+                padding-left: 4px !important;
+            }
+            .rank-badge {
+                width: 22px !important;
+                height: 22px !important;
+                font-size: 0.72rem !important;
             }
             .leaderboard-table td i.fa-clock {
                 display: none !important;
@@ -4856,10 +5067,24 @@ let selectedQASubjectId = '';
             return htmlOutput.join('');
         };
 
+        // ─────────── CLEAN HTML NOTE NORMALIZER ───────────
+        const prepareFullHtml = (rawHtml) => {
+            if (!rawHtml) return '';
+            let html = rawHtml;
+            if (/<html[\s\S]*>/i.test(html)) {
+                let styles = '';
+                const styleMatches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+                if (styleMatches) styles = styleMatches.join('\n');
+                const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                html = styles + (bodyMatch ? bodyMatch[1] : html);
+            }
+            return formatOdiaText(html);
+        };
+
         const showNoteDetails = (noteData) => {
             document.getElementById('notes-topic-list-view').style.display = 'none';
             document.getElementById('notes-detail-view').style.display = 'block';
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'instant' });
             const detailCard = document.getElementById('note-detail-card');
             
             let pdfButtonHtml = '';
@@ -4872,19 +5097,6 @@ let selectedQASubjectId = '';
                     </div>
                 `;
             }
-
-            const prepareFullHtml = (rawHtml) => {
-                if (!rawHtml) return '';
-                let html = rawHtml;
-                if (/<html[\s\S]*>/i.test(html)) {
-                    let styles = '';
-                    const styleMatches = html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
-                    if (styleMatches) styles = styleMatches.join('\n');
-                    const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-                    html = styles + (bodyMatch ? bodyMatch[1] : html);
-                }
-                return formatOdiaText(html);
-            };
 
             let renderedBody = '';
             if (noteData.htmlContent && noteData.htmlContent.trim()) {
@@ -4913,7 +5125,7 @@ let selectedQASubjectId = '';
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([detailCard]).catch(err => console.warn('MathJax render error:', err));
             }
-        }; 
+        };
 
         // ─────────── NOTES BACK NAVIGATION HANDLERS ───────────
         const goBackToNotesSubjects = () => {
@@ -4922,11 +5134,23 @@ let selectedQASubjectId = '';
             const subjectView = document.getElementById('notes-subject-view');
             if (subjectView) subjectView.style.display = 'block';
             else document.getElementById('notes-subject-container').style.display = 'block';
+
+            // Restore header ads when returning to the topic list
+            const heroAd = document.getElementById('hero-ad-banner-slot');
+            const tickerAd = document.getElementById('ticker-ad-wrapper');
+            if (heroAd && heroAd.dataset.hadContent === 'true') heroAd.style.display = 'block';
+            if (tickerAd && tickerAd.dataset.hadContent === 'true') tickerAd.style.display = 'flex';
         };
 
         const goBackToNotesTopics = () => {
             document.getElementById('notes-detail-view').style.display = 'none';
             document.getElementById('notes-topic-list-view').style.display = 'block';
+
+            // Restore header ads when returning to the topic list
+            const heroAd = document.getElementById('hero-ad-banner-slot');
+            const tickerAd = document.getElementById('ticker-ad-wrapper');
+            if (heroAd && heroAd.dataset.hadContent === 'true') heroAd.style.display = 'block';
+            if (tickerAd && tickerAd.dataset.hadContent === 'true') tickerAd.style.display = 'flex';
         };
 
 
@@ -5998,8 +6222,43 @@ if (loginFormEl) {
 
         document.getElementById('quiz-form').onsubmit = (e) => { e.preventDefault(); calculateResult(); };
 
+        // ─────────── PERSISTENT THEME CONTROLLER WITH NOTE SYNC ───────────
+        const applyTheme = (isDark) => {
+            const themeBtn = document.getElementById('theme-toggle');
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('cs_theme_mode', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (themeBtn) themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('cs_theme_mode', 'light');
+            }
+
+            // Adapt MathJax formulas if visible
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                const detail = document.getElementById('note-detail-card');
+                if (detail && detail.offsetHeight > 0) {
+                    window.MathJax.typesetPromise([detail]).catch(() => {});
+                }
+            }
+        };
+
         const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); themeToggle.innerHTML = document.body.classList.contains('dark-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; });
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const isCurrentlyDark = document.body.classList.contains('dark-mode');
+                applyTheme(!isCurrentlyDark);
+            });
+        }
+
+        // Auto-restore saved theme on startup
+        const savedTheme = localStorage.getItem('cs_theme_mode');
+        if (savedTheme === 'dark') {
+            applyTheme(true);
+        } else if (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            applyTheme(true);
+        }
         // ─────────── ADVANCED ABOUT US (TEXT & URL LINK) CONTROLLER ───────────
         document.getElementById('footer-about-us').onclick = (e) => {
             e.preventDefault();
