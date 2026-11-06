@@ -133,8 +133,7 @@
         }
 
         /* ========================================================
-           NOTES SCREEN THEME & FLUID RESPONSIVE FORMATTER
-           (EXACT MATCH TO SCREENSHOT 2 ACROSS MOBILE & BROWSER)
+           BULLETPROOF NOTES THEME ENGINE (HIGH CONTRAST LIGHT & DARK)
            ======================================================== */
 
         /* Maximize full-width reading room on mobile */
@@ -145,79 +144,205 @@
             }
         }
 
-        /* ─── LIGHT MODE (Default) ─── */
+        /* ─── 1. LIGHT MODE (Clean White & Slate Contrast) ─── */
         body:not(.dark-mode) .html-note-content {
             color: #1e293b;
         }
 
-        /* Content containers & cards */
         body:not(.dark-mode) .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
         body:not(.dark-mode) .html-note-content section,
         body:not(.dark-mode) .html-note-content article {
-            background-color: #ffffff;
-            color: #1e293b;
-            border-color: #e2e8f0;
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-color: #e2e8f0 !important;
         }
 
-        /* Tables */
-        body:not(.dark-mode) .html-note-content table {
-            background-color: #ffffff;
-            border-color: #e2e8f0;
-        }
-        body:not(.dark-mode) .html-note-content tr:nth-child(even) td {
-            background-color: #f8fafc;
-        }
-        body:not(.dark-mode) .html-note-content th {
-            background-color: #0284c7;
-            color: #ffffff;
-        }
-        body:not(.dark-mode) .html-note-content td {
-            color: #1e293b;
-            border-color: #e2e8f0;
-        }
-
-        /* Headings & Text */
-        body:not(.dark-mode) .html-note-content h1,
-        body:not(.dark-mode) .html-note-content h2:not([style*="linear-gradient"] h2),
-        body:not(.dark-mode) .html-note-content h3:not([style*="linear-gradient"] h3),
-        body:not(.dark-mode) .html-note-content h4 {
-            color: #0369a1;
+        body:not(.dark-mode) .html-note-content p,
+        body:not(.dark-mode) .html-note-content span:not([style*="gradient"]),
+        body:not(.dark-mode) .html-note-content font,
+        body:not(.dark-mode) .html-note-content li,
+        body:not(.dark-mode) .html-note-content em,
+        body:not(.dark-mode) .html-note-content i {
+            color: #1e293b !important;
         }
 
         body:not(.dark-mode) .html-note-content strong,
         body:not(.dark-mode) .html-note-content b {
-            color: #0f172a;
-            font-weight: 700;
+            color: #0f172a !important;
+            font-weight: 700 !important;
         }
 
-        /* ─── DARK MODE CONTRAST ─── */
+        body:not(.dark-mode) .html-note-content h1,
+        body:not(.dark-mode) .html-note-content h2:not([style*="linear-gradient"] h2),
+        body:not(.dark-mode) .html-note-content h3:not([style*="linear-gradient"] h3),
+        body:not(.dark-mode) .html-note-content h4 {
+            color: #0369a1 !important;
+        }
+
+        /* ─── 2. DARK MODE (100% VISIBLE HIGH CONTRAST) ─── */
         body.dark-mode #note-detail-card,
         body.dark-mode .html-note-content {
-            color: #f8fafc;
-            background: transparent;
+            color: #f8fafc !important;
+            background: transparent !important;
         }
 
+        /* Step cards, sections, and inner boxes */
         body.dark-mode .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
         body.dark-mode .html-note-content section,
         body.dark-mode .html-note-content article {
-            background-color: #141836;
-            color: #f8fafc;
-            border-color: rgba(255, 255, 255, 0.15);
+            background-color: #141836 !important;
+            color: #f8fafc !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
         }
 
+        /* OVERRIDES ALL INLINE BLACK/DARK COLORS ON PARAGRAPHS, SPANS & ODIA TEXT */
+        body.dark-mode .html-note-content p,
+        body.dark-mode .html-note-content span:not([style*="gradient"]),
+        body.dark-mode .html-note-content font,
+        body.dark-mode .html-note-content li,
+        body.dark-mode .html-note-content em,
+        body.dark-mode .html-note-content i,
+        body.dark-mode .html-note-content small {
+            color: #e2e8f0 !important; /* Crisp high-contrast readable off-white */
+            background-color: transparent !important;
+        }
+
+        /* Bold text and step labels */
+        body.dark-mode .html-note-content strong,
+        body.dark-mode .html-note-content b {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+
+        /* Headings */
         body.dark-mode .html-note-content h1,
         body.dark-mode .html-note-content h2:not([style*="linear-gradient"] h2),
         body.dark-mode .html-note-content h3:not([style*="linear-gradient"] h3),
-        body.dark-mode .html-note-content h4 {
-            color: #38bdf8;
+        body.dark-mode .html-note-content h4,
+        body.dark-mode .html-note-content h5 {
+            color: #38bdf8 !important; /* Vibrant cyan */
         }
 
-        body.dark-mode .html-note-content strong,
-        body.dark-mode .html-note-content b {
-            color: #ffffff;
+        /* ─── 3. RESPONSIVE TOUCH-SCROLLABLE TABLES ─── */
+        .note-table-scroll {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            margin: 16px 0 !important;
+            border-radius: 12px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+            background: #ffffff !important;
+            box-sizing: border-box !important;
+        }
+        body.dark-mode .note-table-scroll {
+            background: #141836 !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
         }
 
-        /* ─── HERO GRADIENT BANNER (MATCHING SCREENSHOT 2) ─── */
+        .note-table-scroll::-webkit-scrollbar {
+            height: 5px;
+        }
+        .note-table-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 4px;
+        }
+        body.dark-mode .note-table-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .note-table-scroll::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 4px;
+        }
+        body.dark-mode .note-table-scroll::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+        }
+
+        .html-note-content table,
+        #note-detail-card table {
+            width: 100% !important;
+            min-width: 480px !important;
+            border-collapse: collapse !important;
+            margin: 0 !important;
+            font-size: clamp(0.78rem, 2vw, 0.92rem) !important;
+            line-height: 1.55 !important;
+            display: table !important;
+        }
+
+        .html-note-content th,
+        #note-detail-card th,
+        .html-note-content td,
+        #note-detail-card td {
+            padding: clamp(8px, 1.8vw, 12px) clamp(10px, 2vw, 15px) !important;
+            text-align: left !important;
+            vertical-align: middle !important;
+            word-break: normal !important;
+            overflow-wrap: normal !important;
+            white-space: normal !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Light Mode Table Colors */
+        body:not(.dark-mode) .html-note-content th,
+        body:not(.dark-mode) #note-detail-card th {
+            background-color: #0284c7 !important;
+            color: #ffffff !important;
+            border-bottom: 2px solid #0369a1 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+            font-weight: 700 !important;
+        }
+        body:not(.dark-mode) .html-note-content th *,
+        body:not(.dark-mode) #note-detail-card th * {
+            color: #ffffff !important;
+        }
+
+        body:not(.dark-mode) .html-note-content td,
+        body:not(.dark-mode) #note-detail-card td {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+        body:not(.dark-mode) .html-note-content td *,
+        body:not(.dark-mode) #note-detail-card td * {
+            color: #1e293b !important;
+        }
+        body:not(.dark-mode) .html-note-content tr:nth-child(even) td,
+        body:not(.dark-mode) #note-detail-card tr:nth-child(even) td {
+            background-color: #f8fafc !important;
+        }
+
+        /* Dark Mode Table Colors */
+        body.dark-mode .html-note-content th,
+        body.dark-mode #note-detail-card th {
+            background-color: #0369a1 !important;
+            color: #ffffff !important;
+            border-bottom: 2px solid #0284c7 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+            font-weight: 700 !important;
+        }
+        body.dark-mode .html-note-content th *,
+        body.dark-mode #note-detail-card th * {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .html-note-content td,
+        body.dark-mode #note-detail-card td {
+            background-color: #141836 !important;
+            color: #f8fafc !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+        body.dark-mode .html-note-content td *,
+        body.dark-mode #note-detail-card td * {
+            color: #f8fafc !important;
+        }
+        body.dark-mode .html-note-content tr:nth-child(even) td,
+        body.dark-mode #note-detail-card tr:nth-child(even) td {
+            background-color: #1a2046 !important;
+        }
+
+        /* ─── 4. HERO BANNER PRESERVATION ─── */
         .html-note-content [style*="linear-gradient"],
         .html-note-content [style*="background: linear-gradient"],
         .html-note-content [style*="background:linear-gradient"] {
@@ -230,7 +355,6 @@
             margin-bottom: 1.25rem !important;
         }
 
-        /* Top Box inside the banner (NCERT / JASMINE TEXTBOOK SERIES) */
         .html-note-content [style*="linear-gradient"] > div:first-child,
         .html-note-content [style*="background: linear-gradient"] > div:first-child {
             background-color: #ffffff !important;
@@ -252,10 +376,8 @@
             line-height: 1.45 !important;
             color: #0f172a !important;
             margin: 2px 0 !important;
-            letter-spacing: 0.3px !important;
         }
 
-        /* Main Chapter Title: "A Bottle of Dew" */
         .html-note-content [style*="linear-gradient"] h1,
         .html-note-content [style*="linear-gradient"] h2,
         .html-note-content [style*="background: linear-gradient"] h1,
@@ -269,7 +391,6 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.18) !important;
         }
 
-        /* Subtitle: "Story by Sudha Murty (...)" */
         .html-note-content [style*="linear-gradient"] p,
         .html-note-content [style*="background: linear-gradient"] p {
             color: #0284c7 !important;
@@ -280,7 +401,6 @@
             line-height: 1.4 !important;
         }
 
-        /* Bottom Metadata Box (CLASS: Class 6, SUBJECT: English, TOPIC: A Bottle of Dew) */
         .html-note-content [style*="linear-gradient"] > div:last-child,
         .html-note-content [style*="background: linear-gradient"] > div:last-child {
             background-color: #ffffff !important;
@@ -302,7 +422,7 @@
             color: #1e293b !important;
         }
 
-        /* ─── CHAPTER HEADINGS (SCREENSHOT 2) ─── */
+        /* ─── 5. HEADINGS & MATHJAX ─── */
         .html-note-content h2:not([style*="linear-gradient"] h2),
         .html-note-content h3:not([style*="linear-gradient"] h3) {
             font-size: clamp(1.05rem, 3vw, 1.42rem) !important;
@@ -316,27 +436,12 @@
             flex-wrap: wrap !important;
         }
 
-        /* Pill Badges: CORE CONCEPT, ମୁଖ୍ୟ ଭାବାର୍ଥ */
-        .html-note-content span[style*="border"],
-        .html-note-content span[style*="background"],
-        .html-note-content small {
-            display: inline-block !important;
-            font-size: clamp(0.64rem, 1.8vw, 0.76rem) !important;
-            font-weight: 800 !important;
-            border-radius: 4px !important;
-            margin-right: 6px !important;
-            vertical-align: middle !important;
-            letter-spacing: 0.3px !important;
-        }
-
-        /* Body Paragraphs */
         .html-note-content p:not([style*="linear-gradient"] p) {
             font-size: clamp(0.86rem, 2.1vw, 0.98rem) !important;
             line-height: 1.68 !important;
             margin-bottom: 0.85rem !important;
         }
 
-        /* MathJax formulas */
         mjx-container {
             overflow-x: auto !important;
             overflow-y: hidden !important;
@@ -1997,45 +2102,57 @@ body.dark-mode .class-header-title {
     }
 }
 
-/* ─────────── CHHATRASATHEE Q&A SCREEN THEME (CLEAN & WIDE COMPACT VIEW) ─────────── */
+/* ─────────── CHHATRASATHEE Q&A SCREEN THEME (EXACT MATCH TO SCREENSHOT 2) ─────────── */
+        /* Maximize reading width on mobile devices */
+        @media (max-width: 600px) {
+            body:has(#qa-screen.active) .container {
+                padding: 0.35rem 0.45rem !important;
+                max-width: 100% !important;
+            }
+        }
+
         #qa-detail-view {
             width: 100% !important;
             max-width: 100% !important;
             padding: 0 !important;
-            margin: 0 auto 2rem auto !important;
+            margin: 0 auto 1.5rem auto !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
 
-        /* Clean Chapter & Section Titles */
+        /* Chapter Title e.g. "The Trunk of Ganesha" */
         .qa-chapter-title {
-            font-size: clamp(1.15rem, 3.2vw, 1.45rem);
+            font-size: clamp(1.1rem, 3.2vw, 1.4rem);
             font-weight: 800;
             color: #1e293b;
-            margin: 0.5rem 0 0.35rem 0;
+            margin: 0.5rem 0 0.3rem 0;
             line-height: 1.35;
         }
         body.dark-mode .qa-chapter-title {
             color: #f8fafc;
         }
 
+        /* Section Title e.g. Section I */
         .qa-section-title {
-            font-size: clamp(1rem, 2.6vw, 1.2rem);
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
             font-weight: 800;
             color: #0f172a;
-            margin: 0.4rem 0 1rem 0;
+            margin: 0.3rem 0 0.9rem 0;
             line-height: 1.3;
         }
         body.dark-mode .qa-section-title {
             color: #38bdf8;
         }
 
-        /* Q&A Item Box Card - Maximize horizontal reading room */
+        /* Q&A Item Box Card */
         .qa-card-box {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: clamp(10px, 2.4vw, 16px) clamp(12px, 2.8vw, 20px);
-            margin-bottom: 0.9rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border-radius: 12px;
+            padding: clamp(8px, 1.8vw, 14px) clamp(10px, 2.2vw, 18px);
+            margin-bottom: clamp(8px, 1.8vw, 12px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-sizing: border-box;
             width: 100%;
@@ -2047,19 +2164,19 @@ body.dark-mode .class-header-title {
         }
         .qa-card-box:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
         }
 
-        /* Question Header Row */
+        /* Question Header Row - Vertically Centered like Screenshot 2 */
         .qa-q-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: clamp(6px, 1.5vw, 10px);
+            margin-bottom: clamp(6px, 1.4vw, 10px);
             width: 100%;
         }
 
-        /* Sleek Question Pill Badge matching Screenshot 2 */
+        /* Sleek Question Pill Badge */
         .qa-q-pill {
             display: inline-flex;
             align-items: center;
@@ -2067,22 +2184,22 @@ body.dark-mode .class-header-title {
             gap: 4px;
             background: #007bff;
             color: #ffffff;
-            font-size: clamp(0.72rem, 1.8vw, 0.82rem);
+            font-size: clamp(0.7rem, 1.8vw, 0.8rem);
             font-weight: 800;
-            padding: 3px 8px;
+            padding: 3px clamp(6px, 1.4vw, 8px);
             border-radius: 6px;
             white-space: nowrap;
             flex-shrink: 0;
             line-height: 1.2;
-            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.25);
+            box-shadow: 0 1px 4px rgba(0, 123, 255, 0.2);
         }
 
-        /* Compact, fluid Question Text that fits gracefully */
+        /* Fluid Question Text - Fits on 1 line */
         .qa-q-text {
-            font-size: clamp(0.92rem, 2.2vw, 1.08rem);
+            font-size: clamp(0.85rem, 2.2vw, 1.02rem);
             font-weight: 700;
             color: #1e293b;
-            line-height: 1.4;
+            line-height: 1.35;
             flex: 1;
             letter-spacing: -0.2px;
         }
@@ -2090,12 +2207,12 @@ body.dark-mode .class-header-title {
             color: #f8fafc;
         }
 
-        /* Clean Answer Callout Block matching Screenshot 2 */
+        /* Answer Callout Block */
         .qa-ans-block {
             background: #f4fbf7;
             border-left: 3.5px solid #28a745;
             border-radius: 8px;
-            padding: clamp(8px, 1.8vw, 12px) clamp(10px, 2.2vw, 14px);
+            padding: clamp(6px, 1.5vw, 10px) clamp(8px, 1.8vw, 14px);
             margin-top: 6px;
             box-sizing: border-box;
         }
@@ -2106,18 +2223,18 @@ body.dark-mode .class-header-title {
         .qa-ans-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             color: #28a745;
-            font-size: clamp(0.68rem, 1.6vw, 0.78rem);
+            font-size: clamp(0.66rem, 1.5vw, 0.75rem);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .qa-ans-content {
-            font-size: clamp(0.86rem, 2vw, 0.98rem);
-            line-height: 1.55;
+            font-size: clamp(0.82rem, 1.9vw, 0.95rem);
+            line-height: 1.5;
             color: #1e293b;
             word-break: break-word;
         }
@@ -2125,62 +2242,16 @@ body.dark-mode .class-header-title {
             color: #f1f5f9;
         }
 
-        /* Section Headings & Parts */
-        .qa-section-header {
-            background: linear-gradient(135deg, #eef6ff, #dbeafe);
-            border: 1.5px solid rgba(0, 123, 255, 0.25);
-            color: #0056b3;
-            font-weight: 800;
-            font-size: clamp(0.95rem, 2.4vw, 1.15rem);
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin: 20px 0 10px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        body.dark-mode .qa-section-header {
-            background: rgba(0, 123, 255, 0.15);
-            border-color: rgba(10, 211, 250, 0.3);
-            color: #0ad3fa;
-        }
-
-        .qa-part-header {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff9f43, #ff5252);
-            color: #ffffff;
-            font-size: 0.78rem;
-            font-weight: 800;
-            padding: 3px 12px;
-            border-radius: 16px;
-            margin: 10px 0 6px 0;
-            text-transform: uppercase;
-        }
-
-        .qa-subtopic-header {
-            background: rgba(0, 0, 0, 0.03);
-            border-left: 3.5px solid #007bff;
-            padding: 6px 12px;
-            border-radius: 0 8px 8px 0;
-            margin: 10px 0 6px 0;
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        body.dark-mode .qa-subtopic-header {
-            background: rgba(255, 255, 255, 0.05);
-            border-left-color: #0ad3fa;
-        }
-
         .qa-content-line {
             padding: 2px 4px;
             margin-bottom: 4px;
-            font-size: clamp(0.88rem, 2vw, 0.98rem);
-            line-height: 1.6;
-            color: var(--text-main);
+            font-size: clamp(0.9rem, 2.2vw, 1.12rem);
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.4;
+        }
+        body.dark-mode .qa-content-line {
+            color: #f8fafc;
         }
 
         /* Mobile Container Edge-Padding Optimization for Q&A */
@@ -5250,6 +5321,17 @@ let selectedQASubjectId = '';
                 </div>
             `;
 
+            // Automatically wrap all tables in a touch-scrollable container
+            const tables = detailCard.querySelectorAll('table');
+            tables.forEach(table => {
+                if (!table.parentElement.classList.contains('note-table-scroll')) {
+                    const scrollWrapper = document.createElement('div');
+                    scrollWrapper.className = 'note-table-scroll';
+                    table.parentNode.insertBefore(scrollWrapper, table);
+                    scrollWrapper.appendChild(table);
+                }
+            });
+
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([detailCard]).catch(err => console.warn('MathJax render error:', err));
             }
@@ -5448,14 +5530,14 @@ const loadQASubjects = () => {
                 let line = lines[i].trim();
                 if (!line) continue;
 
-                // 1. Quoted Chapter Titles (e.g., "The Trunk of Ganesha")
+                // 1. Quoted Chapter Titles (e.g. "The Trunk of Ganesha")
                 if (chapterPattern.test(line)) {
                     flushCard();
                     cardsHtml.push(`<h2 class="qa-chapter-title">${applyMarkdown(line)}</h2>`);
                     continue;
                 }
 
-                // 2. Section Markers (e.g., Section I, Section II)
+                // 2. Section Markers (e.g. Section I)
                 if (sectionPattern.test(line)) {
                     flushCard();
                     cardsHtml.push(`<h3 class="qa-section-title">${applyMarkdown(line)}</h3>`);
@@ -5474,14 +5556,14 @@ const loadQASubjects = () => {
                         cardsHtml.push(`
                             <div class="qa-card-box" style="border-left: 3.5px solid #007bff;">
                                 <div class="qa-ans-badge" style="color:#007bff;"><i class="fas fa-info-circle"></i> ACTIVITY / NOTE</div>
-                                <div class="qa-ans-content" style="margin-top:4px;">${applyMarkdown(ansText)}</div>
+                                <div class="qa-ans-content" style="margin-top:3px;">${applyMarkdown(ansText)}</div>
                             </div>
                         `);
                     }
                     continue;
                 }
 
-                // 4. Sub-part headers (e.g., (a), (b))
+                // 4. Sub-part headers (e.g. (a), (b))
                 const partMatch = line.match(partPattern);
                 if (partMatch) {
                     flushCard();
@@ -5544,8 +5626,8 @@ const loadQASubjects = () => {
             let pdfButtonHtml = '';
             if (qaData.pdfUrl && qaData.pdfUrl.trim()) {
                 pdfButtonHtml = `
-                    <div style="margin-bottom: 16px; text-align: center;">
-                        <a href="${qaData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 10px 20px; border-radius: 25px; font-weight: 700; font-size: 0.9rem; box-shadow:0 4px 12px rgba(214, 48, 49, 0.3);">
+                    <div style="margin-bottom: 14px; text-align: center;">
+                        <a href="${qaData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 9px 18px; border-radius: 25px; font-weight: 700; font-size: 0.88rem; box-shadow:0 3px 10px rgba(214, 48, 49, 0.25);">
                             <i class="fas fa-file-pdf" style="font-size:1.1rem;"></i> Open / Download PDF Q&A Sheet
                         </a>
                     </div>
@@ -5564,12 +5646,12 @@ const loadQASubjects = () => {
                 }
             } else {
                 renderedBody = `
-                    <div style="text-align: center; padding: 3rem 1rem;">
-                        <div style="font-size: 2.8rem; color: #ff9933; margin-bottom: 0.8rem;">
+                    <div style="text-align: center; padding: 2.5rem 1rem;">
+                        <div style="font-size: 2.6rem; color: #ff9933; margin-bottom: 0.6rem;">
                             <i class="fas fa-question-circle"></i>
                         </div>
-                        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main);">Coming soon...</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-sub);">Questions and solutions are being prepared for this topic.</p>
+                        <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-main);">Coming soon...</h3>
+                        <p style="font-size: 0.88rem; color: var(--text-sub);">Questions and solutions are being prepared for this topic.</p>
                     </div>
                 `;
             }
