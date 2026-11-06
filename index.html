@@ -133,130 +133,207 @@
         }
 
         /* ========================================================
-           100% BULLETPROOF THEME ENFORCER (LIGHT & DARK CONTRAST)
+           NOTES SCREEN THEME & FLUID RESPONSIVE FORMATTER
+           (EXACT MATCH TO SCREENSHOT 2 ACROSS MOBILE & BROWSER)
            ======================================================== */
+
+        /* Maximize full-width reading room on mobile */
+        @media (max-width: 600px) {
+            body:has(#notes-screen.active) .container {
+                padding: 0.35rem 0.45rem !important;
+                max-width: 100% !important;
+            }
+        }
 
         /* ─── LIGHT MODE (Default) ─── */
         body:not(.dark-mode) .html-note-content {
-            color: #1e293b !important;
+            color: #1e293b;
         }
 
-        /* Force all cards, steps, sections, and tables to clean white with dark text */
+        /* Content containers & cards */
         body:not(.dark-mode) .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
         body:not(.dark-mode) .html-note-content section,
-        body:not(.dark-mode) .html-note-content article,
-        body:not(.dark-mode) .html-note-content table,
-        body:not(.dark-mode) .html-note-content tr,
-        body:not(.dark-mode) .html-note-content td,
-        body:not(.dark-mode) .html-note-content ul,
-        body:not(.dark-mode) .html-note-content ol,
-        body:not(.dark-mode) .html-note-content li {
-            background-color: #ffffff !important;
-            color: #1e293b !important;
-            border-color: #e2e8f0 !important;
+        body:not(.dark-mode) .html-note-content article {
+            background-color: #ffffff;
+            color: #1e293b;
+            border-color: #e2e8f0;
         }
 
-        /* Light mode alternate table rows */
+        /* Tables */
+        body:not(.dark-mode) .html-note-content table {
+            background-color: #ffffff;
+            border-color: #e2e8f0;
+        }
         body:not(.dark-mode) .html-note-content tr:nth-child(even) td {
-            background-color: #f8fafc !important;
+            background-color: #f8fafc;
         }
-
-        /* Light mode table headers */
         body:not(.dark-mode) .html-note-content th {
-            background-color: #0284c7 !important;
-            color: #ffffff !important;
-            border-color: #0284c7 !important;
+            background-color: #0284c7;
+            color: #ffffff;
+        }
+        body:not(.dark-mode) .html-note-content td {
+            color: #1e293b;
+            border-color: #e2e8f0;
         }
 
-        /* Light mode paragraphs, text, and headings */
-        body:not(.dark-mode) .html-note-content p,
-        body:not(.dark-mode) .html-note-content span:not([style*="gradient"]),
-        body:not(.dark-mode) .html-note-content a {
-            color: #1e293b !important;
-            background-color: transparent !important;
+        /* Headings & Text */
+        body:not(.dark-mode) .html-note-content h1,
+        body:not(.dark-mode) .html-note-content h2:not([style*="linear-gradient"] h2),
+        body:not(.dark-mode) .html-note-content h3:not([style*="linear-gradient"] h3),
+        body:not(.dark-mode) .html-note-content h4 {
+            color: #0369a1;
         }
 
         body:not(.dark-mode) .html-note-content strong,
         body:not(.dark-mode) .html-note-content b {
-            color: #0f172a !important;
-            font-weight: 700 !important;
+            color: #0f172a;
+            font-weight: 700;
         }
 
-        body:not(.dark-mode) .html-note-content h1,
-        body:not(.dark-mode) .html-note-content h2,
-        body:not(.dark-mode) .html-note-content h3,
-        body:not(.dark-mode) .html-note-content h4 {
-            color: #0369a1 !important;
-        }
-
-
-        /* ─── DARK MODE (Solid High Contrast) ─── */
+        /* ─── DARK MODE CONTRAST ─── */
         body.dark-mode #note-detail-card,
-        body.dark-mode #qa-detail-card,
         body.dark-mode .html-note-content {
-            color: #f8fafc !important;
-            background: transparent !important;
+            color: #f8fafc;
+            background: transparent;
         }
 
-        /* Force all cards, steps, sections, and tables to deep navy with white text */
         body.dark-mode .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
         body.dark-mode .html-note-content section,
-        body.dark-mode .html-note-content article,
-        body.dark-mode .html-note-content table,
-        body.dark-mode .html-note-content tr,
-        body.dark-mode .html-note-content td,
-        body.dark-mode .html-note-content ul,
-        body.dark-mode .html-note-content ol,
-        body.dark-mode .html-note-content li {
-            background-color: #141836 !important;
-            color: #f8fafc !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
+        body.dark-mode .html-note-content article {
+            background-color: #141836;
+            color: #f8fafc;
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
-        /* Dark mode alternate table rows */
-        body.dark-mode .html-note-content tr:nth-child(even) td {
-            background-color: #1a2046 !important;
-        }
-
-        /* Dark mode table headers */
-        body.dark-mode .html-note-content th {
-            background-color: #0369a1 !important;
-            color: #ffffff !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
-        }
-
-        /* Dark mode paragraphs, text, and headings */
-        body.dark-mode .html-note-content p,
-        body.dark-mode .html-note-content span:not([style*="gradient"]),
-        body.dark-mode .html-note-content a {
-            color: #f1f5f9 !important;
-            background-color: transparent !important;
+        body.dark-mode .html-note-content h1,
+        body.dark-mode .html-note-content h2:not([style*="linear-gradient"] h2),
+        body.dark-mode .html-note-content h3:not([style*="linear-gradient"] h3),
+        body.dark-mode .html-note-content h4 {
+            color: #38bdf8;
         }
 
         body.dark-mode .html-note-content strong,
         body.dark-mode .html-note-content b {
-            color: #ffffff !important;
-            font-weight: 700 !important;
+            color: #ffffff;
         }
 
-        body.dark-mode .html-note-content h1,
-        body.dark-mode .html-note-content h2,
-        body.dark-mode .html-note-content h3,
-        body.dark-mode .html-note-content h4 {
-            color: #38bdf8 !important;
-        }
-
-
-        /* ─── HERO GRADIENT BANNERS (KEEP VIBRANT IN BOTH MODES) ─── */
+        /* ─── HERO GRADIENT BANNER (MATCHING SCREENSHOT 2) ─── */
         .html-note-content [style*="linear-gradient"],
         .html-note-content [style*="background: linear-gradient"],
         .html-note-content [style*="background:linear-gradient"] {
-            color: #ffffff !important;
+            border-radius: 14px !important;
+            padding: clamp(14px, 3vw, 24px) clamp(10px, 2.5vw, 20px) !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            text-align: center !important;
+            margin-bottom: 1.25rem !important;
         }
-        .html-note-content [style*="linear-gradient"] *,
-        .html-note-content [style*="background: linear-gradient"] * {
-            background-color: transparent !important;
-            color: #ffffff !important;
+
+        /* Top Box inside the banner (NCERT / JASMINE TEXTBOOK SERIES) */
+        .html-note-content [style*="linear-gradient"] > div:first-child,
+        .html-note-content [style*="background: linear-gradient"] > div:first-child {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-radius: 10px !important;
+            padding: clamp(8px, 1.8vw, 14px) clamp(8px, 2vw, 18px) !important;
+            margin: 0 auto clamp(10px, 2.2vw, 16px) auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .html-note-content [style*="linear-gradient"] > div:first-child *,
+        .html-note-content [style*="background: linear-gradient"] > div:first-child * {
+            font-size: clamp(0.72rem, 2.1vw, 0.88rem) !important;
+            font-weight: 800 !important;
+            line-height: 1.45 !important;
+            color: #0f172a !important;
+            margin: 2px 0 !important;
+            letter-spacing: 0.3px !important;
+        }
+
+        /* Main Chapter Title: "A Bottle of Dew" */
+        .html-note-content [style*="linear-gradient"] h1,
+        .html-note-content [style*="linear-gradient"] h2,
+        .html-note-content [style*="background: linear-gradient"] h1,
+        .html-note-content [style*="background: linear-gradient"] h2 {
+            color: #007bff !important;
+            font-size: clamp(1.4rem, 4.4vw, 2.2rem) !important;
+            font-weight: 800 !important;
+            line-height: 1.25 !important;
+            margin: clamp(6px, 1.6vw, 10px) 0 4px 0 !important;
+            text-align: center !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.18) !important;
+        }
+
+        /* Subtitle: "Story by Sudha Murty (...)" */
+        .html-note-content [style*="linear-gradient"] p,
+        .html-note-content [style*="background: linear-gradient"] p {
+            color: #0284c7 !important;
+            font-size: clamp(0.78rem, 2.2vw, 0.98rem) !important;
+            font-weight: 600 !important;
+            margin: 0 0 clamp(8px, 2vw, 14px) 0 !important;
+            text-align: center !important;
+            line-height: 1.4 !important;
+        }
+
+        /* Bottom Metadata Box (CLASS: Class 6, SUBJECT: English, TOPIC: A Bottle of Dew) */
+        .html-note-content [style*="linear-gradient"] > div:last-child,
+        .html-note-content [style*="background: linear-gradient"] > div:last-child {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-radius: 10px !important;
+            padding: clamp(8px, 1.8vw, 14px) clamp(8px, 2vw, 18px) !important;
+            margin: clamp(10px, 2.2vw, 16px) auto 0 auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .html-note-content [style*="linear-gradient"] > div:last-child *,
+        .html-note-content [style*="background: linear-gradient"] > div:last-child * {
+            font-size: clamp(0.68rem, 1.9vw, 0.86rem) !important;
+            line-height: 1.5 !important;
+            color: #1e293b !important;
+        }
+
+        /* ─── CHAPTER HEADINGS (SCREENSHOT 2) ─── */
+        .html-note-content h2:not([style*="linear-gradient"] h2),
+        .html-note-content h3:not([style*="linear-gradient"] h3) {
+            font-size: clamp(1.05rem, 3vw, 1.42rem) !important;
+            font-weight: 800 !important;
+            color: #0369a1 !important;
+            line-height: 1.35 !important;
+            margin: 1.2rem 0 0.5rem 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            flex-wrap: wrap !important;
+        }
+
+        /* Pill Badges: CORE CONCEPT, ମୁଖ୍ୟ ଭାବାର୍ଥ */
+        .html-note-content span[style*="border"],
+        .html-note-content span[style*="background"],
+        .html-note-content small {
+            display: inline-block !important;
+            font-size: clamp(0.64rem, 1.8vw, 0.76rem) !important;
+            font-weight: 800 !important;
+            border-radius: 4px !important;
+            margin-right: 6px !important;
+            vertical-align: middle !important;
+            letter-spacing: 0.3px !important;
+        }
+
+        /* Body Paragraphs */
+        .html-note-content p:not([style*="linear-gradient"] p) {
+            font-size: clamp(0.86rem, 2.1vw, 0.98rem) !important;
+            line-height: 1.68 !important;
+            margin-bottom: 0.85rem !important;
         }
 
         /* MathJax formulas */
@@ -272,57 +349,6 @@
         }
         body.dark-mode mjx-container svg {
             fill: currentColor !important;
-        }
-
-        /* ─── RESPONSIVE HTML NOTE HERO BANNERS & PILL BADGES (MOBILE) ─── */
-        @media (max-width: 600px) {
-            .html-note-content [style*="linear-gradient"],
-            .html-note-content [style*="background: linear-gradient"],
-            .html-note-content [style*="background:linear-gradient"] {
-                padding: clamp(10px, 3vw, 16px) clamp(8px, 2.5vw, 12px) !important;
-                border-radius: 12px !important;
-            }
-
-            .html-note-content [style*="border-radius: 20px"],
-            .html-note-content [style*="border-radius: 25px"],
-            .html-note-content [style*="border-radius: 30px"],
-            .html-note-content [style*="border-radius: 50px"] {
-                font-size: clamp(0.55rem, 1.7vw, 0.68rem) !important;
-                padding: 2px clamp(6px, 1.8vw, 10px) !important;
-                margin: 2px !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                white-space: nowrap !important;
-                line-height: 1.25 !important;
-                max-width: 98% !important;
-            }
-
-            .html-note-content h1,
-            .html-note-content h2,
-            .html-note-content [style*="font-size: 2rem"],
-            .html-note-content [style*="font-size: 2.2rem"] {
-                font-size: clamp(1.2rem, 3.8vw, 1.6rem) !important;
-                line-height: 1.3 !important;
-                margin: 4px 0 2px 0 !important;
-            }
-
-            .html-note-content [style*="background: rgba(0, 0, 0"],
-            .html-note-content [style*="background:rgba(0, 0, 0"] {
-                padding: 6px 10px !important;
-                font-size: clamp(0.62rem, 1.8vw, 0.76rem) !important;
-                line-height: 1.45 !important;
-                margin-top: 6px !important;
-                border-radius: 8px !important;
-            }
-
-            .html-note-content [style*="border: 1px solid"],
-            .html-note-content [style*="border:1px solid"] {
-                padding: clamp(10px, 2.8vw, 16px) clamp(8px, 2.4vw, 14px) !important;
-                margin-top: 10px !important;
-                margin-bottom: 10px !important;
-                border-radius: 12px !important;
-            }
         }
 
         /* Full support for superscripts, subscripts, fractions, formulas, and math tags */
@@ -1971,133 +1997,147 @@ body.dark-mode .class-header-title {
     }
 }
 
-/* ─────────── CHHATRASATHEE Q&A SCREEN THEME ─────────── */
-        .qa-hero-header {
-            text-align: center;
-            padding: 1.2rem 1rem 1.6rem 1rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px dashed var(--border-color);
-            position: relative;
-        }
-        .qa-hero-title {
-            font-size: 1.7rem;
-            font-weight: 800;
-            line-height: 1.35;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
-        }
-        .qa-hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 123, 255, 0.1);
-            color: var(--header-title);
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 4px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        body.dark-mode .qa-hero-badge {
-            background: rgba(10, 211, 250, 0.15);
-            color: #0ad3fa;
+/* ─────────── CHHATRASATHEE Q&A SCREEN THEME (CLEAN & WIDE COMPACT VIEW) ─────────── */
+        #qa-detail-view {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 auto 2rem auto !important;
         }
 
-        /* Q&A Item Box Card */
+        /* Clean Chapter & Section Titles */
+        .qa-chapter-title {
+            font-size: clamp(1.15rem, 3.2vw, 1.45rem);
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0.5rem 0 0.35rem 0;
+            line-height: 1.35;
+        }
+        body.dark-mode .qa-chapter-title {
+            color: #f8fafc;
+        }
+
+        .qa-section-title {
+            font-size: clamp(1rem, 2.6vw, 1.2rem);
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0.4rem 0 1rem 0;
+            line-height: 1.3;
+        }
+        body.dark-mode .qa-section-title {
+            color: #38bdf8;
+        }
+
+        /* Q&A Item Box Card - Maximize horizontal reading room */
         .qa-card-box {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: clamp(10px, 2.4vw, 16px) clamp(12px, 2.8vw, 20px);
+            margin-bottom: 0.9rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+            width: 100%;
         }
         body.dark-mode .qa-card-box {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
         }
         .qa-card-box:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
         }
 
-        /* Question Header */
+        /* Question Header Row */
         .qa-q-row {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            width: 100%;
         }
+
+        /* Sleek Question Pill Badge matching Screenshot 2 */
         .qa-q-pill {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #007bff, #0056b3);
+            gap: 4px;
+            background: #007bff;
             color: #ffffff;
-            font-size: 0.78rem;
+            font-size: clamp(0.72rem, 1.8vw, 0.82rem);
             font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 8px;
+            padding: 3px 8px;
+            border-radius: 6px;
             white-space: nowrap;
             flex-shrink: 0;
-            margin-top: 2px;
-            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.25);
-        }
-        .qa-q-text {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-main);
-            line-height: 1.6;
-            flex: 1;
+            line-height: 1.2;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.25);
         }
 
-        /* Answer Callout Block */
+        /* Compact, fluid Question Text that fits gracefully */
+        .qa-q-text {
+            font-size: clamp(0.92rem, 2.2vw, 1.08rem);
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.4;
+            flex: 1;
+            letter-spacing: -0.2px;
+        }
+        body.dark-mode .qa-q-text {
+            color: #f8fafc;
+        }
+
+        /* Clean Answer Callout Block matching Screenshot 2 */
         .qa-ans-block {
-            background: rgba(40, 167, 69, 0.06);
-            border-left: 4px solid #28a745;
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-top: 8px;
+            background: #f4fbf7;
+            border-left: 3.5px solid #28a745;
+            border-radius: 8px;
+            padding: clamp(8px, 1.8vw, 12px) clamp(10px, 2.2vw, 14px);
+            margin-top: 6px;
+            box-sizing: border-box;
         }
         body.dark-mode .qa-ans-block {
-            background: rgba(40, 167, 69, 0.12);
+            background: rgba(40, 167, 69, 0.1);
         }
+
         .qa-ans-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             color: #28a745;
-            font-size: 0.8rem;
+            font-size: clamp(0.68rem, 1.6vw, 0.78rem);
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
+
         .qa-ans-content {
-            font-size: 0.98rem;
-            line-height: 1.75;
-            color: var(--text-main);
+            font-size: clamp(0.86rem, 2vw, 0.98rem);
+            line-height: 1.55;
+            color: #1e293b;
             word-break: break-word;
         }
-        
-        /* ─────────── Q&A SECTION HEADERS & SUB-PARTS ─────────── */
+        body.dark-mode .qa-ans-content {
+            color: #f1f5f9;
+        }
+
+        /* Section Headings & Parts */
         .qa-section-header {
             background: linear-gradient(135deg, #eef6ff, #dbeafe);
             border: 1.5px solid rgba(0, 123, 255, 0.25);
             color: #0056b3;
             font-weight: 800;
-            font-size: 1.15rem;
-            padding: 12px 18px;
-            border-radius: 12px;
-            margin: 25px 0 14px 0;
+            font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin: 20px 0 10px 0;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 3px 10px rgba(0, 123, 255, 0.08);
+            gap: 8px;
         }
         body.dark-mode .qa-section-header {
             background: rgba(0, 123, 255, 0.15);
@@ -2109,28 +2149,26 @@ body.dark-mode .class-header-title {
             display: inline-block;
             background: linear-gradient(135deg, #ff9f43, #ff5252);
             color: #ffffff;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 800;
-            padding: 4px 14px;
-            border-radius: 20px;
-            margin: 14px 0 8px 0;
+            padding: 3px 12px;
+            border-radius: 16px;
+            margin: 10px 0 6px 0;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(255, 82, 82, 0.25);
         }
 
         .qa-subtopic-header {
             background: rgba(0, 0, 0, 0.03);
             border-left: 3.5px solid #007bff;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 0 8px 8px 0;
-            margin: 12px 0 8px 0;
-            font-size: 0.98rem;
+            margin: 10px 0 6px 0;
+            font-size: 0.92rem;
             font-weight: 700;
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         body.dark-mode .qa-subtopic-header {
             background: rgba(255, 255, 255, 0.05);
@@ -2138,11 +2176,19 @@ body.dark-mode .class-header-title {
         }
 
         .qa-content-line {
-            padding: 4px 6px;
-            margin-bottom: 6px;
-            font-size: 0.98rem;
-            line-height: 1.7;
+            padding: 2px 4px;
+            margin-bottom: 4px;
+            font-size: clamp(0.88rem, 2vw, 0.98rem);
+            line-height: 1.6;
             color: var(--text-main);
+        }
+
+        /* Mobile Container Edge-Padding Optimization for Q&A */
+        @media (max-width: 600px) {
+            body:has(#qa-screen.active) .container {
+                padding-left: 0.45rem !important;
+                padding-right: 0.45rem !important;
+            }
         }
         
         /* ─────────── HEADER ACTIONS & NOTIFICATION BELL STYLES ─────────── */
@@ -2694,72 +2740,89 @@ body.dark-mode .class-header-title {
             box-shadow: 0 8px 22px rgba(0, 123, 255, 0.45);
         }
 
-        /* ─────────── MODERN COLORFUL IMPORTANT LINK TRAYS ─────────── */
+        /* ─────────── MODERN COLORFUL IMPORTANT LINK TRAYS (EXACT MATCH TO SCREENSHOT 2) ─────────── */
+        #links-screen .card {
+            padding: clamp(1rem, 2.5vw, 1.5rem) clamp(0.7rem, 2.2vw, 1.25rem) !important;
+            border-radius: 18px !important;
+        }
+
         .link-tray-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.15rem 1.4rem;
-            border-radius: 18px;
-            margin-bottom: 1rem;
+            padding: clamp(8px, 2vw, 12px) clamp(10px, 2.4vw, 18px);
+            border-radius: 16px;
+            margin-bottom: 0.85rem;
             cursor: pointer;
             text-decoration: none;
             color: #ffffff;
             border: 1.5px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .link-tray-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+            transform: translateY(-2px) scale(1.008);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
         }
 
         .link-tray-left {
             display: flex;
             align-items: center;
-            gap: 14px;
-            overflow: hidden;
+            gap: clamp(8px, 1.8vw, 12px);
+            min-width: 0;
             flex: 1;
+            overflow: hidden;
         }
 
         .link-tray-icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+            width: clamp(36px, 9vw, 44px);
+            height: clamp(36px, 9vw, 44px);
+            min-width: clamp(36px, 9vw, 44px);
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.22);
             backdrop-filter: blur(5px);
             border: 1.5px solid rgba(255, 255, 255, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.35rem;
+            font-size: clamp(1rem, 2.6vw, 1.25rem);
             flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .link-tray-info {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
+            min-width: 0;
+            flex: 1;
             overflow: hidden;
         }
 
         .link-tray-title {
-            font-size: 1.15rem;
+            font-size: clamp(0.85rem, 2.5vw, 1.12rem);
             font-weight: 700;
-            line-height: 1.4;
+            line-height: 1.25;
             font-family: 'Poppins', 'Noto Sans Oriya', sans-serif;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .link-tray-sub {
-            font-size: 0.82rem;
+            font-size: clamp(0.68rem, 1.8vw, 0.8rem);
             opacity: 0.9;
             font-family: 'Poppins', 'Noto Sans Oriya', sans-serif;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .link-tray-btn {
@@ -2767,22 +2830,24 @@ body.dark-mode .class-header-title {
             backdrop-filter: blur(5px);
             border: 1.5px solid rgba(255, 255, 255, 0.35);
             color: inherit;
-            padding: 8px 16px;
-            border-radius: 22px;
-            font-size: 0.82rem;
+            padding: clamp(5px, 1.2vw, 8px) clamp(10px, 2vw, 16px);
+            border-radius: 20px;
+            font-size: clamp(0.72rem, 1.9vw, 0.84rem);
             font-weight: 800;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex-shrink: 0;
-            margin-left: 12px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            margin-left: clamp(6px, 1.5vw, 10px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.3px;
+            white-space: nowrap;
             transition: all 0.2s ease;
         }
 
         .link-tray-card:hover .link-tray-btn {
             background: rgba(255, 255, 255, 0.35);
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
         
         /* ─────────── STREAK BONUS COIN CELEBRATION MODAL ─────────── */
@@ -5325,7 +5390,7 @@ const loadQASubjects = () => {
             }
         };
 
-        // ─────────── ENHANCED CHHATRASATHEE Q&A FORMATTER ───────────
+        // ─────────── ENHANCED CHHATRASATHEE Q&A FORMATTER (MATCHING SCREENSHOT 2) ───────────
         const formatQAContent = (rawText) => {
             if (!rawText) return '<p style="text-align:center; opacity:0.6;">No questions available.</p>';
             
@@ -5336,7 +5401,6 @@ const loadQASubjects = () => {
             let currentA = [];
             let qCounter = 1;
 
-            // Universal markdown renderer for bold & italics
             const applyMarkdown = (str) => {
                 if (!str) return '';
                 return str
@@ -5356,11 +5420,11 @@ const loadQASubjects = () => {
                     cardsHtml.push(`
                         <div class="qa-card-box">
                             <div class="qa-q-row">
-                                <span class="qa-q-pill"><i class="fas fa-question-circle" style="margin-right:4px;"></i> Q.${qCounter}</span>
+                                <span class="qa-q-pill"><i class="fas fa-question-circle"></i> Q.${qCounter}</span>
                                 <div class="qa-q-text">${cleanQ}</div>
                             </div>
                             <div class="qa-ans-block">
-                                <div class="qa-ans-badge"><i class="fas fa-check-circle"></i> Answer</div>
+                                <div class="qa-ans-badge"><i class="fas fa-check-circle"></i> ANSWER</div>
                                 <div class="qa-ans-content">${ansBody}</div>
                             </div>
                         </div>
@@ -5371,21 +5435,12 @@ const loadQASubjects = () => {
                 }
             };
 
-            // Answer regex: checks 'Answer' BEFORE 'Ans' and removes wer, -, :, ., or spaces cleanly
             const aPattern = /^(?:Answer|Ans|ଉତ୍ତର|उत्तर|wer)\s*[\:\.\-–—\s]\s*(.*)/i;
-
-            // Section titles (e.g. "F. Let's read between the lines:", "H. Let's listen and speak:")
-            const sectionPattern = /^[A-Z]\.\s+.*[\:\.]?$/i;
-
-            // Standalone sub-parts (e.g. "(a)", "(b)")
+            const sectionPattern = /^(?:Section\s+[I|V|X|0-9]+|[A-Z]\.\s+.*[\:\.]?)$/i;
+            const chapterPattern = /^["'“].+["'”]$/;
             const partPattern = /^\(([a-zA-Z])\)$/;
+            const subTopicPattern = /^\((?:i|ii|iii|iv|v|vi|vii|viii|ix|x|[0-9]+)\)\s+[A-Za-z].*[\:\.]?$/;
 
-            // Grammar topic sub-headers (e.g. "(i) Relative Clauses...:", "(ii) Emphatic Negatives...:")
-            const subTopicPattern = /^\((?:i|ii|iii|iv|v|vi|vii|viii|ix|x|[0-9]+)\)\s+[A-Za-z].*[\:\.]$/;
-
-            // Question patterns:
-            // 1. Numbered: "11.", "24.", "Q1.", "Q.11", "Question 11:"
-            // 2. Roman numeral question: "(i) Why did...", "(ii) What..."
             const qNumberedPattern = /^(?:Q(?:\.|\:|\d+\.|\d+\:)?|Question\s*\d*[\.\:]?|[0-9୦-୯]+[\.\)])\s*(.*)/i;
             const qRomanPattern = /^\((?:i|ii|iii|iv|v|vi|vii|viii|ix|x|xi|xii)\)\s+(.*)/i;
 
@@ -5393,64 +5448,60 @@ const loadQASubjects = () => {
                 let line = lines[i].trim();
                 if (!line) continue;
 
-                // 1. Handle Answer Lines
+                // 1. Quoted Chapter Titles (e.g., "The Trunk of Ganesha")
+                if (chapterPattern.test(line)) {
+                    flushCard();
+                    cardsHtml.push(`<h2 class="qa-chapter-title">${applyMarkdown(line)}</h2>`);
+                    continue;
+                }
+
+                // 2. Section Markers (e.g., Section I, Section II)
+                if (sectionPattern.test(line)) {
+                    flushCard();
+                    cardsHtml.push(`<h3 class="qa-section-title">${applyMarkdown(line)}</h3>`);
+                    continue;
+                }
+
+                // 3. Answer lines
                 const aMatch = line.match(aPattern);
                 if (aMatch) {
                     let ansText = aMatch[1] ? aMatch[1].trim() : '';
-                    // Remove leading punctuation or quotation marks leftover
                     ansText = ansText.replace(/^[\-–—\:\.]\s*/, '').trim();
 
                     if (currentQ) {
-                        currentA.push(ansText);
+                        currentA.push(`<strong>Ans-</strong>${ansText}`);
                     } else {
-                        // Standalone Answer/Activity Note without a question header
                         cardsHtml.push(`
-                            <div class="qa-card-box" style="border-left: 4px solid #007bff;">
-                                <div class="qa-ans-badge" style="color:#007bff;"><i class="fas fa-info-circle"></i> Activity / Note</div>
-                                <div class="qa-ans-content" style="margin-top:6px;">${applyMarkdown(ansText)}</div>
+                            <div class="qa-card-box" style="border-left: 3.5px solid #007bff;">
+                                <div class="qa-ans-badge" style="color:#007bff;"><i class="fas fa-info-circle"></i> ACTIVITY / NOTE</div>
+                                <div class="qa-ans-content" style="margin-top:4px;">${applyMarkdown(ansText)}</div>
                             </div>
                         `);
                     }
                     continue;
                 }
 
-                // 2. Handle Chapter Section Headings (e.g., F. Let's read between the lines)
-                if (sectionPattern.test(line)) {
-                    flushCard();
-                    cardsHtml.push(`
-                        <div class="qa-section-header">
-                            <i class="fas fa-bookmark"></i>
-                            <span>${applyMarkdown(line.replace(/\*\*/g, ''))}</span>
-                        </div>
-                    `);
-                    continue;
-                }
-
-                // 3. Handle Part Markers (e.g., (a), (b))
+                // 4. Sub-part headers (e.g., (a), (b))
                 const partMatch = line.match(partPattern);
                 if (partMatch) {
                     flushCard();
-                    cardsHtml.push(`
-                        <div class="qa-part-header">
-                            <span>Part (${partMatch[1].toUpperCase()})</span>
-                        </div>
-                    `);
+                    cardsHtml.push(`<div class="qa-part-header">Part (${partMatch[1].toUpperCase()})</div>`);
                     continue;
                 }
 
-                // 4. Handle Grammar or Study Subtopic Titles
+                // 5. Grammar or study subtopic headers
                 if (subTopicPattern.test(line)) {
                     flushCard();
                     cardsHtml.push(`
                         <div class="qa-subtopic-header">
-                            <i class="fas fa-chevron-right" style="color: #007bff; font-size: 0.85rem;"></i>
+                            <i class="fas fa-chevron-right" style="color: #007bff; font-size: 0.8rem;"></i>
                             <span>${applyMarkdown(line)}</span>
                         </div>
                     `);
                     continue;
                 }
 
-                // 5. Handle Questions (Numbered, Roman numeral, or lines ending with '?')
+                // 6. Question detector
                 const qNumMatch = line.match(qNumberedPattern);
                 const qRomMatch = line.match(qRomanPattern);
                 const isQuestionByMark = (line.includes('?') && !line.toLowerCase().startsWith('ans'));
@@ -5466,21 +5517,15 @@ const loadQASubjects = () => {
                         currentQ = line;
                     }
 
-                    // Clean outer asterisks e.g. **Question text?**
                     currentQ = currentQ.replace(/^\*\*|\*\*$/g, '').trim();
                     continue;
                 }
 
-                // 6. Accumulate Answer Lines or Content Lines
+                // 7. Accumulate multiline answers or general lines
                 if (currentQ) {
                     currentA.push(line);
                 } else {
-                    // Educational notes or grammar examples (e.g., Relative Clause sentences)
-                    cardsHtml.push(`
-                        <div class="qa-content-line">
-                            ${applyMarkdown(line)}
-                        </div>
-                    `);
+                    cardsHtml.push(`<div class="qa-content-line">${applyMarkdown(line)}</div>`);
                 }
             }
 
@@ -5492,17 +5537,16 @@ const loadQASubjects = () => {
         const showQADetails = (qaData) => {
             document.getElementById('qa-topic-list-view').style.display = 'none';
             document.getElementById('qa-detail-view').style.display = 'block';
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'instant' });
 
             const detailCard = document.getElementById('qa-detail-card');
-            const topicTitle = formatOdiaText(qaData.topicName || 'Questions & Answers');
 
             let pdfButtonHtml = '';
             if (qaData.pdfUrl && qaData.pdfUrl.trim()) {
                 pdfButtonHtml = `
-                    <div style="margin-bottom: 20px; text-align: center;">
-                        <a href="${qaData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 12px 24px; border-radius: 30px; font-weight: 700; box-shadow:0 4px 15px rgba(214, 48, 49, 0.35);">
-                            <i class="fas fa-file-pdf" style="font-size:1.3rem;"></i> Open / Download PDF Q&A Sheet
+                    <div style="margin-bottom: 16px; text-align: center;">
+                        <a href="${qaData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 10px 20px; border-radius: 25px; font-weight: 700; font-size: 0.9rem; box-shadow:0 4px 12px rgba(214, 48, 49, 0.3);">
+                            <i class="fas fa-file-pdf" style="font-size:1.1rem;"></i> Open / Download PDF Q&A Sheet
                         </a>
                     </div>
                 `;
@@ -5511,18 +5555,10 @@ const loadQASubjects = () => {
             let renderedBody = '';
             if (qaData.htmlContent && qaData.htmlContent.trim()) {
                 const cleanMarkup = qaData.htmlContent.replace(/<\/?(html|head|body)[^>]*>/gi, '');
-                renderedBody = `
-                    <div class="html-note-content" style="font-family: inherit; line-height: 1.8; word-wrap: break-word;">
-                        ${cleanMarkup}
-                    </div>
-                `;
+                renderedBody = `<div class="html-note-content">${cleanMarkup}</div>`;
             } else if (qaData.content && qaData.content.trim()) {
                 if (/<[a-z][\s\S]*>/i.test(qaData.content)) {
-                    renderedBody = `
-                        <div class="html-note-content" style="font-family: inherit; line-height: 1.8; word-wrap: break-word;">
-                            ${qaData.content}
-                        </div>
-                    `;
+                    renderedBody = `<div class="html-note-content">${qaData.content}</div>`;
                 } else {
                     renderedBody = formatQAContent(qaData.content);
                 }
@@ -5544,6 +5580,10 @@ const loadQASubjects = () => {
                     ${renderedBody}
                 </div>
             `;
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([detailCard]).catch(() => {});
+            }
         };
 
         const goBackToQASubjects = () => {
