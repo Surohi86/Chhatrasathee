@@ -52,7 +52,7 @@
         /* ─── SOLID, HIGH-CONTRAST DARK MODE ENGINE ─── */
         body.dark-mode {
             --bg-color: #0a0c21;
-            --card-bg: #141836; /* Solid rich dark navy: no muddy transparency */
+            --card-bg: #141836; /* Solid rich dark navy */
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --border-color: rgba(255, 255, 255, 0.12);
@@ -75,6 +75,45 @@
         body.dark-mode strong,
         body.dark-mode b {
             color: #ffffff;
+        }
+
+        /* Dark Mode Fixes for Question Text, Review Cards, and Tables */
+        body.dark-mode .question-text {
+            color: #f8fafc !important;
+            font-weight: 700;
+        }
+
+        body.dark-mode #progress-text {
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode .review-card {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+
+        body.dark-mode .review-card .review-text {
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .sidebar-user-name {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode #sidebar-user-avatar {
+            background: #1a2046 !important;
+            color: #38bdf8 !important;
+            border-color: #38bdf8 !important;
+        }
+
+        body.dark-mode .leaderboard-table td {
+            background: #141836 !important;
+            color: #f8fafc !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        body.dark-mode .leaderboard-table tr:nth-child(even) td {
+            background: #1a2046 !important;
         }
 
         /* ─── 100% CERTIFICATE DARK & LIGHT MODE IMMUNITY SHIELD ─── */
@@ -255,267 +294,172 @@
         }
 
         /* ========================================================
-           BULLETPROOF NOTES THEME ENGINE (PERFECT LIGHT & DARK)
+           EXACT 1:1 NOTE ENGINE (SMART AUTO-THEMED LIGHT & DARK)
            ======================================================== */
 
-        /* Maximize full-width reading room on mobile */
-        @media (max-width: 600px) {
+        /* Responsive full-width reading room across mobile & tablets */
+        @media (max-width: 768px) {
             body:has(#notes-screen.active) .container {
-                padding: 0.35rem 0.45rem !important;
+                padding: 0.5rem 0.6rem !important;
                 max-width: 100% !important;
             }
         }
 
-        /* ─── 1. LIGHT MODE NOTES ─── */
+        /* Base HTML Note Container */
+        #note-detail-card,
+        .html-note-content {
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Noto Sans Math', 'STIX Two Math', sans-serif;
+            font-size: clamp(0.92rem, 2.2vw, 1.05rem);
+            line-height: 1.8;
+            color: var(--text-main);
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 0 2rem 0 !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            box-sizing: border-box;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* ─── 1. LIGHT MODE: CRISP, HIGH-CONTRAST DARK TEXT ─── */
         body:not(.dark-mode) .html-note-content {
             color: #1e293b;
         }
-        body:not(.dark-mode) .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
-        body:not(.dark-mode) .html-note-content section,
-        body:not(.dark-mode) .html-note-content article {
-            background-color: #ffffff;
-            color: #1e293b;
-            border-color: #e2e8f0;
-        }
-        body:not(.dark-mode) .html-note-content p:not([style*="linear-gradient"] *),
-        body:not(.dark-mode) .html-note-content span:not([style*="gradient"]),
-        body:not(.dark-mode) .html-note-content font,
+        body:not(.dark-mode) .html-note-content p,
         body:not(.dark-mode) .html-note-content li,
-        body:not(.dark-mode) .html-note-content em,
-        body:not(.dark-mode) .html-note-content i {
-            color: #1e293b !important;
+        body:not(.dark-mode) .html-note-content td {
+            color: #1e293b;
         }
         body:not(.dark-mode) .html-note-content strong,
         body:not(.dark-mode) .html-note-content b {
-            color: #0f172a !important;
-            font-weight: 700 !important;
-        }
-        body:not(.dark-mode) .html-note-content h1,
-        body:not(.dark-mode) .html-note-content h2:not([style*="linear-gradient"] h2),
-        body:not(.dark-mode) .html-note-content h3:not([style*="linear-gradient"] h3),
-        body:not(.dark-mode) .html-note-content h4 {
-            color: #0369a1 !important;
+            color: #0f172a;
         }
 
-        /* ─── 2. DARK MODE NOTES (NO MORE INVISIBLE BLACK TEXT) ─── */
-        body.dark-mode #note-detail-card,
+        /* ─── 2. DARK MODE: UNIVERSAL AUTO-THEMING FOR ALL HTML NOTES ─── */
         body.dark-mode .html-note-content {
             color: #f8fafc !important;
-            background: transparent !important;
         }
-        body.dark-mode .html-note-content div:not([style*="gradient"]):not([style*="linear-gradient"]),
+
+        /* Automatically convert all card containers to Dark Navy (#141836) */
+        body.dark-mode .html-note-content div,
         body.dark-mode .html-note-content section,
         body.dark-mode .html-note-content article {
             background-color: #141836 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
             color: #f8fafc !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
         }
-        body.dark-mode .html-note-content p:not([style*="linear-gradient"] *),
-        body.dark-mode .html-note-content span:not([style*="linear-gradient"] *):not([style*="gradient"]),
-        body.dark-mode .html-note-content font,
-        body.dark-mode .html-note-content li,
-        body.dark-mode .html-note-content em,
-        body.dark-mode .html-note-content i,
-        body.dark-mode .html-note-content small {
-            color: #e2e8f0 !important;
-            background-color: transparent !important;
+
+        /* Give inner callout boxes (like the green-bordered concept boxes) elevated navy (#1a2046) */
+        body.dark-mode .html-note-content div div,
+        body.dark-mode .html-note-content section div,
+        body.dark-mode .html-note-content article div {
+            background-color: #1a2046 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
         }
-        body.dark-mode .html-note-content strong,
-        body.dark-mode .html-note-content b {
+
+        /* Preserve colored pill badges without letting them turn solid navy */
+        body.dark-mode .html-note-content span[style*="border-radius"],
+        body.dark-mode .html-note-content span[style*="background"] {
+            background-color: rgba(255, 255, 255, 0.15) !important;
             color: #ffffff !important;
-            font-weight: 700 !important;
         }
+
+        /* Headings in Dark Mode */
         body.dark-mode .html-note-content h1,
-        body.dark-mode .html-note-content h2:not([style*="linear-gradient"] h2),
-        body.dark-mode .html-note-content h3:not([style*="linear-gradient"] h3),
+        body.dark-mode .html-note-content h2,
+        body.dark-mode .html-note-content h3,
         body.dark-mode .html-note-content h4,
         body.dark-mode .html-note-content h5 {
             color: #38bdf8 !important;
         }
 
-        /* ─── 3. HERO GRADIENT BANNERS (PRESERVED IN BOTH MODES) ─── */
-        .html-note-content [style*="linear-gradient"],
-        .html-note-content [style*="background: linear-gradient"],
-        .html-note-content [style*="background:linear-gradient"] {
-            border-radius: 14px !important;
-            padding: clamp(14px, 3vw, 24px) clamp(10px, 2.5vw, 20px) !important;
-            box-sizing: border-box !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            text-align: center !important;
-            margin-bottom: 1.25rem !important;
+        /* Paragraphs, List items, and regular text */
+        body.dark-mode .html-note-content p,
+        body.dark-mode .html-note-content li,
+        body.dark-mode .html-note-content span:not([style*="background"]):not([style*="border-radius"]) {
+            color: #cbd5e1 !important;
         }
 
-        /* Inner White Boxes inside Hero Banner: ALWAYS White with Dark Text in BOTH Modes */
-        .html-note-content [style*="linear-gradient"] > div,
-        .html-note-content [style*="background: linear-gradient"] > div,
-        body.dark-mode .html-note-content [style*="linear-gradient"] > div,
-        body.dark-mode .html-note-content [style*="background: linear-gradient"] > div {
-            background-color: #ffffff !important;
-            border-radius: 10px !important;
-            padding: clamp(8px, 1.8vw, 14px) clamp(8px, 2vw, 18px) !important;
-            margin: 0 auto clamp(10px, 2.2vw, 16px) auto !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-            text-align: center !important;
-            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        /* Bold text (e.g. Sudha Murty, Hard work is the real magic) */
+        body.dark-mode .html-note-content strong,
+        body.dark-mode .html-note-content b {
+            color: #ffffff !important;
+            font-weight: 700 !important;
         }
 
-        /* Text inside Hero Banner White Boxes: ALWAYS Crisp Black/Dark */
-        .html-note-content [style*="linear-gradient"] > div *,
-        .html-note-content [style*="background: linear-gradient"] > div *,
-        body.dark-mode .html-note-content [style*="linear-gradient"] > div *,
-        body.dark-mode .html-note-content [style*="background: linear-gradient"] > div * {
-            color: #0f172a !important;
-            background-color: transparent !important;
-            font-size: clamp(0.72rem, 2.1vw, 0.88rem);
-            line-height: 1.45;
+        /* Horizontal dividers */
+        body.dark-mode .html-note-content hr {
+            border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        /* Banner Main Title: "A Bottle of Dew" */
-        .html-note-content [style*="linear-gradient"] h1,
-        .html-note-content [style*="linear-gradient"] h2,
-        .html-note-content [style*="background: linear-gradient"] h1,
-        .html-note-content [style*="background: linear-gradient"] h2,
-        body.dark-mode .html-note-content [style*="linear-gradient"] h1,
-        body.dark-mode .html-note-content [style*="linear-gradient"] h2 {
-            color: #007bff !important;
-            font-size: clamp(1.4rem, 4.4vw, 2.2rem) !important;
-            font-weight: 800 !important;
-            line-height: 1.25 !important;
-            margin: clamp(6px, 1.6vw, 10px) 0 4px 0 !important;
-            text-align: center !important;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
-        }
-
-        /* Banner Subtitle: "Story by Sudha Murty" */
-        .html-note-content [style*="linear-gradient"] p,
-        .html-note-content [style*="background: linear-gradient"] p,
-        body.dark-mode .html-note-content [style*="linear-gradient"] p {
-            color: #0284c7 !important;
-            font-size: clamp(0.78rem, 2.2vw, 0.98rem) !important;
-            font-weight: 600 !important;
-            margin: 0 0 clamp(8px, 2vw, 14px) 0 !important;
-            text-align: center !important;
-            line-height: 1.4 !important;
-        }
-
-        /* ─── 4. RESPONSIVE TOUCH-SCROLLABLE TABLES ─── */
+        /* ─── 3. TABLE AUTO-CONVERSION (FIXES WHITE TABLE CELLS) ─── */
         .note-table-scroll {
             width: 100% !important;
             max-width: 100% !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
-            margin: 16px 0 !important;
-            border-radius: 12px !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
-            background: #ffffff !important;
+            margin: 12px 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
             box-sizing: border-box !important;
-        }
-        body.dark-mode .note-table-scroll {
-            background: #141836 !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+            padding: 0 !important;
         }
 
-        .html-note-content table,
-        #note-detail-card table {
+        .html-note-content table {
             width: 100% !important;
-            min-width: 480px !important;
-            border-collapse: collapse !important;
-            margin: 0 !important;
-            font-size: clamp(0.78rem, 2vw, 0.92rem) !important;
-            line-height: 1.55 !important;
-            display: table !important;
+            max-width: 100% !important;
+            border-collapse: collapse;
+            margin: 10px 0;
+            display: table;
+            box-sizing: border-box;
         }
 
         .html-note-content th,
-        #note-detail-card th,
-        .html-note-content td,
-        #note-detail-card td {
-            padding: clamp(8px, 1.8vw, 12px) clamp(10px, 2vw, 15px) !important;
-            text-align: left !important;
-            vertical-align: middle !important;
-            word-break: normal !important;
-            overflow-wrap: normal !important;
-            white-space: normal !important;
-            box-sizing: border-box !important;
+        .html-note-content td {
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: middle;
+            box-sizing: border-box;
         }
 
-        /* Light Mode Table Colors */
-        body:not(.dark-mode) .html-note-content th,
-        body:not(.dark-mode) #note-detail-card th {
-            background-color: #0284c7 !important;
-            color: #ffffff !important;
-            border-bottom: 2px solid #0369a1 !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
-            font-weight: 700 !important;
-        }
-        body:not(.dark-mode) .html-note-content th *,
-        body:not(.dark-mode) #note-detail-card th * {
-            color: #ffffff !important;
-        }
-        body:not(.dark-mode) .html-note-content td,
-        body:not(.dark-mode) #note-detail-card td {
-            background-color: #ffffff !important;
-            color: #1e293b !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-        body:not(.dark-mode) .html-note-content td *,
-        body:not(.dark-mode) #note-detail-card td * {
-            color: #1e293b !important;
-        }
-        body:not(.dark-mode) .html-note-content tr:nth-child(even) td,
-        body:not(.dark-mode) #note-detail-card tr:nth-child(even) td {
-            background-color: #f8fafc !important;
+        /* Light Mode Tables */
+        body:not(.dark-mode) .html-note-content table:not([border]) td,
+        body:not(.dark-mode) .html-note-content table:not([border]) th {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
 
-        /* Dark Mode Table Colors */
-        body.dark-mode .html-note-content th,
-        body.dark-mode #note-detail-card th {
-            background-color: #0369a1 !important;
-            color: #ffffff !important;
-            border-bottom: 2px solid #0284c7 !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
-            font-weight: 700 !important;
+        /* Dark Mode Tables: Clean dark cells with bright white text */
+        body.dark-mode .html-note-content table {
+            background-color: #141836 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
         }
-        body.dark-mode .html-note-content th *,
-        body.dark-mode #note-detail-card th * {
-            color: #ffffff !important;
+        body.dark-mode .html-note-content th {
+            background-color: #1e293b !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
         }
-        body.dark-mode .html-note-content td,
-        body.dark-mode #note-detail-card td {
+        body.dark-mode .html-note-content td {
             background-color: #141836 !important;
             color: #f8fafc !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
-        body.dark-mode .html-note-content td *,
-        body.dark-mode #note-detail-card td * {
-            color: #f8fafc !important;
-        }
-        body.dark-mode .html-note-content tr:nth-child(even) td,
-        body.dark-mode #note-detail-card tr:nth-child(even) td {
+        body.dark-mode .html-note-content tr:nth-child(even) td {
             background-color: #1a2046 !important;
         }
 
-        /* ─── 5. HEADINGS, PARAGRAPHS & FORMULAS ─── */
-        .html-note-content h2:not([style*="linear-gradient"] h2),
-        .html-note-content h3:not([style*="linear-gradient"] h3) {
-            font-size: clamp(1.05rem, 3vw, 1.42rem) !important;
-            font-weight: 800 !important;
-            color: #0369a1 !important;
-            line-height: 1.35 !important;
-            margin: 1.2rem 0 0.5rem 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 8px !important;
-            flex-wrap: wrap !important;
-        }
-        body.dark-mode .html-note-content h2:not([style*="linear-gradient"] h2),
-        body.dark-mode .html-note-content h3:not([style*="linear-gradient"] h3) {
-            color: #38bdf8 !important;
+        /* Prevent diagrams, SVGs, canvas, and media from overflowing on mobile */
+        .html-note-content img,
+        .html-note-content svg {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+            margin: 10px auto;
+            border-radius: 8px;
+            box-sizing: border-box;
         }
 
         .html-note-content p:not([style*="linear-gradient"] p) {
@@ -1516,8 +1460,11 @@ body.dark-mode .score-stat-chip {
         }
 
         body.dark-mode .ticker-container {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: #141836 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+        }
+        body.dark-mode .ticker-content {
+            color: #f8fafc !important;
         }
 
         /* Slim, compact badge pill matching Screenshot 1 */
@@ -2019,8 +1966,15 @@ body.dark-mode .score-stat-chip {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
             transition: 0.3s;
         }
-        /* Prevent text selection and highlighting across the user panel */
+        /* Complete Full-Viewport Responsive Body Theme Engine */
         body {
+            background: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            transition: background 0.3s ease, color 0.3s ease;
             -webkit-user-select: none; /* Safari */
             -moz-user-select: none;    /* Firefox */
             -ms-user-select: none;     /* IE10+/Edge */
@@ -2104,6 +2058,11 @@ body.dark-mode .score-stat-chip {
             border: 1px solid rgba(0, 0, 0, 0.03) !important;
             backdrop-filter: none !important;
         }
+        body.dark-mode .login-card-container {
+            background: #141836 !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+        }
 
         .login-card-title {
             text-align: center;
@@ -2111,6 +2070,9 @@ body.dark-mode .score-stat-chip {
             font-weight: 800;
             color: #1e293b;
             margin-bottom: 1.8rem;
+        }
+        body.dark-mode .login-card-title {
+            color: #f8fafc !important;
         }
 
         .login-input {
@@ -2125,6 +2087,15 @@ body.dark-mode .score-stat-chip {
             font-family: inherit;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        body.dark-mode .login-input {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
+        }
+        body.dark-mode .login-logo-box {
+            background: #141836;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .login-input:focus {
@@ -5319,7 +5290,7 @@ let selectedQASubjectId = '';
             }
         };
 
-        // ─────────── SUBJECT NOTES MARKDOWN PARSER (MOBILE & DESKTOP TUNED) ───────────
+        // ─────────── SUBJECT NOTES MARKDOWN PARSER (CLEAN & BORDERLESS) ───────────
         const formatNotesContent = (text) => {
             if (!text) return '';
             
@@ -5336,18 +5307,18 @@ let selectedQASubjectId = '';
                 }
 
                 let formattedLine = line
-                    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
-                    .replace(/__(.*?)__/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700;">$1</strong>')
+                    .replace(/__(.*?)__/g, '<strong style="font-weight: 700;">$1</strong>')
                     .replace(/\*(.*?)\*/g, '<em>$1</em>')
                     .replace(/_(.*?)_/g, '<em>$1</em>');
 
-                // Clean headline for Note Title (adapts to light/dark themes and viewport widths)
+                // Note Title without extra border line
                 if (firstNonEmptyLine) {
                     firstNonEmptyLine = false;
                     let titleText = line.replace(/\*\*/g, '').replace(/__/g, '');
                     htmlOutput.push(`
-                        <div style="text-align: center; margin-bottom: 20px; width: 100%;">
-                            <h2 style="font-family: inherit; font-size: clamp(1.25rem, 4vw, 1.75rem); font-weight: 800; color: var(--header-title); display: inline-block; margin: 0; padding-bottom: 6px; border-bottom: 2.5px solid var(--header-title); line-height: 1.35;">${titleText}</h2>
+                        <div style="text-align: center; margin-bottom: 18px; width: 100%;">
+                            <h2 style="font-family: inherit; font-size: clamp(1.25rem, 3.8vw, 1.75rem); font-weight: 800; color: var(--header-title); display: inline-block; margin: 0; line-height: 1.35;">${titleText}</h2>
                         </div>
                     `);
                     continue;
@@ -5361,7 +5332,7 @@ let selectedQASubjectId = '';
                     const num = headingMatch[1];
                     let title = headingMatch[2].replace(/\*\*/g, '').replace(/__/g, '');
                     htmlOutput.push(`
-                        <h3 style="color: var(--header-title); font-size: clamp(1.05rem, 3.2vw, 1.25rem); font-weight: 800; margin-top: 20px; margin-bottom: 8px; font-family: inherit; line-height: 1.4;">
+                        <h3 style="color: var(--header-title); font-size: clamp(1.05rem, 3vw, 1.25rem); font-weight: 800; margin-top: 18px; margin-bottom: 6px; font-family: inherit; line-height: 1.4;">
                             ${num}. ${title}
                         </h3>
                     `);
@@ -5374,22 +5345,22 @@ let selectedQASubjectId = '';
                 
                 if (bulletMatch) {
                     let bulletText = bulletMatch[1]
-                        .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
-                        .replace(/__(.*?)__/g, '<strong style="font-weight: 700; color: var(--text-main);">$1</strong>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700;">$1</strong>')
+                        .replace(/__(.*?)__/g, '<strong style="font-weight: 700;">$1</strong>')
                         .replace(/\*(.*?)\*/g, '<em>$1</em>')
                         .replace(/_(.*?)_/g, '<em>$1</em>');
 
                     htmlOutput.push(`
-                        <div style="display: flex; align-items: flex-start; margin-left: 6px; margin-bottom: 8px; line-height: 1.75;">
+                        <div style="display: flex; align-items: flex-start; margin-left: 6px; margin-bottom: 6px; line-height: 1.7;">
                             <span style="color: var(--header-title); margin-right: 8px; font-size: 1.1rem; line-height: 1.5;">•</span>
-                            <span style="flex: 1; color: var(--text-main); font-size: clamp(0.92rem, 2.3vw, 1.05rem); font-family: inherit;">${bulletText}</span>
+                            <span style="flex: 1; font-family: inherit;">${bulletText}</span>
                         </div>
                     `);
                     continue;
                 }
 
                 htmlOutput.push(`
-                    <p style="color: var(--text-main); font-size: clamp(0.92rem, 2.3vw, 1.05rem); margin-bottom: 10px; line-height: 1.8; font-family: inherit;">
+                    <p style="font-size: clamp(0.92rem, 2.2vw, 1.05rem); margin-bottom: 10px; line-height: 1.75; font-family: inherit;">
                         ${formattedLine}
                     </p>
                 `);
@@ -5421,9 +5392,9 @@ let selectedQASubjectId = '';
             let pdfButtonHtml = '';
             if (noteData.pdfUrl && noteData.pdfUrl.trim()) {
                 pdfButtonHtml = `
-                    <div style="margin-bottom: 18px; text-align: center;">
-                        <a href="${noteData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: clamp(8px, 2vw, 12px) clamp(16px, 3.5vw, 24px); border-radius: 25px; font-size: clamp(0.82rem, 2.2vw, 0.95rem); font-weight: 700; box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3);">
-                            <i class="fas fa-file-pdf" style="font-size:1.15rem;"></i> Open / Download PDF Notes
+                    <div style="margin-bottom: 16px; text-align: center;">
+                        <a href="${noteData.pdfUrl}" target="_blank" class="btn" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; background: linear-gradient(135deg, #ff5e57, #d63031); color:#fff; padding: 10px 22px; border-radius: 25px; font-size: 0.9rem; font-weight: 700; box-shadow: 0 4px 12px rgba(214, 48, 49, 0.25);">
+                            <i class="fas fa-file-pdf" style="font-size:1.1rem;"></i> Open / Download PDF Notes
                         </a>
                     </div>
                 `;
@@ -5453,7 +5424,7 @@ let selectedQASubjectId = '';
                 </div>
             `;
 
-            // Automatically wrap all tables in a touch-scrollable container
+            // Clean responsive table wrapper with NO border lines or shadows
             const tables = detailCard.querySelectorAll('table');
             tables.forEach(table => {
                 if (!table.parentElement.classList.contains('note-table-scroll')) {
@@ -5468,6 +5439,7 @@ let selectedQASubjectId = '';
                 window.MathJax.typesetPromise([detailCard]).catch(err => console.warn('MathJax render error:', err));
             }
         };
+         
 
         // ─────────── NOTES BACK NAVIGATION HANDLERS ───────────
         const goBackToNotesSubjects = () => {
@@ -5909,6 +5881,11 @@ const loadQASubjects = () => {
                 // Map colors across datasets systematically
                 const backgroundColors = percentScores.map((_, i) => gradientPalette[i % gradientPalette.length]);
 
+                // Detect theme for chart axes & grid line visibility
+                const isDark = document.body.classList.contains('dark-mode');
+                const axisTextColor = isDark ? '#94a3b8' : '#495057';
+                const gridLineColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)';
+
                 // Render beautiful glowing Chart.js configuration
                 resultsChartInstance = new Chart(chartCanvas, {
                     type: 'bar',
@@ -5920,7 +5897,7 @@ const loadQASubjects = () => {
                             backgroundColor: backgroundColors,
                             borderRadius: 12,
                             borderWidth: 1,
-                            borderColor: 'rgba(255,255,255,0.1)'
+                            borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.05)'
                         }]
                     },
                     options: {
@@ -5930,12 +5907,18 @@ const loadQASubjects = () => {
                             y: {
                                 beginAtZero: true,
                                 max: 100,
-                                grid: { color: 'rgba(0,0,0,0.05)' },
-                                ticks: { font: { family: 'Poppins', size: 11 } }
+                                grid: { color: gridLineColor },
+                                ticks: { 
+                                    color: axisTextColor,
+                                    font: { family: 'Poppins', size: 11 } 
+                                }
                             },
                             x: {
                                 grid: { display: false },
-                                ticks: { font: { family: 'Poppins', size: 11, weight: 'bold' } }
+                                ticks: { 
+                                    color: axisTextColor,
+                                    font: { family: 'Poppins', size: 11, weight: 'bold' } 
+                                }
                             }
                         },
                         plugins: {
@@ -6558,6 +6541,12 @@ if (loginFormEl) {
                 localStorage.setItem('cs_theme_mode', 'light');
             }
 
+            // Re-render performance chart if on results screen so axes switch color
+            const resultsScreen = document.getElementById('my-results-screen');
+            if (resultsScreen && resultsScreen.classList.contains('active')) {
+                renderResultsChart();
+            }
+
             // Adapt MathJax formulas if visible
             if (window.MathJax && window.MathJax.typesetPromise) {
                 const detail = document.getElementById('note-detail-card');
@@ -6579,8 +6568,12 @@ if (loginFormEl) {
         const savedTheme = localStorage.getItem('cs_theme_mode');
         if (savedTheme === 'dark') {
             applyTheme(true);
-        } else if (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        } else if (savedTheme === 'light') {
+            applyTheme(false);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             applyTheme(true);
+        } else {
+            applyTheme(false);
         }
         // ─────────── ADVANCED ABOUT US (TEXT & URL LINK) CONTROLLER ───────────
         document.getElementById('footer-about-us').onclick = (e) => {
