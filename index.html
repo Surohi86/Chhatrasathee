@@ -262,9 +262,38 @@
             max-width: 100% !important;
         }
 
+        /* ─────────── SEAMLESS FULL-PAGE SUBJECT TRAYS (EXACT MATCH TO SCREENSHOT 2) ─────────── */
+        #subject-list-screen,
+        #subject-list-view,
         #notes-screen > #notes-subject-view,
-        #notes-screen > #notes-topic-list-view,
         #qa-screen > #qa-subject-view,
+        #books-screen > .card {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Clean centered title matching Screenshot 2 */
+        .subject-screen-title,
+        #subject-screen-heading,
+        #qa-screen-heading,
+        #notes-screen-heading {
+            font-size: clamp(1.4rem, 4.2vw, 1.85rem) !important;
+            font-weight: 800 !important;
+            color: var(--header-title) !important;
+            text-align: center !important;
+            margin: 0.3rem 0 1.25rem 0 !important;
+            letter-spacing: -0.3px !important;
+            line-height: 1.25 !important;
+        }
+
+        /* Topic list views remain neat cards */
+        #notes-screen > #notes-topic-list-view,
         #qa-screen > #qa-topic-list-view {
             background: var(--card-bg) !important;
             border: 1px solid var(--border-color) !important;
@@ -395,13 +424,13 @@
             border-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        /* ─── 3. TABLE AUTO-CONVERSION (FIXES WHITE TABLE CELLS) ─── */
+        /* ─── 3. FULL-MODE RESPONSIVE TABLE ENGINE (MATCHES SCREENSHOT 2) ─── */
         .note-table-scroll {
             width: 100% !important;
             max-width: 100% !important;
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
-            margin: 12px 0 !important;
+            margin: 10px 0 !important;
             border: none !important;
             box-shadow: none !important;
             background: transparent !important;
@@ -409,43 +438,69 @@
             padding: 0 !important;
         }
 
-        .html-note-content table {
+        .html-note-content table,
+        #note-detail-card table {
             width: 100% !important;
             max-width: 100% !important;
-            border-collapse: collapse;
-            margin: 10px 0;
-            display: table;
-            box-sizing: border-box;
+            min-width: 0 !important;
+            border-collapse: collapse !important;
+            margin: 8px 0 !important;
+            display: table !important;
+            table-layout: auto !important;
+            box-sizing: border-box !important;
         }
 
         .html-note-content th,
-        .html-note-content td {
-            padding: 8px 12px;
+        .html-note-content td,
+        #note-detail-card th,
+        #note-detail-card td {
+            padding: clamp(4px, 1.2vw, 8px) clamp(4px, 1.2vw, 8px) !important;
+            font-size: clamp(0.72rem, 1.9vw, 0.90rem) !important;
+            line-height: 1.45 !important;
             text-align: left;
-            vertical-align: middle;
-            box-sizing: border-box;
+            vertical-align: top !important; /* Top-aligned matching Screenshot 2 */
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow-wrap: anywhere !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Responsive cell padding and font scaling for narrow phone screens */
+        @media (max-width: 600px) {
+            body:has(#notes-screen.active) .container {
+                padding: 0.25rem 0.35rem !important;
+            }
+            .html-note-content th,
+            .html-note-content td,
+            #note-detail-card th,
+            #note-detail-card td {
+                padding: 5px 4px !important;
+                font-size: clamp(0.68rem, 1.8vw, 0.82rem) !important;
+                line-height: 1.38 !important;
+            }
         }
 
         /* Light Mode Tables */
         body:not(.dark-mode) .html-note-content table:not([border]) td,
         body:not(.dark-mode) .html-note-content table:not([border]) th {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.12) !important;
         }
 
         /* Dark Mode Tables: Clean dark cells with bright white text */
         body.dark-mode .html-note-content table {
             background-color: #141836 !important;
-            border-color: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
         }
         body.dark-mode .html-note-content th {
             background-color: #1e293b !important;
             color: #38bdf8 !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
         }
         body.dark-mode .html-note-content td {
             background-color: #141836 !important;
             color: #f8fafc !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
         }
         body.dark-mode .html-note-content tr:nth-child(even) td {
             background-color: #1a2046 !important;
@@ -1000,9 +1055,25 @@
 
         .subject-tray {
             background: linear-gradient(90deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fcf6ba 75%, #bf953f 100%);
-            color: #4a3500; text-align: center; padding: 15px 25px; border-radius: 18px; margin: 1rem auto; width: 100%; cursor: pointer; font-weight: 700; font-size: 1.3rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); text-transform: uppercase; border: 1px solid #aa771c; transition: 0.3s;
+            color: #4a3500;
+            text-align: center;
+            padding: clamp(12px, 2.6vw, 16px) clamp(16px, 3vw, 24px);
+            border-radius: 16px;
+            margin: clamp(0.7rem, 2vw, 0.95rem) auto;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+            text-transform: uppercase;
+            border: 1px solid #aa771c;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        .subject-tray:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+        .subject-tray:hover {
+            transform: translateY(-2px) scale(1.008);
+            box-shadow: 0 6px 20px rgba(170, 119, 28, 0.3);
+        }
         
         .quiz-list-item { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-radius: 18px; margin-bottom: 1rem; transition: transform 0.3s ease; cursor: pointer; color: white; }
         .quiz-list-item:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
@@ -3220,11 +3291,11 @@ body.dark-mode .class-header-title {
             </div>
         </div>
 
-        <!-- SCREEN 1: SUBJECTS (HOME) -->
+        <!-- SCREEN 1: SUBJECTS (HOME) - SEAMLESS FULL-PAGE LAYOUT (MATCHING SCREENSHOT 2) -->
 <div id="subject-list-screen" class="screen">
     <div class="back-nav" onclick="openClassSelection('quizzes')"><i class="fas fa-arrow-left"></i> Back to Classes</div>
-    <div class="card">
-        <h1 id="subject-screen-heading" style="text-align: center; margin-bottom: 1rem;">Available Quizzes/Tests (MCQs)</h1>
+    <div id="subject-list-view">
+        <h1 id="subject-screen-heading" class="subject-screen-title">Available Quizzes/Tests (MCQs)</h1>
         <div id="subject-list-container">
             <p style="text-align:center; opacity:0.6;">Searching for subjects...</p>
         </div>
@@ -5424,9 +5495,17 @@ let selectedQASubjectId = '';
                 </div>
             `;
 
-            // Clean responsive table wrapper with NO border lines or shadows
+            // Reset any hardcoded pixel widths and enable full fluid rendering
             const tables = detailCard.querySelectorAll('table');
             tables.forEach(table => {
+                table.style.width = '100%';
+                table.style.maxWidth = '100%';
+                table.style.minWidth = '0';
+                table.removeAttribute('width');
+                table.querySelectorAll('th, td').forEach(cell => {
+                    cell.style.minWidth = '0';
+                    cell.removeAttribute('width');
+                });
                 if (!table.parentElement.classList.contains('note-table-scroll')) {
                     const scrollWrapper = document.createElement('div');
                     scrollWrapper.className = 'note-table-scroll';
