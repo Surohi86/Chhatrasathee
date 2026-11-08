@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CHHATRASATHEE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
@@ -454,16 +454,27 @@
         .html-note-content td,
         #note-detail-card th,
         #note-detail-card td {
-            padding: clamp(4px, 1.2vw, 8px) clamp(4px, 1.2vw, 8px) !important;
-            font-size: clamp(0.72rem, 1.9vw, 0.90rem) !important;
-            line-height: 1.45 !important;
+            padding: clamp(6px, 1.4vw, 10px) clamp(6px, 1.4vw, 10px) !important;
+            font-size: clamp(0.74rem, 1.9vw, 0.92rem) !important;
+            line-height: 1.48 !important;
             text-align: left;
-            vertical-align: top !important; /* Top-aligned matching Screenshot 2 */
+            vertical-align: top !important;
             white-space: normal !important;
-            word-break: break-word !important;
-            overflow-wrap: anywhere !important;
+            word-break: normal !important; /* Never chop words in the middle */
+            overflow-wrap: break-word !important; /* Wrap by whole words only */
             min-width: 0 !important;
             box-sizing: border-box !important;
+        }
+
+        /* ─── GUARANTEE 1ST COLUMN WORDS (Looking after, Tended, Precious, Wisdom, etc.) STAY ON A SINGLE LINE ─── */
+        .html-note-content th:first-child,
+        .html-note-content td:first-child,
+        #note-detail-card th:first-child,
+        #note-detail-card td:first-child {
+            white-space: nowrap !important; /* Keeps terms/words strictly on a single line */
+            word-break: normal !important;
+            font-weight: 700 !important;
+            width: 1% !important; /* Standard layout rule: automatically allocates the exact width needed for the word without wrapping */
         }
 
         /* Responsive cell padding and font scaling for narrow phone screens */
@@ -475,9 +486,20 @@
             .html-note-content td,
             #note-detail-card th,
             #note-detail-card td {
-                padding: 5px 4px !important;
-                font-size: clamp(0.68rem, 1.8vw, 0.82rem) !important;
-                line-height: 1.38 !important;
+                padding: 6px 5px !important;
+                font-size: clamp(0.70rem, 1.8vw, 0.84rem) !important;
+                line-height: 1.4 !important;
+                word-break: normal !important;
+                overflow-wrap: break-word !important;
+                white-space: normal !important;
+                vertical-align: top !important;
+            }
+            .html-note-content th:first-child,
+            .html-note-content td:first-child,
+            #note-detail-card th:first-child,
+            #note-detail-card td:first-child {
+                white-space: nowrap !important;
+                word-break: normal !important;
             }
         }
 
@@ -580,7 +602,15 @@
             border-radius: 10px;
         }
 
-        .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 1rem; min-height: 80vh; }
+        .container { 
+    width: 100% !important; 
+    max-width: 800px; 
+    margin: 0 auto; 
+    padding: 1rem; 
+    min-height: 80vh; 
+    box-sizing: border-box !important;
+    overflow-x: hidden !important; /* Keeps child elements from stretching beyond the screen */
+}
         
         .screen { 
             display: none; 
@@ -2038,18 +2068,37 @@ body.dark-mode .score-stat-chip {
             transition: 0.3s;
         }
         /* Complete Full-Viewport Responsive Body Theme Engine */
+        /* ─── FIXED VIEWPORT & HORIZONTAL SCROLL LOCK ─── */
+        html {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+            -webkit-text-size-adjust: 100% !important;
+            touch-action: pan-y !important; /* Only allows vertical scrolling, stops pinch-zoom & left/right drag */
+        }
+
         body {
             background: var(--bg-color);
             color: var(--text-main);
             font-family: 'Poppins', 'Noto Sans Oriya', 'Noto Sans Devanagari', sans-serif;
             min-height: 100vh;
+            width: 100% !important;
+            max-width: 100% !important;
             margin: 0;
             padding: 0;
+            overflow-x: hidden !important; /* Strictly prevents horizontal scroll */
+            position: relative;
+            touch-action: pan-y !important;
             transition: background 0.3s ease, color 0.3s ease;
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE10+/Edge */
-            user-select: none;         /* Standard */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* ─── PREVENT AUTO-ZOOM ON INPUT FOCUS ─── */
+        input, select, textarea, .login-input {
+            font-size: 16px !important; /* 16px prevents mobile browsers from auto-zooming when tapped */
         }
         
         /* Prevent dragging of images or cards */
@@ -2065,35 +2114,37 @@ body.dark-mode .score-stat-chip {
             }
         }
         
-        /* ─────────── CUSTOM CLEAN LOGIN SCREEN STYLES ─────────── */
+        /* ─────────── CUSTOM CLEAN LOGIN SCREEN STYLES (MATCHING SCREENSHOT 2) ─────────── */
         #login-screen {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 1.5rem 1rem;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .login-branding {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.35rem;
             text-align: center;
         }
 
         .login-logo-box {
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             background: #ffffff;
-            border-radius: 20px;
-            padding: 10px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 18px;
+            padding: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.85rem;
         }
 
         .login-logo-box img {
@@ -2103,31 +2154,34 @@ body.dark-mode .score-stat-chip {
         }
 
         .login-title-main {
-            font-size: 1.85rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: 1.5px;
-            background: linear-gradient(90deg, #b833f4, #5034f5);
+            letter-spacing: 1.2px;
+            background: linear-gradient(90deg, #9d4edd 0%, #4361ee 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            line-height: 1.2;
         }
 
         .login-title-sub {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #e63946;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
+            line-height: 1.2;
         }
 
         .login-card-container {
             background: #ffffff !important;
             border-radius: 24px !important;
-            padding: 2.5rem 2rem !important;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04) !important;
+            padding: 1.75rem 1.6rem !important;
+            width: 86% !important;
+            max-width: 340px !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04), 0 2px 10px rgba(0, 0, 0, 0.02) !important;
             border: 1px solid rgba(0, 0, 0, 0.03) !important;
             backdrop-filter: none !important;
+            box-sizing: border-box !important;
         }
         body.dark-mode .login-card-container {
             background: #141836 !important;
@@ -2137,10 +2191,11 @@ body.dark-mode .score-stat-chip {
 
         .login-card-title {
             text-align: center;
-            font-size: 1.6rem;
+            font-size: 1.35rem;
             font-weight: 800;
             color: #1e293b;
-            margin-bottom: 1.8rem;
+            margin: 0 0 1.25rem 0;
+            line-height: 1.2;
         }
         body.dark-mode .login-card-title {
             color: #f8fafc !important;
@@ -2148,15 +2203,16 @@ body.dark-mode .score-stat-chip {
 
         .login-input {
             width: 100%;
-            padding: 14px 18px !important;
-            margin-bottom: 1.2rem !important;
-            background: #f4f6f8 !important;
-            border: 1px solid #eef0f3 !important;
+            padding: 12px 16px !important;
+            margin-bottom: 0.85rem !important;
+            background: #f8fafc !important;
+            border: 1px solid #edf2f7 !important;
             border-radius: 12px !important;
             color: #1e293b !important;
-            font-size: 0.95rem !important;
+            font-size: 0.92rem !important;
             font-family: inherit;
             outline: none;
+            box-sizing: border-box;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         body.dark-mode .login-input {
@@ -2181,23 +2237,25 @@ body.dark-mode .score-stat-chip {
 
         .login-enter-btn {
             width: 100%;
-            padding: 14px 20px;
+            padding: 12px 20px;
             border-radius: 30px !important;
-            background: linear-gradient(90deg, #d623d6 0%, #5027ee 50%, #1e3cf5 100%) !important;
+            background: linear-gradient(90deg, #c026d3 0%, #4f46e5 100%) !important;
             color: #ffffff !important;
-            font-size: 1rem;
+            font-size: 0.92rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
             border: none;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(80, 39, 238, 0.35);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
             transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            margin-top: 0.25rem;
+            box-sizing: border-box;
         }
 
         .login-enter-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(80, 39, 238, 0.45);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.45);
             opacity: 0.95;
         }
         
@@ -3985,7 +4043,10 @@ let selectedQASubjectId = '';
             };
             const activeIdx = mapScreenToSidebarItemIndex[id];
             if (activeIdx !== undefined) {
-                document.querySelectorAll('.sidebar-item')[activeIdx].classList.add('active');
+                const sidebarItems = document.querySelectorAll('.sidebar-item');
+                if (sidebarItems[activeIdx]) {
+                    sidebarItems[activeIdx].classList.add('active');
+                }
             }
 
             // Screen Action Hooks
@@ -5602,7 +5663,10 @@ const loadQASubjects = () => {
             });
         };
 
-        const showQATopicsForSubject = async (subjectId, subjectName) => {
+        // ─── REAL-TIME SYNCED Q&A TOPICS CONTROLLER ───
+        let qaTopicsUnsubscribe = null;
+
+        const showQATopicsForSubject = (subjectId, subjectName) => {
             selectedQASubjectId = subjectId;
             document.getElementById('selected-qa-subject').innerText = subjectName;
             const subjectView = document.getElementById('qa-subject-view');
@@ -5610,49 +5674,81 @@ const loadQASubjects = () => {
             document.getElementById('qa-topic-list-view').style.display = 'block';
             
             const container = document.getElementById('qa-topics-container');
-            container.innerHTML = '<p style="text-align:center; padding:15px;">Loading questions catalog...</p>';
+            container.innerHTML = '<p style="text-align:center; padding:15px;"><i class="fas fa-spinner fa-spin"></i> Loading questions catalog...</p>';
 
-            try {
-                const snap = await db.collection('qa_sheets').where('subjectId', '==', subjectId).get();
-                container.innerHTML = '';
-                if (snap.empty) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 3rem 1rem;">
-                            <div style="font-size: 3rem; color: #ff9933; margin-bottom: 1rem;">
-                                <i class="fas fa-hourglass-half"></i>
-                            </div>
-                            <h2 style="font-size: 1.8rem; font-weight: 700; background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; display: inline-block;">Coming soon.....</h2>
-                            <p style="font-size: 0.95rem; color: var(--text-sub); font-weight: 500;">Solved question-answer sheets are currently being prepared for this section. Stay tuned!</p>
-                        </div>`;
-                    return;
-                }
-                
-                let colorIndex = 0;
-                snap.forEach(doc => {
-                    const data = doc.data();
-                    const item = document.createElement('div');
-                    const gradClass = data.gradientClass || ('q-grad-' + ((colorIndex % 12) + 1));
-                    item.className = `quiz-list-item ${gradClass}`;
-                    colorIndex++;
-                    
-                    item.innerHTML = `
-                        <div style="flex:1;">
-                            <h3 style="margin:0; font-size:1.2rem; font-weight:700;">${data.topicName}</h3>
-                            <p style="margin:4px 0 0 0; opacity:0.85; font-size:0.85rem;">Open Question Sheet</p>
-                        </div>
-                        <button type="button" class="btn btn-secondary" style="pointer-events: none;">Open</button>
-                    `;
-                    
-                    item.onclick = (e) => {
-                        e.preventDefault();
-                        showQADetails(data);
-                    };
-                    
-                    container.appendChild(item);
-                });
-            } catch (err) {
-                container.innerHTML = '<p style="color:red">Failed to retrieve Q&A topics.</p>';
+            // Clean up any previously active listener
+            if (qaTopicsUnsubscribe) {
+                qaTopicsUnsubscribe();
+                qaTopicsUnsubscribe = null;
             }
+
+            // Real-time listener: immediately updates when edited or recolored in Admin Panel
+            qaTopicsUnsubscribe = db.collection('qa_sheets')
+                .where('subjectId', '==', subjectId)
+                .onSnapshot(snap => {
+                    container.innerHTML = '';
+                    if (snap.empty) {
+                        container.innerHTML = `
+                            <div style="text-align: center; padding: 3rem 1rem;">
+                                <div style="font-size: 3rem; color: #ff9933; margin-bottom: 1rem;">
+                                    <i class="fas fa-hourglass-half"></i>
+                                </div>
+                                <h2 style="font-size: 1.8rem; font-weight: 700; background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; display: inline-block;">Coming soon.....</h2>
+                                <p style="font-size: 0.95rem; color: var(--text-sub); font-weight: 500;">Solved question-answer sheets are currently being prepared for this section. Stay tuned!</p>
+                            </div>`;
+                        return;
+                    }
+                    
+                    let colorIndex = 0;
+                    snap.forEach(doc => {
+                        const data = doc.data();
+                        const item = document.createElement('div');
+                        
+                        // Apply custom gradient background or standard class
+                        if (data.gradientBg) {
+                            item.className = 'quiz-list-item';
+                            item.style.background = data.gradientBg;
+                        } else {
+                            const gradClass = data.gradientClass || ('q-grad-' + ((colorIndex % 12) + 1));
+                            item.className = `quiz-list-item ${gradClass}`;
+                        }
+                        colorIndex++;
+                        
+                        // Apply real-time topic title color selected in Admin Panel
+                        const titleColor = data.titleColor || '#ffffff';
+
+                        item.innerHTML = `
+                            <div style="flex:1;">
+                                <h3 style="margin:0; font-size:1.2rem; font-weight:700; color:${titleColor} !important;">${data.topicName}</h3>
+                                <p style="margin:4px 0 0 0; opacity:0.85; font-size:0.85rem; color:#ffffff;">Open Question Sheet</p>
+                            </div>
+                            <button type="button" class="btn btn-secondary" style="pointer-events: none;">Open</button>
+                        `;
+                        
+                        item.onclick = (e) => {
+                            e.preventDefault();
+                            showQADetails(data);
+                        };
+                        
+                        container.appendChild(item);
+                    });
+                }, err => {
+                    console.error("Real-time Q&A error:", err);
+                    container.innerHTML = '<p style="color:red; text-align:center;">Failed to retrieve Q&A topics.</p>';
+                });
+        };
+
+        const goBackToQASubjects = () => {
+            // Unsubscribe listener when exiting the topic view
+            if (qaTopicsUnsubscribe) {
+                qaTopicsUnsubscribe();
+                qaTopicsUnsubscribe = null;
+            }
+            document.getElementById('qa-detail-view').style.display = 'none';
+            document.getElementById('qa-topic-list-view').style.display = 'none';
+            const subjectView = document.getElementById('qa-subject-view');
+            if (subjectView) subjectView.style.display = 'block';
+            else document.getElementById('qa-subject-container').style.display = 'block';
         };
 
         // ─────────── ENHANCED CHHATRASATHEE Q&A FORMATTER (MATCHING SCREENSHOT 2) ───────────
@@ -5849,14 +5945,6 @@ const loadQASubjects = () => {
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([detailCard]).catch(() => {});
             }
-        };
-
-        const goBackToQASubjects = () => {
-            document.getElementById('qa-detail-view').style.display = 'none';
-            document.getElementById('qa-topic-list-view').style.display = 'none';
-            const subjectView = document.getElementById('qa-subject-view');
-            if (subjectView) subjectView.style.display = 'block';
-            else document.getElementById('qa-subject-container').style.display = 'block';
         };
 
         const goBackToQATopics = () => {
@@ -6739,8 +6827,8 @@ if (loginFormEl) {
         };
 
 // ─────────── CERTIFICATE DYNAMIC COMPILER & PDF GENERATION ───────────
-       // Helper to safely transform database date string formats and server timestamps to YYYY-MM-DD
-const parseToLocalDateStr = (docData) => {
+// Helper to safely transform database date string formats and server timestamps to YYYY-MM-DD
+function parseToLocalDateStr(docData) {
     let d = null;
     if (docData.timestamp && typeof docData.timestamp.toDate === 'function') {
         d = docData.timestamp.toDate();
@@ -6767,7 +6855,7 @@ const parseToLocalDateStr = (docData) => {
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const dayVal = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${dayVal}`;
-};
+}
             let activeSelectedMilestone = 100;
 let cachedCertConfig = null;
 
@@ -7142,6 +7230,17 @@ const loadStudentCertificate = async () => {
             }
         };
         
+        // ─────────── DISABLE PINCH & DOUBLE-TAP ZOOM ───────────
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+        document.addEventListener('gesturechange', function (e) {
+            e.preventDefault();
+        });
+        document.addEventListener('gestureend', function (e) {
+            e.preventDefault();
+        });
+
         init();
     </script>
 </body>
