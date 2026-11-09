@@ -328,7 +328,8 @@
 
         /* Responsive full-width reading room across mobile & tablets */
         @media (max-width: 768px) {
-            body:has(#notes-screen.active) .container {
+            /* Only apply to the main app container, NOT to any note containers */
+            body:has(#notes-screen.active) > .container {
                 padding: 0.5rem 0.6rem !important;
                 max-width: 100% !important;
             }
@@ -352,129 +353,146 @@
             width: 100% !important;
             max-width: 100% !important;
         }
-
-        /* ─── 1. LIGHT MODE: CRISP, HIGH-CONTRAST DARK TEXT ─── */
-        body:not(.dark-mode) .html-note-content {
-            color: #1e293b;
-        }
-        body:not(.dark-mode) .html-note-content p,
-        body:not(.dark-mode) .html-note-content li,
-        body:not(.dark-mode) .html-note-content td {
-            color: #1e293b;
-        }
-        body:not(.dark-mode) .html-note-content strong,
-        body:not(.dark-mode) .html-note-content b {
-            color: #0f172a;
-        }
-
-        /* ─── 2. DARK MODE: UNIVERSAL AUTO-THEMING FOR ALL HTML NOTES ─── */
-        body.dark-mode .html-note-content {
-            color: #f8fafc !important;
+        
+        /* ─── ISOLATE & DISPLAY ADMIN HTML NOTES EXACTLY 1:1 ─── */
+        /* 1. Prevent the App's outer container styles from adding padding inside the Note's container */
+        .html-note-content .container {
+            width: 100% !important;
+            max-width: 950px !important;
+            margin: 0 auto !important;
+            padding: 0 !important; /* Removes the white padding around the green header banner */
+            min-height: auto !important;
+            overflow: hidden !important;
+            border-radius: 10px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+            border: 1px solid #dcdcdc !important;
+            background: #ffffff !important;
+            box-sizing: border-box !important;
         }
 
-        /* Automatically convert all card containers to Dark Navy (#141836) */
-        body.dark-mode .html-note-content div,
-        body.dark-mode .html-note-content section,
-        body.dark-mode .html-note-content article {
-            background-color: #141836 !important;
-            border-color: rgba(255, 255, 255, 0.12) !important;
-            color: #f8fafc !important;
+        /* 2. Ensure the top green banner stretches edge-to-edge flush with the card */
+        .html-note-content .header-banner {
+            border-radius: 9px 9px 0 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
 
-        /* Give inner callout boxes (like the green-bordered concept boxes) elevated navy (#1a2046) */
-        body.dark-mode .html-note-content div div,
-        body.dark-mode .html-note-content section div,
-        body.dark-mode .html-note-content article div {
-            background-color: #1a2046 !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
+        /* 3. Apply Google Noto Sans Oriya to all Odia text to prevent broken ligatures like 'ମୂର୍ତ୍ତ1ଙ୍କ' */
+        .html-note-content,
+        .html-note-content * {
+            font-family: 'Segoe UI', 'Poppins', 'Noto Sans Oriya', Roboto, Arial, sans-serif;
         }
 
-        /* Preserve colored pill badges without letting them turn solid navy */
-        body.dark-mode .html-note-content span[style*="border-radius"],
-        body.dark-mode .html-note-content span[style*="background"] {
-            background-color: rgba(255, 255, 255, 0.15) !important;
-            color: #ffffff !important;
+        .html-note-content .od-text,
+        .html-note-content .mcq-q-od,
+        .html-note-content td:nth-child(3),
+        .html-note-content .step-body .od-text {
+            font-family: 'Noto Sans Oriya', 'Poppins', sans-serif !important;
+            font-size: 0.98rem;
+            line-height: 1.65;
         }
 
-        /* Headings in Dark Mode */
-        body.dark-mode .html-note-content h1,
-        body.dark-mode .html-note-content h2,
-        body.dark-mode .html-note-content h3,
-        body.dark-mode .html-note-content h4,
-        body.dark-mode .html-note-content h5 {
-            color: #38bdf8 !important;
-        }
-
-        /* Paragraphs, List items, and regular text */
-        body.dark-mode .html-note-content p,
-        body.dark-mode .html-note-content li,
-        body.dark-mode .html-note-content span:not([style*="background"]):not([style*="border-radius"]) {
-            color: #cbd5e1 !important;
-        }
-
-        /* Bold text (e.g. Sudha Murty, Hard work is the real magic) */
-        body.dark-mode .html-note-content strong,
-        body.dark-mode .html-note-content b {
-            color: #ffffff !important;
-            font-weight: 700 !important;
-        }
-
-        /* Horizontal dividers */
-        body.dark-mode .html-note-content hr {
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-
-        /* ─── 3. FULL-MODE RESPONSIVE TABLE ENGINE (MATCHES SCREENSHOT 2) ─── */
-        .note-table-scroll {
+        /* ─── 100% TRUE COLOR ENGINE: PRESERVES EXACT ADMIN COLORS ─── */
+        /* Let the note's original embedded CSS colors and styles take 100% priority */
+        .html-note-content {
             width: 100% !important;
             max-width: 100% !important;
-            overflow-x: auto !important;
-            -webkit-overflow-scrolling: touch !important;
-            margin: 10px 0 !important;
-            border: none !important;
-            box-shadow: none !important;
+            box-sizing: border-box !important;
             background: transparent !important;
-            box-sizing: border-box !important;
             padding: 0 !important;
+            margin: 0 auto 2rem auto !important;
         }
 
-        .html-note-content table,
-        #note-detail-card table {
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            border-collapse: collapse !important;
-            margin: 8px 0 !important;
-            display: table !important;
-            table-layout: auto !important;
-            box-sizing: border-box !important;
+        /* Enforce rich Royal Blue for Odia text and Noto Sans Oriya for perfect conjuncts */
+        .html-note-content .od-text,
+        .html-note-content .mcq-q-od {
+            color: #0d47a1 !important;
+            font-family: 'Noto Sans Oriya', 'Segoe UI', sans-serif !important;
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+
+        /* Ensure bold Odia words (e.g., ସୁଧା ମୂର୍ତ୍ତୀଙ୍କ) use Noto Sans Oriya bold so they don't break into '1' */
+        .html-note-content strong,
+        .html-note-content b {
+            font-family: inherit;
+            font-weight: 700;
+        }
+
+        .html-note-content .od-text strong,
+        .html-note-content .od-text b {
+            font-family: 'Noto Sans Oriya', sans-serif !important;
+            font-weight: 700;
+            color: inherit;
+        }
+
+        /* Keep the note's white background and borders intact in both light & dark mode */
+        body.dark-mode .html-note-content .container {
+            background: #ffffff !important;
+            color: #212121 !important;
+            border-color: #dcdcdc !important;
+        }
+
+        body.dark-mode .html-note-content .section-card {
+            background: #ffffff !important;
+            border-color: #dcdcdc !important;
+        }
+
+        body.dark-mode .html-note-content .bilingual-block {
+            background: #fafafa !important;
+            border-left-color: #1b5e20 !important;
+        }
+
+        body.dark-mode .html-note-content .en-text {
+            color: #1a1a1a !important;
+        }
+
+        /* ─── EXACT 1:1 NOTE ENGINE (HONORS ADMIN HTML, TABLES & STYLES) ─── */
+        .note-table-scroll {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        .html-note-content {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Responsive tables without overriding custom widths, colors, or alignments */
+        .html-note-content table {
+            border-collapse: collapse;
+            max-width: 100%;
+            margin: 10px 0;
+            box-sizing: border-box;
         }
 
         .html-note-content th,
-        .html-note-content td,
-        #note-detail-card th,
-        #note-detail-card td {
-            padding: clamp(6px, 1.4vw, 10px) clamp(6px, 1.4vw, 10px) !important;
-            font-size: clamp(0.74rem, 1.9vw, 0.92rem) !important;
-            line-height: 1.48 !important;
-            text-align: left;
-            vertical-align: top !important;
-            white-space: normal !important;
-            word-break: normal !important; /* Never chop words in the middle */
-            overflow-wrap: break-word !important; /* Wrap by whole words only */
-            min-width: 0 !important;
-            box-sizing: border-box !important;
+        .html-note-content td {
+            vertical-align: top;
+            box-sizing: border-box;
         }
 
-        /* ─── GUARANTEE 1ST COLUMN WORDS (Looking after, Tended, Precious, Wisdom, etc.) STAY ON A SINGLE LINE ─── */
-        .html-note-content th:first-child,
-        .html-note-content td:first-child,
-        #note-detail-card th:first-child,
-        #note-detail-card td:first-child {
-            white-space: nowrap !important; /* Keeps terms/words strictly on a single line */
-            word-break: normal !important;
-            font-weight: 700 !important;
-            width: 1% !important; /* Standard layout rule: automatically allocates the exact width needed for the word without wrapping */
+        /* Fallback subtle border only if table doesn't already have borders */
+        .html-note-content table:not([border]) td,
+        .html-note-content table:not([border]) th {
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 8px 10px;
+        }
+
+        /* Allow responsive media */
+        .html-note-content img,
+        .html-note-content svg {
+            max-width: 100% !important;
+            height: auto !important;
+            border-radius: 8px;
         }
 
         /* Responsive cell padding and font scaling for narrow phone screens */
@@ -3200,6 +3218,144 @@ body.dark-mode .class-header-title {
             0% { transform: scale(0.7); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* ─── CLEAN FULL-WIDTH VIEW (AUTO-HIDES ADS & TICKER IN QUIZ, RESULT, Q&A & LEADERBOARD) ─── */
+        body:has(#quiz-screen.active) #hero-ad-banner-slot,
+        body:has(#quiz-screen.active) #ticker-ad-wrapper,
+        body:has(#result-screen.active) #hero-ad-banner-slot,
+        body:has(#result-screen.active) #ticker-ad-wrapper,
+        body:has(#leaderboard-screen.active) #hero-ad-banner-slot,
+        body:has(#leaderboard-screen.active) #ticker-ad-wrapper,
+        body.in-quiz-mode #hero-ad-banner-slot,
+        body.in-quiz-mode #ticker-ad-wrapper,
+        body.in-result-mode #hero-ad-banner-slot,
+        body.in-result-mode #ticker-ad-wrapper,
+        body.in-qa-reading-mode #hero-ad-banner-slot,
+        body.in-qa-reading-mode #ticker-ad-wrapper,
+        body.in-leaderboard-mode #hero-ad-banner-slot,
+        body.in-leaderboard-mode #ticker-ad-wrapper {
+            display: none !important;
+        }
+
+        /* Maximizes quiz card reading room on mobile phones */
+        @media (max-width: 600px) {
+            body:has(#quiz-screen.active) .container,
+            body.in-quiz-mode .container {
+                padding: 0.5rem 0.6rem !important;
+                max-width: 100% !important;
+            }
+            body:has(#quiz-screen.active) .card,
+            body.in-quiz-mode .card {
+                padding: 1rem !important;
+                margin-bottom: 0.85rem !important;
+                border-radius: 14px !important;
+            }
+        }
+        
+        /* ─────────── USER CREATED QUIZ & AD OVERLAY STYLES ─────────── */
+        .create-question-block {
+            padding: 1.2rem;
+            border: 1.5px dashed var(--header-title);
+            border-radius: 14px;
+            margin-bottom: 1.25rem;
+            position: relative;
+            background: rgba(0, 123, 255, 0.02);
+        }
+        body.dark-mode .create-question-block {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+        .remove-question-btn {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-opt-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .user-opt-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .user-opt-input {
+            flex: 1;
+            padding: 10px 14px !important;
+            border-radius: 10px !important;
+            border: 1px solid var(--border-color) !important;
+            background: rgba(0,0,0,0.02) !important;
+            color: var(--text-main) !important;
+        }
+        body.dark-mode .user-opt-input {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #fff !important;
+        }
+
+        /* Fullscreen Interactive Interstitial Video/Ad Overlay */
+        .interstitial-ad-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 12, 33, 0.95);
+            z-index: 99999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .interstitial-ad-overlay.active {
+            display: flex;
+        }
+        .ad-timer-countdown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ad-close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff4757;
+            color: #fff;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
+            animation: pulse-ring 1.5s infinite;
+        }
     </style>
 </head>
 <body>
@@ -3255,19 +3411,20 @@ body.dark-mode .class-header-title {
         </div>
 <ul class="sidebar-menu">
     <li class="sidebar-item active" onclick="openClassSelection('quizzes')"><i class="fas fa-home"></i> Home</li>
+    <li class="sidebar-item" onclick="openUserCreateQuizOptions()"><i class="fas fa-plus-circle" style="color: #00d2d3;"></i> Create Quiz</li>
     <li class="sidebar-item" onclick="openClassSelection('books')"><i class="fas fa-atlas"></i> Books</li>
     <li class="sidebar-item" onclick="openClassSelection('notes')"><i class="fas fa-book-open"></i> Notes</li>
     <li class="sidebar-item" onclick="openClassSelection('qa')"><i class="fas fa-question-circle"></i> Questions Answers</li>
-            <li class="sidebar-item" onclick="navigateSidebar('my-results-screen')"><i class="fas fa-chart-bar"></i> My Results</li>
-            <li class="sidebar-item" onclick="navigateSidebar('certificate-screen')"><i class="fas fa-award"></i> My Certificate</li>
-            <li class="sidebar-item" onclick="navigateSidebar('leaderboard-screen')"><i class="fas fa-trophy"></i> Leaderboard</li>
-            <li class="sidebar-item" onclick="navigateSidebar('profile-screen')"><i class="fas fa-user-circle"></i> Profile</li>
-            <li class="sidebar-item" onclick="navigateSidebar('links-screen')"><i class="fas fa-link"></i> Important Links</li>
-            <li class="sidebar-item" onclick="navigateSidebar('reviews-screen')"><i class="fas fa-star-half-alt"></i> Students Reviews</li>
-            <li class="sidebar-item" onclick="navigateSidebar('stats-screen')"><i class="fas fa-users"></i> Our Students</li>
-            <li class="sidebar-item" onclick="navigateSidebar('youtube-screen')"><i class="fas fa-play-circle"></i> YouTube Lessons</li>
-            <li class="sidebar-item" style="color: #dc3545;" onclick="logoutApp()"><i class="fas fa-sign-out-alt"></i> Exit</li>
-        </ul>
+    <li class="sidebar-item" onclick="navigateSidebar('my-results-screen')"><i class="fas fa-chart-bar"></i> My Results</li>
+    <li class="sidebar-item" onclick="navigateSidebar('certificate-screen')"><i class="fas fa-award"></i> My Certificate</li>
+    <li class="sidebar-item" onclick="navigateSidebar('leaderboard-screen')"><i class="fas fa-trophy"></i> Leaderboard</li>
+    <li class="sidebar-item" onclick="navigateSidebar('profile-screen')"><i class="fas fa-user-circle"></i> Profile</li>
+    <li class="sidebar-item" onclick="navigateSidebar('links-screen')"><i class="fas fa-link"></i> Important Links</li>
+    <li class="sidebar-item" onclick="navigateSidebar('reviews-screen')"><i class="fas fa-star-half-alt"></i> Students Reviews</li>
+    <li class="sidebar-item" onclick="navigateSidebar('stats-screen')"><i class="fas fa-users"></i> Our Students</li>
+    <li class="sidebar-item" onclick="navigateSidebar('youtube-screen')"><i class="fas fa-play-circle"></i> YouTube Lessons</li>
+    <li class="sidebar-item" style="color: #dc3545;" onclick="logoutApp()"><i class="fas fa-sign-out-alt"></i> Exit</li>
+</ul>
     </div>
 
     <div class="container">
@@ -3332,6 +3489,14 @@ body.dark-mode .class-header-title {
                     <!-- Populated dynamically from Firebase & local cache -->
                 </div>
 
+<!-- 🌟 USER'S QUIZZES DEDICATED TRAY 🌟 -->
+                <div id="users-quizzes-tray" class="subject-tray" style="background: linear-gradient(135deg, #0984e3 0%, #6c5ce7 50%, #a29bfe 100%); color: #ffffff; border: 1.5px solid rgba(255,255,255,0.4); margin-top: 1.2rem;" onclick="openUsersQuizzesList()">
+                    <div id="users-quizzes-tray-title" style="font-size: 1.2rem; font-weight: 800; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <i class="fas fa-users-cog"></i> USER'S QUIZZES / ଛାତ୍ରଙ୍କ କୁଇଜ୍
+                    </div>
+                    <div id="users-quizzes-tray-sub" style="font-size: 0.78rem; opacity: 0.9; margin-top: 2px;">Community Created Interactive Tests</div>
+                </div>
+
                 <!-- 🌟 EYE-CATCHING DAILY NEWS / GK / CURRENT AFFAIRS SECTION -->
                 <div id="daily-feed-container" class="daily-feed-wrapper" style="display:none;"></div>
             </div>
@@ -3346,6 +3511,52 @@ body.dark-mode .class-header-title {
                 <div id="books-list-container">
                     <p style="text-align:center; opacity:0.6;">Loading books...</p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- SCREEN: USER CREATE QUIZ SCREEN (IDENTICAL TO ADMIN FORM) -->
+        <div id="user-create-quiz-screen" class="screen">
+            <div class="back-nav" onclick="showScreen('choose-class-screen')"><i class="fas fa-arrow-left"></i> Cancel & Back</div>
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: 0.5rem;"><i class="fas fa-pencil-alt" style="color:var(--header-title)"></i> Create a New Quiz</h1>
+                <p style="text-align: center; opacity: 0.8; margin-bottom: 1.5rem; font-size: 0.92rem;">Subject: <strong style="color:var(--header-title)">User's Quizzes</strong></p>
+
+                <form id="user-create-quiz-form">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" value="User's Quizzes" readonly style="font-weight:700; background:rgba(0,0,0,0.05); cursor:not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>Quiz Title</label>
+                        <input type="text" id="user-quiz-title" class="login-input" placeholder="e.g. Science Revision Chapter 1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quiz Subtitle (Optional)</label>
+                        <input type="text" id="user-quiz-subtitle" class="login-input" placeholder="e.g. Created by Student">
+                    </div>
+
+                    <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-color);">
+
+                    <div id="user-questions-builder-container"></div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-top:1.5rem;">
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <label style="font-size:0.85rem; font-weight:700; flex-shrink:0;">Next Question Type:</label>
+                            <select id="user-question-type-select" class="login-input" style="margin-bottom:0;">
+                                <option value="mcq">Multiple Choice</option>
+                                <option value="tf">True / False</option>
+                            </select>
+                            <button type="button" class="btn btn-secondary" style="white-space:nowrap;" onclick="addUserQuestionField(document.getElementById('user-question-type-select').value)">
+                                <i class="fas fa-plus"></i> ADD QUESTION
+                            </button>
+                        </div>
+                        
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button type="submit" class="btn" style="flex:1;"><i class="fas fa-save"></i> SAVE QUIZ</button>
+                            <button type="button" class="btn btn-secondary" style="flex:1;" onclick="showScreen('choose-class-screen')">CANCEL</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -3827,6 +4038,69 @@ body.dark-mode .class-header-title {
             <button class="btn btn-secondary" style="margin-top: 12px; width: 100%;" onclick="closeModal('about-modal')">Close</button>
         </div>
     </div>
+    
+    <!-- 1. USER CREATE QUIZ CHOICES MODAL -->
+    <div id="user-quiz-choice-modal" class="modal" onclick="if(event.target === this) closeModal('user-quiz-choice-modal')">
+        <div class="modal-content" style="max-width: 440px; text-align: center;">
+            <h2 style="color:var(--header-title); margin-bottom: 0.5rem;"><i class="fas fa-plus-circle"></i> Create Quiz</h2>
+            <p style="color:var(--text-sub); font-size:0.9rem; margin-bottom: 1.5rem;">Choose how you want to prepare your quiz questions</p>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button type="button" class="btn" style="background: linear-gradient(135deg, #007bff, #0056b3); width:100%;" onclick="startNewQuizCreation()">
+                    <i class="fas fa-edit"></i> Create a New Quiz
+                </button>
+                <button type="button" class="btn" style="background: linear-gradient(135deg, #f92edc, #811fee); width:100%;" onclick="triggerAdBeforeQuizTextImport()">
+                    <i class="fas fa-file-alt"></i> Create Quiz from Text
+                </button>
+            </div>
+
+            <button type="button" class="btn btn-secondary" style="width:100%; margin-top: 1.2rem;" onclick="closeModal('user-quiz-choice-modal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- 2. FULLSCREEN VIDEO / CPM AD OVERLAY -->
+    <div id="user-interstitial-ad-overlay" class="interstitial-ad-overlay">
+        <div class="ad-timer-countdown" id="user-ad-countdown-timer">
+            <i class="fas fa-clock"></i> Ad in progress: <span id="ad-seconds-count">5</span>s
+        </div>
+        <button type="button" id="user-ad-skip-btn" class="ad-close-btn" onclick="finishAdAndOpenTextImport()">
+            SKIP AD / CONTINUE <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <div style="background: #ffffff; border-radius: 16px; padding: 20px; max-width: 400px; width: 92%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="font-size:0.75rem; font-weight:800; color:#888; text-transform:uppercase; margin-bottom:10px;">SPONSORED ADVERTISEMENT</div>
+            <!-- Adsterra / CPM Responsive Slot -->
+            <div id="ad-creative-display" style="min-height: 250px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f8f9fa; border-radius:12px; padding:10px; border:1px dashed #ccc;">
+                <script>atOptions = { 'key' : '6a98f67268ac762c8149c945454a4d47', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };</script>
+                <script src="https://www.highperformanceformat.com/6a98f67268ac762c8149c945454a4d47/invoke.js"></script>
+            </div>
+            <p style="font-size:0.8rem; color:#666; margin-top:10px;">Please wait for the short ad to complete to unlock Quiz Text Importer.</p>
+        </div>
+    </div>
+
+    <!-- 3. USER CREATE QUIZ FROM TEXT TRAY (MODAL) -->
+    <div id="user-quiz-from-text-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h2 style="margin:0; font-size:1.3rem; color:var(--header-title);"><i class="fas fa-file-invoice"></i> Create Quiz from Text</h2>
+                <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('user-quiz-from-text-modal')">✕</button>
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-sub); margin-bottom:10px;">Paste questions matching the format below:</p>
+            <div class="form-group">
+                <textarea id="user-import-text-area" style="min-height: 220px; font-family: monospace; font-size: 0.85rem;" placeholder="1. What is the chemical formula of Water?
+(A) H2O
+(B) CO2
+(C) O2
+(D) NaCl
+Answer-A
+Explanation (Optional) Water is formed by two Hydrogen and one Oxygen atoms."></textarea>
+            </div>
+            <div class="modal-buttons" style="display:flex; gap:10px;">
+                <button type="button" class="btn" style="flex:1;" onclick="processUserTextImport()">GENERATE FIELDS</button>
+                <button type="button" class="btn btn-secondary" style="flex:1;" onclick="closeModal('user-quiz-from-text-modal')">CLOSE</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -4006,6 +4280,41 @@ let selectedQASubjectId = '';
                 target.classList.add('active');
             });
             window.scrollTo({ top: 0, behavior: 'instant' });
+            
+            // Automatically hide ads & ticker while taking quiz; restore when going back
+            if (id === 'quiz-screen') {
+                document.body.classList.add('in-quiz-mode');
+            } else {
+                document.body.classList.remove('in-quiz-mode');
+            }
+            
+            // Automatically hide ads & ticker while taking quiz; restore when going back
+            if (id === 'quiz-screen') {
+                document.body.classList.add('in-quiz-mode');
+            } else {
+                document.body.classList.remove('in-quiz-mode');
+            }
+
+            // Automatically hide top banner & ticker on Leaderboard (Hall of Fame)
+            if (id === 'leaderboard-screen') {
+                document.body.classList.add('in-leaderboard-mode');
+            } else {
+                document.body.classList.remove('in-leaderboard-mode');
+            }
+            
+            // Automatically hide top banner & ticker on Leaderboard (Hall of Fame)
+            if (id === 'leaderboard-screen') {
+                document.body.classList.add('in-leaderboard-mode');
+            } else {
+                document.body.classList.remove('in-leaderboard-mode');
+            }
+
+            // Automatically hide top banner & ticker on Quiz Completed Result Screen
+            if (id === 'result-screen') {
+                document.body.classList.add('in-result-mode');
+            } else {
+                document.body.classList.remove('in-result-mode');
+            }
 
             // Toggle body class and visibility for clean Login screen
             const isLoginPage = (id === 'login-screen');
@@ -4033,13 +4342,13 @@ let selectedQASubjectId = '';
                 item.classList.remove('active');
             });
             const mapScreenToSidebarItemIndex = {
-                'choose-class-screen': currentClassTargetSection === 'books' ? 1 : (currentClassTargetSection === 'notes' ? 2 : (currentClassTargetSection === 'qa' ? 3 : 0)),
-                'books-screen': 1,
+                'choose-class-screen': currentClassTargetSection === 'books' ? 2 : (currentClassTargetSection === 'notes' ? 3 : (currentClassTargetSection === 'qa' ? 4 : 0)),
+                'books-screen': 2,
                 'subject-list-screen': 0, 'quiz-list-screen': 0, 'quiz-screen': 0, 'result-screen': 0,
-                'notes-screen': 2, 'qa-screen': 3, 'my-results-screen': 4, 
-                'certificate-screen': 5,
-                'leaderboard-screen': 6, 'profile-screen': 7, 'links-screen': 8, 
-                'reviews-screen': 9, 'stats-screen': 10, 'youtube-screen': 11
+                'notes-screen': 3, 'qa-screen': 4, 'my-results-screen': 5, 
+                'certificate-screen': 6,
+                'leaderboard-screen': 7, 'profile-screen': 8, 'links-screen': 9, 
+                'reviews-screen': 10, 'stats-screen': 11, 'youtube-screen': 12
             };
             const activeIdx = mapScreenToSidebarItemIndex[id];
             if (activeIdx !== undefined) {
@@ -4091,6 +4400,19 @@ let selectedQASubjectId = '';
                     if (l2) l2.src = parsed.logoUrl;
                     if (l3) l3.src = parsed.logoUrl;
                 }
+                
+                if (parsed.userQuizzesTrayBg) {
+                    const ut = document.getElementById('users-quizzes-tray');
+                    if (ut) {
+                        ut.style.setProperty('background', parsed.userQuizzesTrayBg, 'important');
+                        if (parsed.userQuizzesTrayTextColor) ut.style.setProperty('color', parsed.userQuizzesTrayTextColor, 'important');
+                    }
+                    const utTitle = document.getElementById('users-quizzes-tray-title');
+                    if (utTitle && parsed.userQuizzesTrayTitle) utTitle.innerHTML = `<i class="fas fa-users-cog"></i> ${formatOdiaText(parsed.userQuizzesTrayTitle)}`;
+                    const utSub = document.getElementById('users-quizzes-tray-sub');
+                    if (utSub && parsed.userQuizzesTraySubtitle) utSub.innerText = formatOdiaText(parsed.userQuizzesTraySubtitle);
+                }
+                
             } else {
                 renderUserClassGrid(DEFAULT_CLASSES, '#007bff', '#ffffff', {});
             }
@@ -4105,6 +4427,36 @@ let selectedQASubjectId = '';
                 if(doc.exists) {
                     const data = doc.data();
                     const classes = data.classesList || DEFAULT_CLASSES;
+
+                    // ─── REAL-TIME USER'S QUIZZES TRAY APPEARANCE SYNC ───
+                    const userTray = document.getElementById('users-quizzes-tray');
+                    const userTrayTitle = document.getElementById('users-quizzes-tray-title');
+                    const userTraySub = document.getElementById('users-quizzes-tray-sub');
+
+                    if (userTray) {
+                        if (data.userQuizzesTrayBg) userTray.style.setProperty('background', data.userQuizzesTrayBg, 'important');
+                        if (data.userQuizzesTrayTextColor) userTray.style.setProperty('color', data.userQuizzesTrayTextColor, 'important');
+                    }
+                    if (userTrayTitle && data.userQuizzesTrayTitle) {
+                        userTrayTitle.innerHTML = `<i class="fas fa-users-cog"></i> ${formatOdiaText(data.userQuizzesTrayTitle)}`;
+                    }
+                    if (userTraySub && data.userQuizzesTraySubtitle !== undefined) {
+                        userTraySub.innerText = formatOdiaText(data.userQuizzesTraySubtitle);
+                    }
+                    // ─────────────────────────────────────────────────────
+
+                    // Cache to localStorage for instant start on next launch
+                    localStorage.setItem('cs_cached_app_config', JSON.stringify({
+                        classesList: classes,
+                        classTrayBg: data.classTrayBg,
+                        classTrayTextColor: data.classTrayTextColor,
+                        classTrayCustom: data.classTrayCustom || {},
+                        logoUrl: data.logoUrl || '',
+                        userQuizzesTrayBg: data.userQuizzesTrayBg,
+                        userQuizzesTrayTextColor: data.userQuizzesTrayTextColor,
+                        userQuizzesTrayTitle: data.userQuizzesTrayTitle,
+                        userQuizzesTraySubtitle: data.userQuizzesTraySubtitle
+                    }));
 
                     // Cache to localStorage for instant start on next launch
                     localStorage.setItem('cs_cached_app_config', JSON.stringify({
@@ -5248,7 +5600,7 @@ let selectedQASubjectId = '';
                 }
 
                 document.getElementById('result-screen').innerHTML = `
-                    <div class="back-nav" onclick="showScreen('subject-list-screen')"><i class="fas fa-arrow-left"></i> Home</div>
+                    <div class="back-nav" onclick="showScreen('quiz-list-screen')"><i class="fas fa-arrow-left"></i> Back to Topics</div>
                     <div class="ad-container">
                         <script>atOptions = { 'key' : 'f6db9d038a3b7fddbee9c6b335d35872', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };<\/script>
                         <script src="https://www.highperformanceformat.com/f6db9d038a3b7fddbee9c6b335d35872/invoke.js"><\/script>
@@ -5519,6 +5871,19 @@ let selectedQASubjectId = '';
             document.getElementById('notes-topic-list-view').style.display = 'none';
             document.getElementById('notes-detail-view').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'instant' });
+
+            // Temporarily hide the top ticker and hero ads for an uncluttered reading view
+            const heroAd = document.getElementById('hero-ad-banner-slot');
+            const tickerAd = document.getElementById('ticker-ad-wrapper');
+            if (heroAd && heroAd.style.display !== 'none') {
+                heroAd.dataset.hadContent = 'true';
+                heroAd.style.display = 'none';
+            }
+            if (tickerAd && tickerAd.style.display !== 'none') {
+                tickerAd.dataset.hadContent = 'true';
+                tickerAd.style.display = 'none';
+            }
+
             const detailCard = document.getElementById('note-detail-card');
             
             let pdfButtonHtml = '';
@@ -5534,17 +5899,13 @@ let selectedQASubjectId = '';
 
             let renderedBody = '';
             if (noteData.htmlContent && noteData.htmlContent.trim()) {
-                renderedBody = `
-                    <div class="html-note-content" style="width: 100%; max-width: 100%; box-sizing: border-box;">
-                        ${prepareFullHtml(noteData.htmlContent)}
-                    </div>
-                `;
+                renderedBody = `<div class="html-note-content">${prepareFullHtml(noteData.htmlContent)}</div>`;
             } else if (noteData.content && noteData.content.trim()) {
-                renderedBody = `
-                    <div style="width: 100%; max-width: 100%; box-sizing: border-box;">
-                        ${formatNotesContent(noteData.content)}
-                    </div>
-                `;
+                if (/<[a-z][\s\S]*>/i.test(noteData.content)) {
+                    renderedBody = `<div class="html-note-content">${prepareFullHtml(noteData.content)}</div>`;
+                } else {
+                    renderedBody = `<div class="html-note-content">${formatNotesContent(noteData.content)}</div>`;
+                }
             } else {
                 renderedBody = `<p style="text-align:center; opacity:0.6; padding:2rem;">No study content found.</p>`;
             }
@@ -5555,25 +5916,6 @@ let selectedQASubjectId = '';
                     ${renderedBody}
                 </div>
             `;
-
-            // Reset any hardcoded pixel widths and enable full fluid rendering
-            const tables = detailCard.querySelectorAll('table');
-            tables.forEach(table => {
-                table.style.width = '100%';
-                table.style.maxWidth = '100%';
-                table.style.minWidth = '0';
-                table.removeAttribute('width');
-                table.querySelectorAll('th, td').forEach(cell => {
-                    cell.style.minWidth = '0';
-                    cell.removeAttribute('width');
-                });
-                if (!table.parentElement.classList.contains('note-table-scroll')) {
-                    const scrollWrapper = document.createElement('div');
-                    scrollWrapper.className = 'note-table-scroll';
-                    table.parentNode.insertBefore(scrollWrapper, table);
-                    scrollWrapper.appendChild(table);
-                }
-            });
 
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise([detailCard]).catch(err => console.warn('MathJax render error:', err));
@@ -5739,6 +6081,7 @@ const loadQASubjects = () => {
         };
 
         const goBackToQASubjects = () => {
+            document.body.classList.remove('in-qa-reading-mode');
             // Unsubscribe listener when exiting the topic view
             if (qaTopicsUnsubscribe) {
                 qaTopicsUnsubscribe();
@@ -5749,6 +6092,12 @@ const loadQASubjects = () => {
             const subjectView = document.getElementById('qa-subject-view');
             if (subjectView) subjectView.style.display = 'block';
             else document.getElementById('qa-subject-container').style.display = 'block';
+
+            // Restore header ads when returning to the subjects list
+            const heroAd = document.getElementById('hero-ad-banner-slot');
+            const tickerAd = document.getElementById('ticker-ad-wrapper');
+            if (heroAd && heroAd.dataset.hadContent === 'true') heroAd.style.display = 'block';
+            if (tickerAd && tickerAd.dataset.hadContent === 'true') tickerAd.style.display = 'flex';
         };
 
         // ─────────── ENHANCED CHHATRASATHEE Q&A FORMATTER (MATCHING SCREENSHOT 2) ───────────
@@ -5900,6 +6249,21 @@ const loadQASubjects = () => {
             document.getElementById('qa-detail-view').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'instant' });
 
+            // Activate distraction-free full-width reading mode
+            document.body.classList.add('in-qa-reading-mode');
+
+            // Temporarily hide the top ticker and hero ads for clean view
+            const heroAd = document.getElementById('hero-ad-banner-slot');
+            const tickerAd = document.getElementById('ticker-ad-wrapper');
+            if (heroAd && heroAd.style.display !== 'none') {
+                heroAd.dataset.hadContent = 'true';
+                heroAd.style.display = 'none';
+            }
+            if (tickerAd && tickerAd.style.display !== 'none') {
+                tickerAd.dataset.hadContent = 'true';
+                tickerAd.style.display = 'none';
+            }
+
             const detailCard = document.getElementById('qa-detail-card');
 
             let pdfButtonHtml = '';
@@ -5948,8 +6312,15 @@ const loadQASubjects = () => {
         };
 
         const goBackToQATopics = () => {
+            document.body.classList.remove('in-qa-reading-mode');
             document.getElementById('qa-detail-view').style.display = 'none';
             document.getElementById('qa-topic-list-view').style.display = 'block';
+
+            // Restore header ads when returning to the Q&A topic list
+            const heroAd = document.getElementById('hero-ad-banner-slot');
+            const tickerAd = document.getElementById('ticker-ad-wrapper');
+            if (heroAd && heroAd.dataset.hadContent === 'true') heroAd.style.display = 'block';
+            if (tickerAd && tickerAd.dataset.hadContent === 'true') tickerAd.style.display = 'flex';
         };
         
         
@@ -7240,6 +7611,237 @@ const loadStudentCertificate = async () => {
         document.addEventListener('gestureend', function (e) {
             e.preventDefault();
         });
+        
+        // ─────────── USER CREATE QUIZ & AD CONTROLLER ───────────
+        const USER_QUIZZES_SUBJECT_ID = 'user_quizzes';
+
+        const openUserCreateQuizOptions = () => {
+            toggleSidebar(false);
+            const modal = document.getElementById('user-quiz-choice-modal');
+            if (modal) modal.classList.add('active');
+        };
+
+        const startNewQuizCreation = () => {
+            closeModal('user-quiz-choice-modal');
+            document.getElementById('user-create-quiz-form').reset();
+            document.getElementById('user-questions-builder-container').innerHTML = '';
+            addUserQuestionField('mcq');
+            showScreen('user-create-quiz-screen');
+        };
+
+        // Every time user taps "Create Quiz from Text", show the ad
+        let adInterval = null;
+        const triggerAdBeforeQuizTextImport = () => {
+            closeModal('user-quiz-choice-modal');
+            const adOverlay = document.getElementById('user-interstitial-ad-overlay');
+            const timerText = document.getElementById('ad-seconds-count');
+            const timerContainer = document.getElementById('user-ad-countdown-timer');
+            const skipBtn = document.getElementById('user-ad-skip-btn');
+
+            let countdown = 5;
+            timerText.innerText = countdown;
+            timerContainer.style.display = 'flex';
+            skipBtn.style.display = 'none';
+
+            adOverlay.classList.add('active');
+
+            clearInterval(adInterval);
+            adInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    timerText.innerText = countdown;
+                } else {
+                    clearInterval(adInterval);
+                    timerContainer.style.display = 'none';
+                    skipBtn.style.display = 'inline-block';
+                }
+            }, 1000);
+        };
+
+        const finishAdAndOpenTextImport = () => {
+            clearInterval(adInterval);
+            const adOverlay = document.getElementById('user-interstitial-ad-overlay');
+            adOverlay.classList.remove('active');
+            
+            document.getElementById('user-import-text-area').value = '';
+            const modal = document.getElementById('user-quiz-from-text-modal');
+            modal.classList.add('active');
+        };
+
+        const addUserQuestionField = (type = 'mcq', qData = {}) => {
+            const container = document.getElementById('user-questions-builder-container');
+            const idx = container.children.length;
+            const block = document.createElement('div');
+            block.className = 'create-question-block';
+            block.dataset.type = type;
+
+            let optionsHtml = '';
+            if (type === 'mcq') {
+                const options = qData.options || ['', '', '', ''];
+                optionsHtml = options.map((opt, i) => `
+                    <div class="user-opt-group">
+                        <input type="radio" name="user-correct-${idx}" value="${i}" ${qData.answer === opt && opt !== '' ? 'checked' : ''} required>
+                        <input type="text" placeholder="Option ${i + 1}" class="user-opt-input" value="${opt.replace(/"/g, '&quot;')}" required>
+                    </div>
+                `).join('');
+            } else {
+                optionsHtml = `
+                    <div class="user-opt-group">
+                        <input type="radio" name="user-correct-${idx}" value="True" ${qData.answer === 'True' ? 'checked' : ''} required> True
+                    </div>
+                    <div class="user-opt-group">
+                        <input type="radio" name="user-correct-${idx}" value="False" ${qData.answer === 'False' ? 'checked' : ''} required> False
+                    </div>
+                `;
+            }
+
+            block.innerHTML = `
+                <button type="button" class="remove-question-btn" onclick="this.closest('.create-question-block').remove()">✕</button>
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:0.85rem; font-weight:700;">Question ${idx + 1}</label>
+                    <input type="text" class="login-input user-q-text" placeholder="Enter question..." value="${(qData.question || '').replace(/"/g, '&quot;')}" required>
+                </div>
+                ${optionsHtml}
+                <div style="margin-top:10px;">
+                    <button type="button" class="btn btn-secondary btn-small" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">Add Description</button>
+                    <div class="user-desc-wrapper" style="display:${qData.description ? 'block' : 'none'}; margin-top:8px;">
+                        <textarea class="login-input user-q-desc" placeholder="Explain the correct answer...">${qData.description || ''}</textarea>
+                    </div>
+                </div>
+            `;
+            container.appendChild(block);
+        };
+
+        // Text Parser (Matches Admin Panel regex)
+        const parseUserQuizText = (text) => {
+            const lines = text.split('\n').map(l => l.trim());
+            const parsedQuestions = [];
+            let currentQ = null;
+            let readingExplanation = false;
+
+            lines.forEach(line => {
+                if (!line) return;
+                const qMatch = line.match(/^\d+[\.\)]\s+(.*)/);
+                if (qMatch) {
+                    if (currentQ) parsedQuestions.push(currentQ);
+                    readingExplanation = false;
+                    currentQ = { question: qMatch[1].trim(), options: [], type: 'mcq', answer: '', description: '' };
+                    return;
+                }
+                if (!currentQ) return;
+                const oMatch = line.match(/^\(([A-D])\)\s*(.*)/i);
+                if (oMatch) {
+                    readingExplanation = false;
+                    currentQ.options.push(oMatch[2].trim());
+                    return;
+                }
+                const ansMatch = line.match(/^Answer\s*[-:]\s*([A-D])/i);
+                if (ansMatch) {
+                    readingExplanation = true;
+                    currentQ._tempAnsLetter = ansMatch[1].toUpperCase();
+                    return;
+                }
+                const expMatch = line.match(/^Explanation(?:\s*\(Optional\))?\s*[-:]?\s*(.*)/i);
+                if (expMatch) {
+                    readingExplanation = true;
+                    currentQ.description = expMatch[1].trim();
+                    return;
+                }
+                if (readingExplanation) {
+                    currentQ.description = (currentQ.description ? currentQ.description + '\n' : '') + line;
+                }
+            });
+
+            if (currentQ) parsedQuestions.push(currentQ);
+            parsedQuestions.forEach(q => {
+                if (q._tempAnsLetter) {
+                    const letterIdx = q._tempAnsLetter.charCodeAt(0) - 65;
+                    if (q.options && q.options[letterIdx] !== undefined) {
+                        q.answer = q.options[letterIdx];
+                    }
+                    delete q._tempAnsLetter;
+                }
+            });
+            return parsedQuestions;
+        };
+
+        const processUserTextImport = () => {
+            const rawText = document.getElementById('user-import-text-area').value;
+            const parsed = parseUserQuizText(rawText);
+            if (parsed.length === 0) {
+                return alert("Could not detect questions. Please verify your format (1. Question, (A) Option, Answer-A).");
+            }
+
+            closeModal('user-quiz-from-text-modal');
+            document.getElementById('user-create-quiz-form').reset();
+            const container = document.getElementById('user-questions-builder-container');
+            container.innerHTML = '';
+
+            parsed.forEach(q => addUserQuestionField('mcq', q));
+            showScreen('user-create-quiz-screen');
+        };
+
+        // Form Submit Handler
+        document.getElementById('user-create-quiz-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('user-quiz-title').value.trim();
+            const subtitle = document.getElementById('user-quiz-subtitle').value.trim();
+            const blocks = document.querySelectorAll('#user-questions-builder-container .create-question-block');
+
+            if (blocks.length === 0) {
+                return alert("Please add at least one question!");
+            }
+
+            const questions = [];
+            for (let i = 0; i < blocks.length; i++) {
+                const b = blocks[i];
+                const type = b.dataset.type;
+                const questionText = b.querySelector('.user-q-text').value.trim();
+                const desc = b.querySelector('.user-q-desc').value.trim();
+
+                let qObj = { type, question: questionText, description: desc };
+
+                if (type === 'mcq') {
+                    const optInputs = b.querySelectorAll('.user-opt-input');
+                    const opts = Array.from(optInputs).map(inp => inp.value.trim());
+                    const checkedRadio = b.querySelector('input[type="radio"]:checked');
+                    if (!checkedRadio) {
+                        return alert(`Please select the correct answer for question ${i + 1}`);
+                    }
+                    qObj.options = opts;
+                    qObj.answer = opts[parseInt(checkedRadio.value, 10)];
+                } else {
+                    const checkedRadio = b.querySelector('input[type="radio"]:checked');
+                    if (!checkedRadio) {
+                        return alert(`Please select True or False for question ${i + 1}`);
+                    }
+                    qObj.answer = checkedRadio.value;
+                }
+                questions.push(qObj);
+            }
+
+            try {
+                await db.collection('quizzes').add({
+                    subjectId: USER_QUIZZES_SUBJECT_ID,
+                    title: formatOdiaText(title),
+                    subtitle: formatOdiaText(subtitle || `Created by ${userData.name || 'Student'}`),
+                    creatorName: userData.name || 'Student',
+                    isUserCreated: true,
+                    questions: questions,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("Quiz created successfully! It is now live in the User's Quizzes section.");
+                showScreen('choose-class-screen');
+            } catch (err) {
+                alert("Failed to save quiz: " + err.message);
+            }
+        });
+
+        // ─────────── OPEN USER'S QUIZZES (TOPICS ￫ QUIZ FLOW) ───────────
+        const openUsersQuizzesList = () => {
+            renderQuizzesForSubject(USER_QUIZZES_SUBJECT_ID, "User's Quizzes");
+        };
 
         init();
     </script>
